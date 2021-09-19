@@ -24,4 +24,12 @@ export default class ImagePath {
   static get aquarium2() {
     return `${PREFIX}/aquarium2.svg`
   }
+
+  static get thumb() {
+    return `${PREFIX}/thumb.jpeg`;
+  }
+
+  static get thumb2() {
+    return `${PREFIX}/thumb2.jpeg`;
+  }
 }

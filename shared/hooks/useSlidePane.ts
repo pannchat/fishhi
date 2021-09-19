@@ -1,5 +1,4 @@
 import produce from "immer";
-import {cloneDeep} from "lodash"
 import { useCallback, useState } from "react";
 
 export type SlidePaneKey = 'isPaneOpen' | 'isPaneOpenLeft' | 'isPaneOpenBottom'

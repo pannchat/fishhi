@@ -3,13 +3,46 @@ import Head from "next/head";
 import Image from "next/image";
 import React from "react";
 import FHNavbar, { FHMainNavbar } from "../components/FHNavbar";
+import PostBox from "../components/PostBox";
+import Spacing from "../shared/commonComponent/spacing";
+import ImagePath from "../shared/imagePath";
 import styles from "../styles/Home.module.css";
+
+const dummy = [
+  {
+    image: ImagePath.thumb,
+    title: "1번 포스트",
+    nickname: "관리자",
+  },
+  {
+    image: ImagePath.thumb2,
+    title: "2번 포스트",
+    nickname: "관리자",
+  },
+];
 
 const Home: NextPage = () => {
   return (
     <div className="app__wrapper">
       <FHNavbar />
       <FHMainNavbar />
+      {dummy.map((value, index) => {
+        return (
+          <div
+            key={`postBox${index}`}
+            style={{
+              cursor: "pointer",
+            }}
+          >
+            <PostBox
+              image={value.image}
+              nickname={value.nickname}
+              title={value.title}
+            />
+            <Spacing height={10} />
+          </div>
+        );
+      })}
       <style jsx>
         {`
           .app__wrapper {
