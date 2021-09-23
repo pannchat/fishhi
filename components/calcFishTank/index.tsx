@@ -1,4 +1,6 @@
 import React, { InputHTMLAttributes, useEffect } from "react";
+import Button from "../../shared/commonComponent/button";
+import Spacing from "../../shared/commonComponent/spacing";
 import useCalcFishBowl from "../../shared/hooks/useCalcFishBowl";
 
 const CalcFishTank = () => {
@@ -23,6 +25,13 @@ const CalcFishTank = () => {
   }, []);
   return (
     <div>
+      <h1
+        style={{
+          textAlign: "center",
+        }}
+      >
+        수조 물양 계산기
+      </h1>
       <div className="flex-box--main">
         <div className="main-section__tank-preview">
           <div className="main-section__tank-container">
@@ -40,9 +49,6 @@ const CalcFishTank = () => {
         </div>
       </div>
 
-      <div className="calculate" onClick={calculate}>
-        계산
-      </div>
       <div className="main-section__tank-size">
         <TankInput
           value={tankWidth}
@@ -72,6 +78,24 @@ const CalcFishTank = () => {
           unit={"cm"}
         />
       </div>
+      <Spacing height={50} />
+      <Button
+        width={200}
+        height={50}
+        color={"#4b5ab4"}
+        style={{
+          color: "white",
+          fontSize: 16,
+          fontWeight: 500,
+          borderRadius: 25,
+          cursor: "pointer",
+          marginLeft: "auto",
+          marginRight: "auto",
+        }}
+        onClick={calculate}
+      >
+        계산하기
+      </Button>
 
       <style jsx>{`
         .face {
@@ -88,10 +112,18 @@ const CalcFishTank = () => {
           background-color: rgba(18, 129, 159, 0.3);
         }
 
+        .main-section__tank-size {
+          display: flex;
+          justify-content: space-around;
+          align-items: center;
+          width: 100%;
+        }
+
         .flex-box--main {
           display: flex;
           align-items: center;
           width: 100%;
+          height: 500px;
           margin: 10px 0;
           flex-direction: row;
           justify-content: center;
@@ -202,7 +234,7 @@ const TankInput = (props: {
         }}
       />
 
-      <div>{unit}</div>
+      <div className="size-unit">{unit}</div>
 
       <style jsx>{`
         .main-section__tank {
@@ -212,6 +244,11 @@ const TankInput = (props: {
         .tank__input-label {
           font-size: 16px;
           font-weight: 800;
+        }
+
+        .size-unit {
+          font-size: 14px;
+          font-weight: 500;
         }
         .input::-webkit-outer-spin-button,
         &::-webkit-inner-spin-button {
