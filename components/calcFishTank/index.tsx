@@ -1,7 +1,9 @@
-import React, { InputHTMLAttributes, useEffect } from "react";
+import React, { InputHTMLAttributes, useEffect, useState } from "react";
 import Button from "../../shared/commonComponent/button";
 import Spacing from "../../shared/commonComponent/spacing";
+import Switch from "../../shared/commonComponent/switch";
 import useCalcFishBowl from "../../shared/hooks/useCalcFishBowl";
+import CalcSupplies from "../calcSupplies";
 
 const CalcFishTank = () => {
   const {
@@ -14,12 +16,19 @@ const CalcFishTank = () => {
     tankWidth,
     tankHeight,
     tankDepth,
+    thickness,
+    tankSand,
     setTankWidth,
     setTankDepth,
     setTankHeight,
+    setThickness,
+    setTankSand,
     calculate,
   } = useCalcFishBowl();
-
+  const [isShowDetail, setIsShowDetail] = useState<boolean>(false);
+  const handleClickSwitch = () => {
+    setIsShowDetail(!isShowDetail);
+  };
   useEffect(() => {
     if (faceFrontRef.current) faceFrontRef.current.style.width = "100px";
   }, []);
@@ -78,6 +87,48 @@ const CalcFishTank = () => {
           unit={"cm"}
         />
       </div>
+      <Spacing height={15} />
+      <div className="main-section__tank-size detail-setting">
+        <TankInput
+          value={thickness}
+          onChange={(value) => {
+            setThickness(value);
+          }}
+          name="thickness"
+          label="유리두께"
+          unit="T"
+        />
+
+        <TankInput
+          value={tankSand}
+          onChange={(value) => {
+            setTankSand(value);
+          }}
+          name="tankSand"
+          label="바닥재"
+          unit="cm"
+        />
+
+        <TankInput
+          value={tankSand}
+          onChange={(value) => {
+            setTankSand(value);
+          }}
+          name="tankSand"
+          label="바닥재"
+          unit="cm"
+        />
+      </div>
+      <Spacing height={20} />
+      <Switch
+        label="상세설정"
+        isActive={isShowDetail}
+        onClick={handleClickSwitch}
+        style={{
+          justifyContent: "flex-end",
+          cursor: "pointer",
+        }}
+      />
       <Spacing height={50} />
       <Button
         width={200}
@@ -96,7 +147,8 @@ const CalcFishTank = () => {
       >
         계산하기
       </Button>
-
+      <Spacing height={50} />
+      <CalcSupplies />
       <style jsx>{`
         .face {
           margin: 0px;
@@ -163,6 +215,10 @@ const CalcFishTank = () => {
           position: relative;
         }
 
+        .main-section__tank-size.detail-setting {
+          display: ${isShowDetail ? "flex" : "none"};
+        }
+
         .faceBack {
           transform: translateZ(-50px);
         }
@@ -200,19 +256,27 @@ const TankInput = (props: {
   placeholder?: string;
   name: string;
   unit: string;
+  labelSize?: number;
 }) => {
-  const { onChange, unit, label, ...inputAttributes } = props;
+  const { onChange, unit, label, labelSize = 16, ...inputAttributes } = props;
 
   return (
     <div
       style={{
-        width: 120,
+        width: 150,
         display: "flex",
         alignItems: "center",
         justifyContent: "space-around",
       }}
     >
-      <p className="tank__input-label">{label}</p>
+      <p
+        className="tank__input-label"
+        style={{
+          fontSize: labelSize,
+        }}
+      >
+        {label}
+      </p>
       <input
         className="input"
         {...inputAttributes}
@@ -242,8 +306,8 @@ const TankInput = (props: {
           height: 300px;
         }
         .tank__input-label {
-          font-size: 16px;
           font-weight: 800;
+          flex-basis: 40%;
         }
 
         .size-unit {
