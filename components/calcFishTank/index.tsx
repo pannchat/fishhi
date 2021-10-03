@@ -3,7 +3,8 @@ import Button from "../../shared/commonComponent/button";
 import Spacing from "../../shared/commonComponent/spacing";
 import Switch from "../../shared/commonComponent/switch";
 import useCalcFishBowl from "../../shared/hooks/useCalcFishBowl";
-import CalcSupplies from "../calcSupplies";
+import CalcSupplies from "./calcSupplies";
+import SuppliesCarousel from "./suppliesCarousel";
 
 const CalcFishTank = () => {
   const {
@@ -149,6 +150,7 @@ const CalcFishTank = () => {
       </Button>
       <Spacing height={50} />
       <CalcSupplies />
+      <SuppliesCarousel supplyWidth={70} />
       <style jsx>{`
         .face {
           margin: 0px;

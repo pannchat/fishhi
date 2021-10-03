@@ -1,5 +1,5 @@
 import React from "react";
-import { useSuppliesProduct } from "../shared/hooks/useSuppliesProduct";
+import { useSuppliesProduct } from "../../shared/hooks/useSuppliesProduct";
 const IMAGE_BASE_URL = "https://fishhi.kr/thumbnails/";
 const CalcSupplies = () => {
   const { data } = useSuppliesProduct();
