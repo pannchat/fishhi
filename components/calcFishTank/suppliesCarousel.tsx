@@ -1,4 +1,5 @@
-import React, { useRef } from "react";
+import { throttle } from "lodash";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import { Carousel } from "react-responsive-carousel";
 import { CSSProperties } from "styled-components";
 import { useSuppliesProduct } from "../../shared/hooks/useSuppliesProduct";
@@ -11,15 +12,32 @@ interface ISuppliesCarousel {
 const SuppliesCarousel = (props: ISuppliesCarousel) => {
   const { supplyWidth } = props;
   const { data } = useSuppliesProduct();
+  const [currentScroll, setCurrentScroll] = useState<number>(0);
   const suppliesWrapperRef = useRef<HTMLDivElement | null>(null);
+  const handleScroll = throttle((value: number) => {
+    setCurrentScroll(value);
+  }, 300);
 
-  const clickLeftHandle = () => {
-    suppliesWrapperRef.current &&
-      suppliesWrapperRef.current.scrollTo({
-        left: 10,
-        behavior: "smooth",
-      });
-  };
+  const clickLeftHandle = useCallback(() => {
+    if (supplyWidth) {
+      suppliesWrapperRef.current &&
+        suppliesWrapperRef.current.scrollTo({
+          left: currentScroll - supplyWidth,
+          behavior: "smooth",
+        });
+    }
+  }, [currentScroll, suppliesWrapperRef.current]);
+
+  const clickRightHandle = useCallback(() => {
+    if (supplyWidth) {
+      suppliesWrapperRef.current &&
+        suppliesWrapperRef.current.scrollTo({
+          left: currentScroll + supplyWidth,
+          behavior: "smooth",
+        });
+    }
+  }, [currentScroll, suppliesWrapperRef.current]);
+
   return (
     <div className="supplies__carousel__wrapper">
       <ScrollButton
@@ -31,11 +49,18 @@ const SuppliesCarousel = (props: ISuppliesCarousel) => {
           position: "absolute",
           transform: "translate(-0,-50%)",
           top: "50%",
+          cursor: "pointer",
           left: 0,
         }}
       />
 
-      <div className="supplies__carousel" ref={suppliesWrapperRef}>
+      <div
+        className="supplies__carousel"
+        ref={suppliesWrapperRef}
+        onScroll={(e) => {
+          handleScroll(e.currentTarget.scrollLeft);
+        }}
+      >
         {data?.map((value: any, index: number) => {
           return (
             <SupplyBox
@@ -52,10 +77,11 @@ const SuppliesCarousel = (props: ISuppliesCarousel) => {
         type="right"
         width={30}
         height={30}
-        onClick={clickLeftHandle}
+        onClick={clickRightHandle}
         style={{
           position: "absolute",
           transform: "translate(-0,-50%)",
+          cursor: "pointer",
           top: "50%",
           right: 0,
         }}

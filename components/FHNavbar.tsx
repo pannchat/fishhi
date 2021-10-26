@@ -116,6 +116,9 @@ const FHNavbar = () => {
         }}
         width={20}
         height={20}
+        style={{
+          cursor: "pointer",
+        }}
       />
       <SlidingPane
         closeIcon={
@@ -317,6 +320,7 @@ const FNMainNavbarItem = (props: IMainNavbarProps) => {
       <style jsx>{`
         .main-nav-bar-item__wrapper {
           padding: 10px;
+          cursor: pointer;
         }
 
         .item-image__wrapper {

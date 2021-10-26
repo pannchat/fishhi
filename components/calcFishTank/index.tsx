@@ -150,7 +150,7 @@ const CalcFishTank = () => {
       </Button>
       <Spacing height={50} />
       <CalcSupplies />
-      <SuppliesCarousel supplyWidth={70} />
+      <SuppliesCarousel supplyWidth={170} />
       <style jsx>{`
         .face {
           margin: 0px;
