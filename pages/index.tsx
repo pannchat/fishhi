@@ -24,8 +24,16 @@ const dummy = [
 const Home: NextPage = () => {
   return (
     <div className="app__wrapper">
-      <FHNavbar />
-      <FHMainNavbar />
+      <h1
+        style={{
+          fontSize: 24,
+          fontWeight: 700,
+        }}
+      >
+        피쉬하이
+      </h1>
+      {/* <FHNavbar /> */}
+
       {dummy.map((value, index) => {
         return (
           <div

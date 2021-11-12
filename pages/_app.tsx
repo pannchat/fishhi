@@ -3,6 +3,7 @@ import type { AppProps } from "next/app";
 import React, { useMemo } from "react";
 import Footer from "../shared/commonComponent/footer";
 import ImagePath from "../shared/imagePath";
+import { RecoilRoot } from "recoil";
 
 const FOOTER_ITEMS = [
   {
@@ -32,22 +33,24 @@ const FOOTER_ITEMS = [
 function MyApp({ Component, pageProps }: AppProps) {
   const FOOTER_REFINED_ITEMS = useMemo(() => {}, [FOOTER_ITEMS]);
   return (
-    <div className="app">
-      <Component {...pageProps} />
-      <Footer
-        footerItems={FOOTER_ITEMS}
-        style={{
-          maxWidth: 500,
-        }}
-      />
-      <style jsx>{`
-        .app {
-          max-width: 500px;
-          margin-left: auto;
-          margin-right: auto;
-        }
-      `}</style>
-    </div>
+    <RecoilRoot>
+      <div className="app">
+        <Component {...pageProps} />
+        <Footer
+          footerItems={FOOTER_ITEMS}
+          style={{
+            maxWidth: 500,
+          }}
+        />
+        <style jsx>{`
+          .app {
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+          }
+        `}</style>
+      </div>
+    </RecoilRoot>
   );
 }
 export default MyApp;

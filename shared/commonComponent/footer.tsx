@@ -16,7 +16,7 @@ const Footer = (props: IFooterProps) => {
       <style jsx>{`
         .footer {
           width: 100%;
-          height: 60px;
+          height: 75px;
           position: fixed;
           bottom: 0;
           border-top: 1px solid #d2d2d2;
