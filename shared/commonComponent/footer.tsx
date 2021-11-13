@@ -1,5 +1,7 @@
 import React from "react";
 import { CSSProperties } from "styled-components";
+import LinkCustom from "./link";
+import Spacing from "./spacing";
 
 interface IFooterProps {
   footerItems: IFooterItemProps[];
@@ -9,10 +11,15 @@ interface IFooterProps {
 const Footer = (props: IFooterProps) => {
   const { footerItems, style } = props;
   return (
-    <div className="footer" style={style}>
-      {footerItems.map((value, index) => (
-        <FooterItem key={`footerItem${index}`} {...value} />
-      ))}
+    <>
+      <div className="footer" style={style}>
+        {footerItems.map((value, index) => (
+          <LinkCustom key={`footerItem${index}`} href={value.href}>
+            <FooterItem key={`footerItem${index}`} {...value} />
+          </LinkCustom>
+        ))}
+      </div>
+      <Spacing height={75} />
       <style jsx>{`
         .footer {
           width: 100%;
@@ -23,10 +30,11 @@ const Footer = (props: IFooterProps) => {
 
           display: flex;
           align-items: center;
+          justify-content: space-between;
           background-color: white;
         }
       `}</style>
-    </div>
+    </>
   );
 };
 
@@ -34,6 +42,7 @@ export default Footer;
 
 interface IFooterItemProps {
   text: string;
+  href: string;
   image?: string;
   width?: string | number;
   height?: string | number;

@@ -1,11 +1,16 @@
 import React from "react";
-import { useRecoilValue } from "recoil";
-import { searchSuggestionState, searchTextState } from "./stores/searchData";
+import { useRecoilState, useRecoilValue } from "recoil";
+import {
+  searchFocusState,
+  searchSuggestionState,
+  searchTextState,
+} from "./stores/searchData";
 
 const SearchResult = () => {
   const suggestion = useRecoilValue(searchSuggestionState);
   const searchText = useRecoilValue(searchTextState);
-  const showSuggenstion = searchText.length > 0;
+  const searchFocus = useRecoilValue(searchFocusState);
+  const showSuggenstion = searchText.length > 0 && searchFocus;
   return (
     <div className="search-result__wrapper">
       {suggestion.length > 0 ? (
@@ -37,6 +42,8 @@ const SearchResult = () => {
           line-height: 50px;
           vertical-align: middle;
           font-size: 14px;
+          padding-left: 10px;
+          cursor: pointer;
         }
 
         .search-result--no-result {

@@ -1,7 +1,11 @@
 import React, { useCallback, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import Input, { IInputProps } from "../../shared/commonComponent/input";
-import { searchSuggestionState, searchTextState } from "./stores/searchData";
+import {
+  searchFocusState,
+  searchSuggestionState,
+  searchTextState,
+} from "./stores/searchData";
 
 export interface ISearchKeywordProps {
   id: number;
@@ -47,7 +51,15 @@ const SearchInput = () => {
   const [suggestion, setSuggestion] = useRecoilState<ISearchKeywordProps[]>(
     searchSuggestionState
   );
+  const setSearchFocus = useSetRecoilState(searchFocusState);
   const data = [...SEARCH_KEYWORD_1.data, ...SEARCH_KEYWORD_2.data];
+  const onFocushandler = () => {
+    setSearchFocus(true);
+  };
+
+  const onBlurHandler = () => {
+    setSearchFocus(false);
+  };
   const onChangeHandler = useCallback(
     (text: string) => {
       let matches: ISearchKeywordProps[] = [];
@@ -92,6 +104,8 @@ const SearchInput = () => {
       onChange={(e) => {
         onChangeHandler(e.target.value);
       }}
+      onFocus={onFocushandler}
+      onBlur={onBlurHandler}
       style={{
         width: "100%",
         border: `1px solid #d2d2d2`,

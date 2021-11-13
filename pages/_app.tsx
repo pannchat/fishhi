@@ -8,6 +8,7 @@ import { RecoilRoot } from "recoil";
 const FOOTER_ITEMS = [
   {
     itemKey: "calculrator",
+    href: "/calcFishTank",
     text: "어항계산기",
     image: ImagePath.aquarium,
     width: 40,
@@ -20,6 +21,7 @@ const FOOTER_ITEMS = [
   {
     itemKey: "auth",
     text: "마이페이지",
+    href: "/",
     image: ImagePath.aquaPlant,
     width: 40,
     height: 40,
