@@ -4,6 +4,8 @@ import Image from "next/image";
 import React from "react";
 import FHNavbar, { FHMainNavbar } from "../components/FHNavbar";
 import PostBox from "../components/PostBox";
+import Search from "../components/search";
+import SearchInput from "../components/search/searchInput";
 import Spacing from "../shared/commonComponent/spacing";
 import ImagePath from "../shared/imagePath";
 import styles from "../styles/Home.module.css";
@@ -32,8 +34,9 @@ const Home: NextPage = () => {
       >
         피쉬하이
       </h1>
-      {/* <FHNavbar /> */}
 
+      <Search />
+      <Spacing height={10} />
       {dummy.map((value, index) => {
         return (
           <div

@@ -1,6 +1,20 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
+import { useRecoilState } from "recoil";
+import Input, { IInputProps } from "../../shared/commonComponent/input";
+import { searchSuggestionState, searchTextState } from "./stores/searchData";
 
-const SEARCH_KEYWORD_1 = {
+export interface ISearchKeywordProps {
+  id: number;
+  name: string;
+  keyword: string[];
+}
+
+export interface ISearchKeywordData {
+  data: ISearchKeywordProps[];
+}
+
+export interface ISearchInputProps extends IInputProps {}
+const SEARCH_KEYWORD_1: ISearchKeywordData = {
   data: [
     { id: 1, name: "라쿤 타이거 새우", keyword: ["비쉬림프", "쉬림프"] },
     { id: 2, name: "오렌지 타이거 새우", keyword: ["비쉬림프"] },
@@ -29,7 +43,65 @@ const SEARCH_KEYWORD_2 = {
 };
 
 const SearchInput = () => {
-  return <div></div>;
+  const [text, setText] = useRecoilState<string>(searchTextState);
+  const [suggestion, setSuggestion] = useRecoilState<ISearchKeywordProps[]>(
+    searchSuggestionState
+  );
+  const data = [...SEARCH_KEYWORD_1.data, ...SEARCH_KEYWORD_2.data];
+  const onChangeHandler = useCallback(
+    (text: string) => {
+      let matches: ISearchKeywordProps[] = [];
+      let matches2: ISearchKeywordProps[] = [];
+      text = text.replace("\\", "");
+      if (text.length > 0) {
+        matches = data.filter((dt) => {
+          const regex = new RegExp(`${text}`, "gi");
+          // var test = [...dt.email,...dt.first_name];
+
+          return dt.name.match(regex);
+        });
+      }
+      if (text.length > 0) {
+        matches2 = data.filter((dt) => {
+          const regex = new RegExp(`\\${text}`, "gi");
+          // var test = [...dt.email,...dt.first_name];
+          let test = null;
+          dt.keyword.map((e) => {
+            if (e.match(regex)) {
+              test = dt.keyword;
+              return;
+            }
+          });
+
+          return test;
+        });
+      }
+      var result = new Set([...matches, ...matches2]); // 중복제거
+
+      setSuggestion([...result]);
+      if (text.length > 0 && result.size > 0) {
+      }
+      setText(text);
+    },
+    [text, suggestion]
+  );
+  return (
+    <Input
+      placeholder="검색어를 입력하세요"
+      value={text}
+      onChange={(e) => {
+        onChangeHandler(e.target.value);
+      }}
+      style={{
+        width: "100%",
+        border: `1px solid #d2d2d2`,
+        borderRadius: 10,
+        height: 50,
+        fontSize: 16,
+        paddingLeft: 10,
+      }}
+    />
+  );
 };
 
 export default SearchInput;

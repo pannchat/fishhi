@@ -82,6 +82,8 @@ const PostBoxInfo = (props: IPostBoxInfoProps) => {
           align-items: center;
           padding-left: 10px;
           padding-right: 10px;
+          padding-top: 5px;
+          padding-bottom: 5px;
         }
 
         .post-title__wrapper {
