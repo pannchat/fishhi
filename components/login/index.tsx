@@ -26,10 +26,10 @@ const Login = () =>{
         <>
             {/* <NavBar/> */}
             <div style={main}>
-            <header>
+            <header id="header">
                 <h2>Login</h2>
             </header>
-            <Form />
+            <Form id="form"/>
             <input className={styles['login-btn']} type="submit" value="로그인"/>
             </div>
         </>

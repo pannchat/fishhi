@@ -1,8 +1,8 @@
-header{
+#header{
     display:flex;
     justify-content: center;
 }
-form{
+#form{
     padding:10px;
 }
 .login-form__box{
