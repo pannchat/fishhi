@@ -29,7 +29,7 @@ const Login = () =>{
             <header id="header">
                 <h2>Login</h2>
             </header>
-            <Form id="form"/>
+            <Form/>
             <input className={styles['login-btn']} type="submit" value="로그인"/>
             </div>
         </>

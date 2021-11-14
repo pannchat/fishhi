@@ -2,9 +2,9 @@
     display:flex;
     justify-content: center;
 }
-#form{
+/* #form{
     padding:10px;
-}
+} */
 .login-form__box{
     position:relative;
     margin:10px 0;
