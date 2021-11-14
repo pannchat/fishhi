@@ -6,8 +6,12 @@ const BASE_URL = 'http://54.180.156.194:8000';
 
 axios.defaults.baseURL = BASE_URL;
 axios.interceptors.request.use(async (config) => {
-  if (!config.headers['Authorization']) {
+ 
     config.headers['Authorization'] = `TOKEN ${AUTH_TOKEN}`;
+  
+
+  if (!config.headers['Origin']) {
+
   }
   return config;
 });
@@ -20,7 +24,7 @@ export async function getSuppliesProduct() {
 }
 
 export async function getFishListApi() {
-  const {data} = await axios.get('/fish');
+  const { data } = await axios.get('/fish');
 
   return data;
 }

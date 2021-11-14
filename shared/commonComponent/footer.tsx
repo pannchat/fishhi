@@ -32,6 +32,8 @@ const Footer = (props: IFooterProps) => {
           align-items: center;
           justify-content: space-between;
           background-color: white;
+          padding-left: 10px;
+          padding-right: 10px;
         }
       `}</style>
     </>

@@ -33,7 +33,6 @@ const FOOTER_ITEMS = [
 ];
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const FOOTER_REFINED_ITEMS = useMemo(() => {}, [FOOTER_ITEMS]);
   return (
     <RecoilRoot>
       <div className="app">
