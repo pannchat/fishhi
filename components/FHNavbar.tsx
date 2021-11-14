@@ -116,6 +116,9 @@ const FHNavbar = () => {
         }}
         width={20}
         height={20}
+        style={{
+          cursor: "pointer",
+        }}
       />
       <SlidingPane
         closeIcon={
@@ -223,18 +226,19 @@ function SlidePaneKey(arg0: boolean, SlidePaneKey: any) {
   throw new Error("Function not implemented.");
 }
 interface IMainNavbarProps {
-  key: string;
+  value: string;
   image: string;
   text: string;
   imageBackgroundColor: string;
   isOpen: boolean;
-  onClick?: () => void;
+  onClick?: (value?: any) => void;
 }
 
-type MainNavbarItems = Omit<IMainNavbarProps, "key" | "onClick">[];
+type MainNavbarItems = Omit<IMainNavbarProps, "onClick">[];
 
 const mainNavbarItems: MainNavbarItems = [
   {
+    value: "calcFishTank",
     image: ImagePath.aquarium,
     text: "#어항계산기",
     imageBackgroundColor: "rgb(239, 242, 198)",
@@ -242,6 +246,7 @@ const mainNavbarItems: MainNavbarItems = [
   },
 
   {
+    value: "",
     image: ImagePath.aquaPlant,
     text: "텍스트",
     imageBackgroundColor: "rgb(230, 252, 245)",
@@ -249,12 +254,14 @@ const mainNavbarItems: MainNavbarItems = [
   },
 
   {
+    value: "",
     image: ImagePath.fish,
     text: "텍스트",
     imageBackgroundColor: "rgb(255, 244, 230)",
     isOpen: false,
   },
   {
+    value: "",
     image: ImagePath.aquarium2,
     text: "텍스트",
     imageBackgroundColor: "rgb(241, 243, 245)",
@@ -271,8 +278,8 @@ export const FHMainNavbar = () => {
           <FNMainNavbarItem
             key={`mainNavbarItem${index}`}
             {...value}
-            onClick={() => {
-              router.push("");
+            onClick={(value: string) => {
+              router.push(`/${value}`);
             }}
           />
         );
@@ -291,12 +298,12 @@ export const FHMainNavbar = () => {
 };
 
 const FNMainNavbarItem = (props: IMainNavbarProps) => {
-  const { key, image, text, imageBackgroundColor, isOpen, onClick } = props;
+  const { value, image, text, imageBackgroundColor, isOpen, onClick } = props;
   return (
     <div
       className="main-nav-bar-item__wrapper"
       onClick={() => {
-        onClick && onClick();
+        onClick && onClick(value);
       }}
     >
       <div className="main-nav-bar-item">
@@ -313,6 +320,7 @@ const FNMainNavbarItem = (props: IMainNavbarProps) => {
       <style jsx>{`
         .main-nav-bar-item__wrapper {
           padding: 10px;
+          cursor: pointer;
         }
 
         .item-image__wrapper {
