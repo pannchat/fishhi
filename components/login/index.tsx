@@ -26,7 +26,7 @@ const Login = () =>{
         <>
             {/* <NavBar/> */}
             <div style={main}>
-            <header id="header">
+            <header className={styles['header']}>
                 <h2>Login</h2>
             </header>
             <Form/>
