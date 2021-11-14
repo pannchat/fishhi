@@ -30,6 +30,7 @@ const Login = () =>{
                 <h2>Login</h2>
             </header>
             <Form/>
+            <div id={styles['forgot-account']}>비밀번호 찾기</div>
             <input className={styles['login-btn']} type="submit" value="로그인"/>
             </div>
         </>

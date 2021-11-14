@@ -60,6 +60,11 @@
     color:rgb(164, 164, 164);
     margin:10px 0px;
 }
-.login-form{
-    padding:10px;
+#forgot-account{
+    display: flex;
+    justify-content: end;
+    color:rgb(87, 87, 87);
 }
+/* .login-form{
+    padding:10px;
+} */
