@@ -1,9 +1,12 @@
 import React from "react";
 
-interface ISpecBox {
+export interface ISpecData {
   name: string;
   spec: string;
   img?: string;
+}
+
+interface ISpecBox extends ISpecData {
   imgWidth?: string | number;
   imgHeight?: string | number;
   width?: string | number;
