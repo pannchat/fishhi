@@ -1,6 +1,8 @@
 import React from "react";
+import ListView from "./listView";
 
-interface ICategoryItem {
+interface ICategoryItemProps {
+  id: string;
   label: string;
   img?: string;
   imgWidth?: string | number;
@@ -10,9 +12,24 @@ interface ICategoryItem {
   height?: string | number;
 }
 
-const CategoryList = () => {};
+interface ICategoryProps
+  extends Pick<ICategoryItemProps, "id" | "label" | "img" | "onClick"> {}
 
-const CategoryItem = (props: ICategoryItem) => {
+const CategoryList = (props: ICategoryProps[]) => {
+  return (
+    <ListView
+      list={props}
+      gap={1}
+      column={2}
+      columnSize="40%"
+      ListItem={(props: ICategoryProps) => <CategoryItem {...props} />}
+    />
+  );
+};
+
+export default CategoryList;
+
+const CategoryItem = (props: ICategoryItemProps) => {
   const { label, img, imgWidth, imgHeight, onClick, width, height } = props;
   return (
     <div
