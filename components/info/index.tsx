@@ -11,6 +11,10 @@ const INFO_CATEGORY_DUMMY = [
     id: "shrimp",
     label: "새우",
   },
+  {
+    id: "medicine",
+    label: "약품",
+  },
 ];
 const Info = () => {
   return (

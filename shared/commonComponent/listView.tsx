@@ -22,6 +22,7 @@ const ListView = <T extends unknown>(props: IListViewProps<T>) => {
           margin-right: auto;
           display: grid;
           column-gap: ${gap}px;
+          row-gap: ${gap}px;
           grid-template-columns: 1fr 1fr;
         }
       `}</style>
