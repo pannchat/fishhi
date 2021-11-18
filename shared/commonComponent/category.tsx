@@ -12,17 +12,30 @@ interface ICategoryItemProps {
   height?: string | number;
 }
 
-interface ICategoryProps
-  extends Pick<ICategoryItemProps, "id" | "label" | "img" | "onClick"> {}
+type PickedICategoryItem = Pick<
+  ICategoryItemProps,
+  "id" | "label" | "img" | "onClick"
+>;
 
-const CategoryList = (props: ICategoryProps[]) => {
+interface ICategoryProps {
+  data: PickedICategoryItem[];
+}
+
+const CategoryList = (props: ICategoryProps) => {
+  const usingList: PickedICategoryItem[] = props.data.map((value) => {
+    return {
+      ...value,
+      width: "50%",
+      height: 50,
+    };
+  });
   return (
     <ListView
-      list={props}
+      list={usingList}
       gap={1}
       column={2}
       columnSize="40%"
-      ListItem={(props: ICategoryProps) => <CategoryItem {...props} />}
+      ListItem={(props: PickedICategoryItem) => <CategoryItem {...props} />}
     />
   );
 };

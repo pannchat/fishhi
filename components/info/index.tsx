@@ -1,8 +1,17 @@
 import React from "react";
+import CategoryList from "../../shared/commonComponent/category";
 import { useFishList } from "../../shared/hooks/useFishList";
 
-const INFO_CATEGORY_DUMMY = ["물고기", "새우", "약품", "수조"];
-
+const INFO_CATEGORY_DUMMY = [
+  {
+    id: "fish",
+    label: "물고기",
+  },
+  {
+    id: "shrimp",
+    label: "새우",
+  },
+];
 const Info = () => {
   return (
     <div className="info__wrapper">
@@ -12,6 +21,7 @@ const Info = () => {
         <br />
         선택해 주세요.
       </h4>
+      <CategoryList data={INFO_CATEGORY_DUMMY} />
       <style jsx>{`
         .info-title {
           font-size: 20px;
