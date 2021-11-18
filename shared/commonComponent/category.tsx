@@ -25,16 +25,16 @@ const CategoryList = (props: ICategoryProps) => {
   const usingList: PickedICategoryItem[] = props.data.map((value) => {
     return {
       ...value,
-      width: "50%",
+      width: "100%",
       height: 50,
     };
   });
   return (
     <ListView
       list={usingList}
-      gap={1}
-      column={2}
-      columnSize="40%"
+      gap={10}
+      column={1}
+      columnSize="45%"
       ListItem={(props: PickedICategoryItem) => <CategoryItem {...props} />}
     />
   );
@@ -58,6 +58,7 @@ const CategoryItem = (props: ICategoryItemProps) => {
         .category-item__wrapper {
           display: flex;
           align-items: center;
+          justify-content: center;
           border-radius: 10px;
           background-color: #606e78;
         }

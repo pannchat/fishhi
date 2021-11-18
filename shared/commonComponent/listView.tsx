@@ -17,7 +17,12 @@ const ListView = <T extends unknown>(props: IListViewProps<T>) => {
       ))}
       <style jsx>{`
         .list-view__wrapper {
-          grid-template-columns: repeat(${column}, ${columnSize} [col-start]);
+          width: 90%;
+          margin-left: auto;
+          margin-right: auto;
+          display: grid;
+          column-gap: ${gap}px;
+          grid-template-columns: 1fr 1fr;
         }
       `}</style>
     </div>
