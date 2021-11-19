@@ -1,3 +1,4 @@
+import { useRouter } from "next/dist/client/router";
 import React from "react";
 import ListView from "./listView";
 
@@ -22,11 +23,15 @@ interface ICategoryProps {
 }
 
 const CategoryList = (props: ICategoryProps) => {
+  const router = useRouter();
   const usingList: PickedICategoryItem[] = props.data.map((value) => {
     return {
       ...value,
       width: "100%",
       height: 50,
+      onClick: () => {
+        router.push(`info/${value.id}`);
+      },
     };
   });
   return (
@@ -51,6 +56,7 @@ const CategoryItem = (props: ICategoryItemProps) => {
         width: width,
         height: height,
       }}
+      onClick={onClick}
     >
       {img && <img src={img} width={imgWidth} height={imgHeight} />}
       <p className="category-item-label">{label}</p>
@@ -61,6 +67,7 @@ const CategoryItem = (props: ICategoryItemProps) => {
           justify-content: center;
           border-radius: 10px;
           background-color: #606e78;
+          cursor: pointer;
         }
 
         .category-item-label {
