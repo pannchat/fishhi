@@ -40,4 +40,8 @@ export default class ImagePath {
   static get home() {
     return `${PREFIX}/home.png`;
   }
+
+  static get shrimp() {
+    return `${PREFIX}/shrimp.jpeg`
+  }
 }

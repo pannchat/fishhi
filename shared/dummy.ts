@@ -1,4 +1,5 @@
 import { FishSpecies } from "./enum";
+import ImagePath from "./imagePath";
 
 export interface IFishListData {
   id: number;
@@ -22,7 +23,7 @@ export const FISH_LIST: IFishListProps = {'data':[
     id:1, 
     species: FishSpecies.shrimp,
     name:'라쿤 타이거 새우(Caridina sp)',
-    thumbnail:'/img/file/shrimp.jpeg',
+    thumbnail: ImagePath.shrimp,
     standardLength:3.5,'minPH':6.0,
     maxPH:7.5,
     minTemperature:22,
