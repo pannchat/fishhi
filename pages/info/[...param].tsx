@@ -1,7 +1,6 @@
 import { useRouter } from "next/dist/client/router";
 import React from "react";
-import Info from "../../components/info";
-import InfoDetail from "../../components/info/detail";
+import Species from "../../components/info/species";
 
 const InfoPageDetail = () => {
   const router = useRouter();
@@ -9,7 +8,7 @@ const InfoPageDetail = () => {
   const species = param ? param[0] : null;
 
   if (!species) return null;
-  return <InfoDetail species={species} />;
+  return <Species species={species} />;
 };
 
 export default InfoPageDetail;

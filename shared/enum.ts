@@ -3,4 +3,5 @@ export enum FishSpecies {
   shrimp = 'shrimp',
   aquarium = 'aquarium',
   medicine = 'medicine',
+  waterPlant = 'waterPlant',
 }
