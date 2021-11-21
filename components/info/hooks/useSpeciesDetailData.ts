@@ -21,6 +21,14 @@ export interface ISpeciesDetailProps {
   description: string[];
 }
 
+export const SPECIES_NAME = {
+  maxPH: 'max PH',
+  minPH: 'min PH',
+  minTemperature: '최소 온도',
+  maxTemperature: '최대 온도',
+  standardLength: '평균 길이',
+}
+
 export default function useSpeciesDetailData(id: string) {
   const data = FISH_LIST.data;
   const detailData = data.filter((item) => id === String(item.id) )

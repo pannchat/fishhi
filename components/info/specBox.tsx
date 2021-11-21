@@ -1,4 +1,5 @@
 import React from "react";
+import { CSSProperties } from "styled-components";
 
 export interface ISpecData {
   name: string;
@@ -12,10 +13,23 @@ interface ISpecBox extends ISpecData {
   width?: string | number;
   height?: string | number;
   color?: string;
+  specColor?: string;
+  style?: CSSProperties;
 }
 
 const SpecBox = (props: ISpecBox) => {
-  const { img, imgWidth, imgHeight, name, spec, color, width, height } = props;
+  const {
+    img,
+    imgWidth,
+    imgHeight,
+    name,
+    spec,
+    color,
+    width,
+    height,
+    specColor,
+    style,
+  } = props;
   return (
     <div
       className="spec-box"
@@ -23,6 +37,8 @@ const SpecBox = (props: ISpecBox) => {
         width: width,
         height: height,
         backgroundColor: color,
+        padding: 5,
+        ...style,
       }}
     >
       {img ? (
@@ -32,8 +48,22 @@ const SpecBox = (props: ISpecBox) => {
       )}
 
       <div className="spec-box-footer">
-        <p className="spec-name">{name}</p>
-        <p className="spec-value">{spec}</p>
+        <p
+          className="spec-name"
+          style={{
+            color: specColor,
+          }}
+        >
+          {name}
+        </p>
+        <p
+          className="spec-value"
+          style={{
+            color: specColor,
+          }}
+        >
+          {spec}
+        </p>
       </div>
 
       <style jsx>{`
