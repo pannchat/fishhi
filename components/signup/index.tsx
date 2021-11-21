@@ -43,8 +43,8 @@ const Form = () =>{
             onChange={(e)=>handleChangePw(e.target.name, e.target.value)}
             />
             <label className={styles['login-form__label']}>비밀번호 확인</label>
-        </div>\
-        {checkPw.pwCheck && checkPw.pw === checkPw.pwCheck ? '맞음':'틀림'}
+        </div>
+        {(checkPw.pwCheck && checkPw.pw)?(checkPw.pw === checkPw.pwCheck) ? '비밀번호가 일치합니다.':'비밀번호가 다릅니다.' :''}
     </div>
     )
 }
