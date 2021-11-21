@@ -1,10 +1,14 @@
 import { useRouter } from "next/dist/client/router";
 import React from "react";
-import Info from "../../components/info";
+import Species from "../../components/info/species";
 
 const InfoPageDetail = () => {
   const router = useRouter();
-  return <div className="info-page"></div>;
+  const { param } = router.query;
+  const species = param ? param[0] : null;
+
+  if (!species) return null;
+  return <Species species={species} />;
 };
 
 export default InfoPageDetail;

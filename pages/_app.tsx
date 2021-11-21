@@ -7,6 +7,18 @@ import { RecoilRoot } from "recoil";
 
 const FOOTER_ITEMS = [
   {
+    itemKey: "hone",
+    href: "/",
+    text: "홈",
+    image: ImagePath.home,
+    width: 35,
+    height: 35,
+    style: {
+      flexBasis: "25%",
+      cursor: "pointer",
+    },
+  },
+  {
     itemKey: "calculrator",
     href: "/calcFishTank",
     text: "어항계산기",
@@ -19,8 +31,20 @@ const FOOTER_ITEMS = [
     },
   },
   {
+    itemKey: "info",
+    text: "피쉬하이 백과",
+    href: "/info",
+    image: ImagePath.fishes,
+    width: 40,
+    height: 40,
+    style: {
+      flexBasis: "25%",
+      cursor: "pointer",
+    },
+  },
+  {
     itemKey: "auth",
-    text: "마이페이지",
+    text: "미정",
     href: "/",
     image: ImagePath.aquaPlant,
     width: 40,

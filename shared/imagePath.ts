@@ -32,4 +32,16 @@ export default class ImagePath {
   static get thumb2() {
     return `${PREFIX}/thumb2.jpeg`;
   }
+
+  static get fishes() {
+    return `${PREFIX}/fishes.png`;
+  }
+
+  static get home() {
+    return `${PREFIX}/home.png`;
+  }
+
+  static get shrimp() {
+    return `${PREFIX}/shrimp.jpeg`
+  }
 }
