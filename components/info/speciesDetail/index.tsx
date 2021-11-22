@@ -4,20 +4,23 @@ import Spacing from "../../../shared/commonComponent/spacing";
 import useSpeciesDetailData, {
   SpeciesBaseInfo,
   SpeciesSpecInfo,
+  SPECIES_NAME,
 } from "../hooks/useSpeciesDetailData";
 import SpecBox from "../specBox";
-
+const SPECIES_DETAIL_GAP = 20;
 const SpeciesDetail = (props: { id: string }) => {
   const { id } = props;
   const { detailData } = useSpeciesDetailData(id);
   console.log(detailData);
   if (!detailData) return null;
-  const { base, spec } = detailData;
+  const { base, spec, description } = detailData;
   return (
     <div>
       <SpeciesDetailBase data={base} />
-      <Spacing height={20} />
-      <SpeciesDetailSpecs data={spec} />
+      <Spacing height={SPECIES_DETAIL_GAP} />
+      <SpeciesDetailSpecs data={spec} title="어종 정보" />
+      <Spacing height={SPECIES_DETAIL_GAP} />
+      <SpeciesDetailDescription description={description} />
     </div>
   );
 };
@@ -65,18 +68,21 @@ const SpeciesDetailBase = (props: { data: SpeciesBaseInfo }) => {
 type SpeciesBaseInfoKeys = keyof SpeciesSpecInfo;
 
 interface ISpeciesDetailSpecData {
-  key: string;
+  id: string;
   value: SpeciesBaseInfoKeys;
 }
 
-const SpeciesDetailSpecs = (props: { data: SpeciesSpecInfo }) => {
-  const { data } = props;
+const SpeciesDetailSpecs = (props: {
+  data: SpeciesSpecInfo;
+  title: string;
+}) => {
+  const { data, title } = props;
   const keys = Object.keys(data);
   const specs = useMemo(() => {
     let tempSpecs: ISpeciesDetailSpecData[] = [];
     keys.map((specKey) => {
       tempSpecs.push({
-        key: specKey,
+        id: specKey,
         value: (data as any)[specKey],
       } as ISpeciesDetailSpecData);
     });
@@ -85,24 +91,74 @@ const SpeciesDetailSpecs = (props: { data: SpeciesSpecInfo }) => {
     return null;
   }, [keys, data]);
   if (!specs) return null;
+
   return (
     <div className="species-detail-specs">
+      <h3>{title}</h3>
       <ListView
         list={specs}
-        ListItem={(props: ISpeciesDetailSpecData) => (
-          <SpecBox
-            name={props.key}
-            spec={props.value}
-            width="100%"
-            height={50}
-            color={"#d2d2d2"}
-            specColor="white"
-          />
-        )}
+        ListItem={(props: ISpeciesDetailSpecData) => {
+          return (
+            <SpecBox
+              name={(SPECIES_NAME as any)[props.id]}
+              spec={props.value}
+              width="100%"
+              height={50}
+              color={"#d2d2d2"}
+              specColor="white"
+            />
+          );
+        }}
         column={2}
         columnSize="50%"
         gap={20}
       />
+    </div>
+  );
+};
+
+const SpeciesDetailDescription = (props: { description: string[] }) => {
+  const { description } = props;
+  return (
+    <div className="species-detail-description">
+      <h3 className="species-detail-title">세부 사항</h3>
+      <div className="species-detail-text__wrapper">
+        {description.map((value, index) => (
+          <div
+            key={index}
+            style={{
+              marginBottom: 20,
+            }}
+          >
+            <p
+              style={{
+                lineHeight: 1.6,
+              }}
+            >
+              {value}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      <style jsx>{`
+        .species-detail-description {
+          padding-top: 10px;
+          padding-bottom: 10px;
+          background-color: #f3f4f5;
+          border-radius: 15px;
+        }
+
+        .species-detail-text__wrapper {
+          width: 90%;
+          margin-left: auto;
+          margin-right: auto;
+        }
+
+        .species-detail-title {
+          padding-left: 10px;
+        }
+      `}</style>
     </div>
   );
 };

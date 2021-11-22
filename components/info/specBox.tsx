@@ -73,6 +73,12 @@ const SpecBox = (props: ISpecBox) => {
           justify-content: space-between;
           border-radius: 5px;
         }
+
+        .spec-box-footer {
+          height: 100%;
+          margin-top: auto;
+          margin-bottom: auto;
+        }
       `}</style>
     </div>
   );
