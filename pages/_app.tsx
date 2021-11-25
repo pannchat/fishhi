@@ -4,6 +4,8 @@ import React, { useMemo } from "react";
 import Footer from "../shared/commonComponent/footer";
 import ImagePath from "../shared/imagePath";
 import { RecoilRoot } from "recoil";
+import { AppContextType, NextPageContext } from "next/dist/shared/lib/utils";
+import { GetStaticProps } from "next";
 
 const FOOTER_ITEMS = [
   {
@@ -57,6 +59,8 @@ const FOOTER_ITEMS = [
 ];
 
 function MyApp({ Component, pageProps }: AppProps) {
+  console.log(Component);
+  console.log("pageProps => ", pageProps);
   return (
     <RecoilRoot>
       <div className="app">
@@ -79,3 +83,11 @@ function MyApp({ Component, pageProps }: AppProps) {
   );
 }
 export default MyApp;
+
+MyApp.getInitialProps = async (appContext: AppContextType<any>) => {
+  return {
+    pagePrpos: {
+      title: "피쉬하이",
+    },
+  };
+};
