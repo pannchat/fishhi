@@ -11,7 +11,7 @@ const SPECIES_DETAIL_GAP = 20;
 const SpeciesDetail = (props: { id: string }) => {
   const { id } = props;
   const { detailData } = useSpeciesDetailData(id);
-  console.log(detailData);
+
   if (!detailData) return null;
   const { base, spec, description } = detailData;
   return (

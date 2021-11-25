@@ -5,12 +5,18 @@ import { IFishListData } from "../../../shared/dummy";
 import useMouseHover from "../../../shared/hooks/useMouseHover";
 import LinkCustom from "../../../shared/commonComponent/link";
 import UrlPath from "../../../shared/urlPath";
+import { FishSpeciesName } from "../../../shared/enum";
+import { getEumEntries } from "../../../shared/funtion";
 
 const Species = (props: { species: string }) => {
   const { species } = props;
   const { dataList } = useSpeciesData(species);
+  const { refinedObj } = getEumEntries(FishSpeciesName);
+  const speciesName = refinedObj[species];
+
   return (
     <div>
+      <h1 className="species-list-title">{speciesName}</h1>
       <ListView
         list={dataList}
         column={2}
@@ -18,6 +24,12 @@ const Species = (props: { species: string }) => {
         gap={10}
         ListItem={(props: IFishListData) => <SpeciesItem {...props} />}
       />
+
+      <style jsx>{`
+        .species-list-title {
+          padding-left: 5px;
+        }
+      `}</style>
     </div>
   );
 };
@@ -27,7 +39,6 @@ export default Species;
 export const SpeciesItem = (props: IFishListData) => {
   const { isHover, onMouseEnterHandler, onMouseLeaveHandler } = useMouseHover();
   const { thumbnail, name, id, species } = props;
-  console.log(props);
 
   return (
     <LinkCustom href={UrlPath.speciesDetail(species as string, String(id))}>
