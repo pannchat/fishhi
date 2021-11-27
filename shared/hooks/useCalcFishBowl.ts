@@ -61,17 +61,155 @@ export default function useCalcFishBowl() {
     return true;
   }, [tankWidth, tankDepth, tankHeight, tankSand, waterLevel, tankWeight]);
 
+
+  const initFishTank = useCallback(() => {
+    const fishTank = [
+      faceFrontRef,
+      faceBackRef,
+      faceBottomRef,
+      faceLeftRef,
+      faceRightRef,
+      faceTopRef,
+    ];
+    fishTank.map((value) => {
+      if (value.current) {
+        value.current.innerHTML = "";
+      }
+    });
+  }, [
+    faceFrontRef,
+    faceBackRef,
+    faceBottomRef,
+    faceLeftRef,
+    faceRightRef,
+    faceTopRef,
+  ])
+
+  const changeFrontRearStyle = useCallback((values: {width: number, height: number, depth: number}) => {
+    if(faceFrontRef.current && faceBackRef.current) {
+      const {width, height, depth} = values;
+      // 어항 앞면
+      faceFrontRef.current.style.width = width + "px";
+      faceFrontRef.current.style.height = height + "px";
+      faceFrontRef.current.style.transform =
+        "translateZ(" + depth / 2 + "px)";
+
+      // 어항 뒷면
+      faceBackRef.current.style.width = width + "px";
+      faceBackRef.current.style.height = height + "px";
+      faceBackRef.current.style.transform = "rotate(-180deg) translateZ(" + -(depth / 2) + "px)";
+    }
+  }, [
+    faceFrontRef, faceBackRef
+  ])
+
+  const changeSideStyle = useCallback((values: {
+    width: number,
+    height: number, 
+    depth: number
+  }) => {
+    if(faceLeftRef.current && faceRightRef.current){ 
+      const { width,height, depth } = values;
+      faceLeftRef.current.style.width = depth + "px";
+      faceLeftRef.current.style.height = height + "px";
+      faceLeftRef.current.style.transform = "translateX(" + -(depth / 2) + "px) rotateY(90deg)";
+
+      faceRightRef.current.style.width = depth + "px";
+      faceRightRef.current.style.height = height + "px";
+      faceRightRef.current.style.transform =
+        "translateX(" +
+        (width - depth + depth / 2) +
+        "px) rotateY(90deg)";
+  }
+  } ,[
+    faceLeftRef, faceRightRef
+  ])
+
+  const changeTopBottomStyle = useCallback((values: {
+    width: number,
+    height: number,
+    depth: number,
+  }) => {
+    if(faceTopRef.current && faceBottomRef.current){
+      const { width, height, depth } = values;
+      faceTopRef.current.style.width = width + "px";
+      faceTopRef.current.style.height = depth + "px";
+      faceTopRef.current.style.transform =
+        "translateY(" + -(depth / 2) + "px) rotateX(90deg)";
+
+      faceBottomRef.current.style.width = width + "px";
+      faceBottomRef.current.style.height = depth + "px";
+      faceBottomRef.current.style.transform =
+        "translateY(" +
+        (height - depth + depth / 2) +
+        "px) rotateX(90deg)";
+    }
+  }, [faceTopRef, faceBottomRef])
+
+  const setSand = useCallback((sandLevel: number) => {
+    if( faceFrontRef.current && 
+      faceBackRef.current && 
+      faceLeftRef.current && 
+      faceRightRef.current ) {
+        const sand = `<div style='width:100%; 
+          height:${sandLevel}px;
+          position:absolute;
+          bottom:0;
+          background-color:rgba(150, 96, 29, 0.714);
+          margin:0px'></div>`;
+
+        const sandBack = `<div style='width:100%; 
+        height:${sandLevel}px;
+        position:absolute;top:0;
+        background-color:rgba(150, 96, 29, 0.714);
+        margin:0px'></div>`
+        
+        faceFrontRef.current.innerHTML = sand;
+        faceLeftRef.current.innerHTML = sand;
+        faceRightRef.current.innerHTML = sand;
+        faceBackRef.current.innerHTML = sandBack;
+    }
+  }, [
+    faceFrontRef, faceBackRef, faceLeftRef, faceRightRef
+  ])
+
+  const setWater = useCallback((waterLevel: number) => {
+    if(faceFrontRef.current &&
+      faceBackRef.current &&
+      faceLeftRef.current &&
+      faceRightRef.current) {
+        const water = `<div style='width:100%; 
+        height:${waterLevel}px;
+        position:absolute;
+        top:0;
+        background-color:rgba(255, 255, 255, 0.714);
+        margin:0px'></div>`;
+        const backWater = `<div style='width:100%; 
+        height:${waterLevel}px;
+        position:absolute;
+        bottom:0;
+        background-color:rgba(255, 255, 255, 0.714);
+        margin:0px'></div>`;
+
+
+        faceFrontRef.current.innerHTML += water;
+        faceLeftRef.current.innerHTML += water;
+        faceRightRef.current.innerHTML += water;
+        faceBackRef.current.innerHTML += backWater
+        
+      }
+  }, [
+    faceFrontRef, faceBackRef, faceLeftRef, faceRightRef
+  ])
+
   const calculate = useCallback(() => {
     if (checkValidation()) {
-      console.log(tankWidth, tankHeight, tankDepth);
       const min = Math.min(tankWidth, tankHeight, tankDepth);
-      console.log(min);
       let styleTankWidth = (tankWidth / min) * TANK_STYLE_RATIO;
       let styleTankHeight = (tankHeight / min) * TANK_STYLE_RATIO;
       let styleTankDepth = (tankDepth / min) * TANK_STYLE_RATIO;
       let styleTankSand = (tankSand / min) * TANK_STYLE_RATIO;
       let styleWaterLevel = (waterLevel / min) * TANK_STYLE_RATIO;
-      console.log(tankWidth / min);
 
       if (Math.max(styleTankWidth, styleTankDepth, styleTankHeight) > 200) {
         var scale =
@@ -83,88 +221,44 @@ export default function useCalcFishBowl() {
         styleWaterLevel *= scale;
       }
 
-      const fishTank = [
-        faceFrontRef,
-        faceBackRef,
-        faceBottomRef,
-        faceLeftRef,
-        faceRightRef,
-        faceTopRef,
-      ];
-      fishTank.map((value) => {
-        if (value.current) {
-          value.current.innerHTML = "";
-        }
-      });
-      if (
-        faceFrontRef.current &&
-        faceBackRef.current &&
-        faceLeftRef.current &&
-        faceRightRef.current &&
-        faceTopRef.current &&
-        faceBottomRef.current
-      ) {
-        if (styleTankSand !== 0 && styleTankSand) {
-          var sand = `<div style='width:100%; height:${styleTankSand}px;position:absolute;bottom:0;background-color:rgba(150, 96, 29, 0.714);margin:0px'></div>`;
-          faceFrontRef.current.innerHTML = sand;
-          faceLeftRef.current.innerHTML = sand;
-          faceRightRef.current.innerHTML = sand;
-          faceBackRef.current.innerHTML = `<div style='width:100%; height:${styleTankSand}px;position:absolute;top:0;background-color:rgba(150, 96, 29, 0.714);margin:0px'></div>`;
-        }
-
-        if (styleWaterLevel !== 0 && styleWaterLevel) {
-          var water = `<div style='width:100%; height:${styleWaterLevel}px;position:absolute;top:0;background-color:rgba(255, 255, 255, 0.714);margin:0px'></div>`;
-          faceFrontRef.current.innerHTML += water;
-          faceLeftRef.current.innerHTML += water;
-          faceRightRef.current.innerHTML += water;
-          faceBackRef.current.innerHTML += `<div style='width:100%; height:${styleWaterLevel}px;position:absolute;bottom:0;background-color:rgba(255, 255, 255, 0.714);margin:0px'></div>`;
-        }
-
-        faceFrontRef.current.style.width = styleTankWidth + "px";
-        faceFrontRef.current.style.height = styleTankHeight + "px";
-        faceFrontRef.current.style.transform = "";
-        faceFrontRef.current.style.transform =
-          "translateZ(" + styleTankDepth / 2 + "px)";
-
-        faceBackRef.current.style.width = styleTankWidth + "px";
-        faceBackRef.current.style.transform =
-          "rotate(-180deg) translateZ(" + -(styleTankDepth / 2) + "px)";
-        faceBackRef.current.style.height = styleTankHeight + "px";
-
-        faceLeftRef.current.style.width = styleTankDepth + "px";
-        faceLeftRef.current.style.transform =
-          "translateX(" + -(styleTankDepth / 2) + "px) rotateY(90deg)";
-        faceLeftRef.current.style.height = styleTankHeight + "px";
-
-        faceRightRef.current.style.width = styleTankDepth + "px";
-        faceRightRef.current.style.height = styleTankHeight + "px";
-        faceRightRef.current.style.transform =
-          "translateX(" +
-          (styleTankWidth - styleTankDepth + styleTankDepth / 2) +
-          "px) rotateY(90deg)";
-
-        faceTopRef.current.style.width = styleTankWidth + "px";
-        faceTopRef.current.style.height = styleTankDepth + "px";
-        faceTopRef.current.style.transform =
-          "translateY(" + -(styleTankDepth / 2) + "px) rotateX(90deg)";
-
-        faceBottomRef.current.style.width = styleTankWidth + "px";
-        faceBottomRef.current.style.height = styleTankHeight + "px";
-        faceBottomRef.current.style.transform =
-          "translateY(" +
-          (styleTankHeight - styleTankDepth + styleTankDepth / 2) +
-          "px) rotateX(90deg)";
+      
+      
+      if (styleTankSand > 0 && styleTankSand) {
+        setSand(styleTankSand);
       }
+
+      if (styleWaterLevel > 0 && styleWaterLevel) {
+        setWater(styleWaterLevel);
+      }
+
+      const values = {
+        width: styleTankWidth,
+        height: styleTankHeight,
+        depth: styleTankDepth,
+      }
+
+      initFishTank();
+      changeFrontRearStyle(values);
+      changeSideStyle(values);
+      changeTopBottomStyle(values)
+      
+      
     }
   }, [
-    tankWeight,
-    tankHeight,
-    tankDepth,
-    waterLevel,
-    tankSand,
-    tankWidth,
-    checkValidation,
-  ]);
+    checkValidation, 
+    tankWidth, 
+    tankHeight, 
+    tankDepth, 
+    tankSand, 
+    waterLevel, 
+    changeFrontRearStyle, 
+    changeSideStyle,
+    changeTopBottomStyle, 
+    setSand, 
+    setWater,
+    initFishTank
+    ]
+  );
 
   const clickCalculateHandle = useCallback(() => {}, []);
   return {
