@@ -1,6 +1,8 @@
 import React, { useCallback, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import Input, { IInputProps } from "../../shared/commonComponent/input";
+import LinkCustom from "../../shared/commonComponent/link";
+import UrlPath from "../../shared/urlPath";
 import {
   searchFocusState,
   searchSuggestionState,
@@ -60,8 +62,26 @@ const SearchInput = () => {
   const onBlurHandler = () => {
     setSearchFocus(false);
   };
+
+  const onClickHandler = useCallback(
+    (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
+      e.preventDefault();
+    },
+    []
+  );
+
+  const onKeyPressHandler = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      const key = e.key;
+      if (key === "Enter") {
+        console.log(e.currentTarget);
+      }
+    },
+    []
+  );
   const onChangeHandler = useCallback(
-    (text: string) => {
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      let text = e.target.value;
       let matches: ISearchKeywordProps[] = [];
       let matches2: ISearchKeywordProps[] = [];
       text = text.replace("\\", "");
@@ -98,23 +118,25 @@ const SearchInput = () => {
     [text, suggestion]
   );
   return (
-    <Input
-      placeholder="검색어를 입력하세요"
-      value={text}
-      onChange={(e) => {
-        onChangeHandler(e.target.value);
-      }}
-      onFocus={onFocushandler}
-      onBlur={onBlurHandler}
-      style={{
-        width: "100%",
-        border: `1px solid #d2d2d2`,
-        borderRadius: 10,
-        height: 50,
-        fontSize: 16,
-        paddingLeft: 10,
-      }}
-    />
+    <LinkCustom href={UrlPath.Search}>
+      <Input
+        placeholder="검색어를 입력하세요"
+        value={text}
+        onClick={onClickHandler}
+        onChange={onChangeHandler}
+        onKeyPress={onKeyPressHandler}
+        onFocus={onFocushandler}
+        onBlur={onBlurHandler}
+        style={{
+          width: "100%",
+          border: `1px solid #d2d2d2`,
+          borderRadius: 10,
+          height: 50,
+          fontSize: 16,
+          paddingLeft: 10,
+        }}
+      />
+    </LinkCustom>
   );
 };
 
