@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import Input, { IInputProps } from "../../shared/commonComponent/input";
 import LinkCustom from "../../shared/commonComponent/link";
@@ -50,11 +50,15 @@ const SEARCH_KEYWORD_2 = {
 
 const SearchInput = () => {
   const [text, setText] = useRecoilState<string>(searchTextState);
+  console.log(text);
+  const url =
+    text && text.length > 0 ? UrlPath.Search + `?searchText=${text}` : "";
   const [suggestion, setSuggestion] = useRecoilState<ISearchKeywordProps[]>(
     searchSuggestionState
   );
   const setSearchFocus = useSetRecoilState(searchFocusState);
   const data = [...SEARCH_KEYWORD_1.data, ...SEARCH_KEYWORD_2.data];
+  const linkRef = useRef<HTMLElement>(null);
   const onFocushandler = () => {
     setSearchFocus(true);
   };
@@ -73,11 +77,15 @@ const SearchInput = () => {
   const onKeyPressHandler = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
       const key = e.key;
-      if (key === "Enter") {
-        console.log(e.currentTarget);
+      if (key === "Enter" && linkRef.current) {
+        if (url.length > 0) {
+          linkRef.current.click();
+          return;
+        }
+        alert("검색어를 입력해 주세요");
       }
     },
-    []
+    [linkRef, url]
   );
   const onChangeHandler = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -117,8 +125,16 @@ const SearchInput = () => {
     },
     [text, suggestion]
   );
+
+  useEffect(() => {
+    if (linkRef.current) {
+      linkRef.current.addEventListener("event", (e) => {
+        console.log(e);
+      });
+    }
+  }, [linkRef]);
   return (
-    <LinkCustom href={UrlPath.Search}>
+    <LinkCustom href={url} ref={linkRef}>
       <Input
         placeholder="검색어를 입력하세요"
         value={text}

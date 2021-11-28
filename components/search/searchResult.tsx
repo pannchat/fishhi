@@ -8,16 +8,25 @@ import {
 
 const SearchResult = () => {
   const suggestion = useRecoilValue(searchSuggestionState);
-  const searchText = useRecoilValue(searchTextState);
+  const [searchText, setSearchText] = useRecoilState(searchTextState);
   const searchFocus = useRecoilValue(searchFocusState);
   const showSuggenstion = searchText.length > 0 && searchFocus;
+  const onClickHandler = (value: string) => {
+    setSearchText(value);
+  };
   return (
     <div className="search-result__wrapper">
       {suggestion.length > 0 ? (
         suggestion.map((value, index) => {
           const { id, name } = value;
           return (
-            <div key={`searchResultItem${id}`} className="search-result-item">
+            <div
+              key={`searchResultItem${id}`}
+              className="search-result-item"
+              onClick={() => {
+                onClickHandler(name);
+              }}
+            >
               {name}
             </div>
           );
