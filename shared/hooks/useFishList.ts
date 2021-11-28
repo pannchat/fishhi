@@ -3,7 +3,7 @@ import { getFishListApi } from "../../api";
 
 export function useFishList() {
   const { data, error } = useSWR('useFishList', getFishListApi);
-  console.log(data);
+  
   return {
     data
   }

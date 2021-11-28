@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React from "react";
 import { useSuppliesProduct } from "../../shared/hooks/useSuppliesProduct";
 const IMAGE_BASE_URL = "https://fishhi.kr/thumbnails/";

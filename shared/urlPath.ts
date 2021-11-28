@@ -3,7 +3,13 @@ export default class UrlPath {
     return '/caclFishTank';
   }
 
+  static get Search() {
+    return '/search';
+  }
+
   static speciesDetail(species: string, id: string) {
     return `/info/${species}/${id}`
   }
+
+
 }
