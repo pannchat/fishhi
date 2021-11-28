@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { useMemo } from "react";
 import ListView from "../../../shared/commonComponent/listView";
 import Spacing from "../../../shared/commonComponent/spacing";
@@ -10,6 +11,7 @@ import SpecBox from "../specBox";
 const SPECIES_DETAIL_GAP = 20;
 const SpeciesDetail = (props: { id: string }) => {
   const { id } = props;
+  console.log("speciesDetail -> ", id);
   const { detailData } = useSpeciesDetailData(id);
 
   if (!detailData) return null;
