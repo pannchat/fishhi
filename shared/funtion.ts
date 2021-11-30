@@ -11,3 +11,7 @@ export function getEumEntries<T>(value: T){
   }
 }
 
+export function isProperty<T>(value: T, key: string) {
+  return key in value
+}
+

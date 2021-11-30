@@ -42,3 +42,13 @@ const Button = (props: IButtonProps) => {
 };
 
 export default Button;
+
+interface IScrollButton extends IButtonProps {
+  type: "right" | "left";
+}
+
+export const ScrollButton = (props: IScrollButton) => {
+  const { type, ...buttonProps } = props;
+  const innerMark = type === "left" ? "<" : ">";
+  return <Button {...buttonProps}>{innerMark}</Button>;
+};

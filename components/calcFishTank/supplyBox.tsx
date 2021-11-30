@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React from "react";
 
-interface ISupplyBoxProps {
+export interface ISupplyBoxProps {
   productName: string;
   img: string;
   recommendedUsage1: number;
