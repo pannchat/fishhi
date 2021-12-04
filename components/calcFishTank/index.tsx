@@ -1,11 +1,11 @@
-import React, { InputHTMLAttributes, useEffect, useState } from "react";
-import Button from "../../shared/commonComponent/button";
-import Spacing from "../../shared/commonComponent/spacing";
-import Switch from "../../shared/commonComponent/switch";
-import useCalcFishBowl from "../../shared/hooks/useCalcFishBowl";
-import CalcSupplies from "./calcSupplies";
-import SuppliesCarousel from "./suppliesCarousel";
-
+import React, { InputHTMLAttributes, useEffect, useState } from 'react';
+import Button from '../../shared/commonComponent/button';
+import Spacing from '../../shared/commonComponent/spacing';
+import Switch from '../../shared/commonComponent/switch';
+import useCalcFishBowl from '../../shared/hooks/useCalcFishBowl';
+import CalcSupplies from './calcSupplies';
+import SuppliesCarousel from './suppliesCarousel';
+//테스트
 const CalcFishTank = () => {
   const {
     faceFrontRef,
@@ -31,13 +31,13 @@ const CalcFishTank = () => {
     setIsShowDetail(!isShowDetail);
   };
   useEffect(() => {
-    if (faceFrontRef.current) faceFrontRef.current.style.width = "100px";
+    if (faceFrontRef.current) faceFrontRef.current.style.width = '100px';
   }, []);
   return (
     <div>
       <h1
         style={{
-          textAlign: "center",
+          textAlign: 'center',
         }}
       >
         수조 물양 계산기
@@ -64,35 +64,35 @@ const CalcFishTank = () => {
           value={tankWidth}
           name="tankWidth"
           label="가로"
-          onChange={(value) => {
+          onChange={value => {
             setTankWidth(value);
           }}
-          unit={"cm"}
+          unit={'cm'}
         />
         <TankInput
           value={tankHeight}
           name="tankHeight"
           label="세로"
-          onChange={(value) => {
+          onChange={value => {
             setTankHeight(value);
           }}
-          unit={"cm"}
+          unit={'cm'}
         />
         <TankInput
           value={tankDepth}
           name="tankDepth"
           label="깊이"
-          onChange={(value) => {
+          onChange={value => {
             setTankDepth(value);
           }}
-          unit={"cm"}
+          unit={'cm'}
         />
       </div>
       <Spacing height={15} />
       <div className="main-section__tank-size detail-setting">
         <TankInput
           value={thickness}
-          onChange={(value) => {
+          onChange={value => {
             setThickness(value);
           }}
           name="thickness"
@@ -102,7 +102,7 @@ const CalcFishTank = () => {
 
         <TankInput
           value={tankSand}
-          onChange={(value) => {
+          onChange={value => {
             setTankSand(value);
           }}
           name="tankSand"
@@ -112,7 +112,7 @@ const CalcFishTank = () => {
 
         <TankInput
           value={tankSand}
-          onChange={(value) => {
+          onChange={value => {
             setTankSand(value);
           }}
           name="tankSand"
@@ -126,23 +126,23 @@ const CalcFishTank = () => {
         isActive={isShowDetail}
         onClick={handleClickSwitch}
         style={{
-          justifyContent: "flex-end",
-          cursor: "pointer",
+          justifyContent: 'flex-end',
+          cursor: 'pointer',
         }}
       />
       <Spacing height={50} />
       <Button
         width={200}
         height={50}
-        color={"#4b5ab4"}
+        color={'#4b5ab4'}
         style={{
-          color: "white",
+          color: 'white',
           fontSize: 16,
           fontWeight: 500,
           borderRadius: 25,
-          cursor: "pointer",
-          marginLeft: "auto",
-          marginRight: "auto",
+          cursor: 'pointer',
+          marginLeft: 'auto',
+          marginRight: 'auto',
         }}
         onClick={calculate}
       >
@@ -218,7 +218,7 @@ const CalcFishTank = () => {
         }
 
         .main-section__tank-size.detail-setting {
-          display: ${isShowDetail ? "flex" : "none"};
+          display: ${isShowDetail ? 'flex' : 'none'};
         }
 
         .faceBack {
@@ -266,9 +266,9 @@ const TankInput = (props: {
     <div
       style={{
         width: 150,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-around",
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-around',
       }}
     >
       <p
@@ -282,7 +282,7 @@ const TankInput = (props: {
       <input
         className="input"
         {...inputAttributes}
-        onChange={(e) => {
+        onChange={e => {
           if (onChange) {
             if (e.target.value.length > 0) {
               onChange(parseInt(e.target.value));
@@ -293,10 +293,10 @@ const TankInput = (props: {
         }}
         style={{
           width: 65,
-          height: "100%",
-          outline: "none",
-          border: "solid 1px #8c98a4",
-          textAlign: "center",
+          height: '100%',
+          outline: 'none',
+          border: 'solid 1px #8c98a4',
+          textAlign: 'center',
         }}
       />
 
