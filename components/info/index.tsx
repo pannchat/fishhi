@@ -5,11 +5,11 @@ import { useFishList } from "../../shared/hooks/useFishList";
 const INFO_CATEGORY_DUMMY = [
   {
     id: "fish",
-    label: "물고기",
+    label: "어종",
   },
   {
-    id: "shrimp",
-    label: "새우",
+    id: "waterPlant",
+    label: "수초",
   },
   {
     id: "medicine",

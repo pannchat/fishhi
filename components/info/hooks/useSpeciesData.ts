@@ -1,11 +1,8 @@
 import { useMemo } from "react";
-import { FISH_LIST } from "../../../shared/dummy";
+import { DUMMY_DATA_LIST, FISH_LIST } from "../../../shared/dummy";
 
 export function useSpeciesData(value: string) {
-  const data = FISH_LIST.data;
-  const dataList = useMemo(() => {
-    return data.filter((item) => value === item.species);
-  }, [data]);
+  const filteredData = (DUMMY_DATA_LIST as any)[value];
 
-  return { dataList };
+  return { dataList: filteredData.data };
 }

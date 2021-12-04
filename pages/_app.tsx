@@ -59,8 +59,6 @@ const FOOTER_ITEMS = [
 ];
 
 function MyApp({ Component, pageProps }: AppProps) {
-  console.log(Component);
-  console.log("pageProps => ", pageProps);
   return (
     <RecoilRoot>
       <div className="app">

@@ -1,6 +1,5 @@
 import { throttle } from "lodash";
-import React, { useCallback, useMemo, useRef, useState } from "react";
-import { Carousel } from "react-responsive-carousel";
+import React, { useCallback, useRef, useState } from "react";
 import { CSSProperties } from "styled-components";
 import { useSuppliesProduct } from "../../shared/hooks/useSuppliesProduct";
 import SupplyBox from "./supplyBox";
@@ -10,100 +9,7 @@ interface ISuppliesCarousel {
 }
 
 const SuppliesCarousel = (props: ISuppliesCarousel) => {
-  const { supplyWidth } = props;
-  const { data } = useSuppliesProduct();
-  const [currentScroll, setCurrentScroll] = useState<number>(0);
-  const suppliesWrapperRef = useRef<HTMLDivElement | null>(null);
-  const handleScroll = throttle((value: number) => {
-    setCurrentScroll(value);
-  }, 300);
-
-  const clickLeftHandle = useCallback(() => {
-    if (supplyWidth) {
-      suppliesWrapperRef.current &&
-        suppliesWrapperRef.current.scrollTo({
-          left: currentScroll - supplyWidth,
-          behavior: "smooth",
-        });
-    }
-  }, [currentScroll, suppliesWrapperRef.current]);
-
-  const clickRightHandle = useCallback(() => {
-    if (supplyWidth) {
-      suppliesWrapperRef.current &&
-        suppliesWrapperRef.current.scrollTo({
-          left: currentScroll + supplyWidth,
-          behavior: "smooth",
-        });
-    }
-  }, [currentScroll, suppliesWrapperRef.current]);
-
-  return (
-    <div className="supplies__carousel__wrapper">
-      <ScrollButton
-        type="left"
-        width={30}
-        height={30}
-        onClick={clickLeftHandle}
-        style={{
-          position: "absolute",
-          transform: "translate(-0,-50%)",
-          top: "50%",
-          cursor: "pointer",
-          left: 0,
-        }}
-      />
-
-      <div
-        className="supplies__carousel"
-        ref={suppliesWrapperRef}
-        onScroll={(e) => {
-          handleScroll(e.currentTarget.scrollLeft);
-        }}
-      >
-        {data?.map((value: any, index: number) => {
-          return (
-            <SupplyBox
-              key={`supplyBox${index}`}
-              {...value}
-              imgWidth={150}
-              imgHeight={150}
-            />
-          );
-        })}
-      </div>
-
-      <ScrollButton
-        type="right"
-        width={30}
-        height={30}
-        onClick={clickRightHandle}
-        style={{
-          position: "absolute",
-          transform: "translate(-0,-50%)",
-          cursor: "pointer",
-          top: "50%",
-          right: 0,
-        }}
-      />
-
-      <style jsx>{`
-        .supplies__carousel__wrapper {
-          position: relative;
-        }
-        .supplies__carousel {
-          display: flex;
-          overflow-x: auto;
-          width: 90%;
-          margin-left: auto;
-          margin-right: auto;
-        }
-        .search-list {
-          margin-right: 20px;
-        }
-      `}</style>
-    </div>
-  );
+  return <div></div>;
 };
 
 export default SuppliesCarousel;

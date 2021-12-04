@@ -1,4 +1,5 @@
-import React, { ReactNode } from "react";
+/* eslint-disable react/display-name */
+import React, { ReactNode, RefObject } from "react";
 import Link from "next/link";
 import { CSSProperties } from "styled-components";
 
@@ -10,15 +11,16 @@ interface ILinkCustomProps {
   style?: CSSProperties;
 }
 
-const LinkCustom = (props: ILinkCustomProps) => {
+const LinkCustom = React.forwardRef((props: ILinkCustomProps, ref) => {
   const { children, href, useReplace = false, target, style } = props;
+  const anchorRef = ref as RefObject<HTMLAnchorElement>;
   return (
-    <Link href={href} replace={useReplace}>
-      <a target={target} style={style}>
+    <Link href={href} replace={useReplace} passHref>
+      <a target={target} style={style} ref={anchorRef}>
         {children}
       </a>
     </Link>
   );
-};
+});
 
 export default LinkCustom;

@@ -1,12 +1,12 @@
 import React from "react";
 import SearchInput from "./searchInput";
-import SearchResult from "./searchResult";
+import SearchSuggestion from "./searchSuggestion";
 
 const Search = () => {
   return (
     <div className="search__wrapper">
       <SearchInput />
-      <SearchResult />
+      <SearchSuggestion />
 
       <style jsx>{`
         .search__wrapper {

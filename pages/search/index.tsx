@@ -1,7 +1,10 @@
 import React from "react";
+import SearchResult from "../../components/search/searchResult";
+
+export const SEARCH_PAGE_KEY = "searchText";
 
 const SearchPage = () => {
-  return <div>검색 결과 페이지</div>;
+  return <SearchResult />;
 };
 
 export default SearchPage;
