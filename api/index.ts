@@ -11,7 +11,17 @@ export async function getSuppliesProduct() {
 }
 
 export async function getFishListApi() {
-  const { data } = await axios.get('/fish');
+  const { data } = await axios.get('/fish/');
 
   return data;
+}
+
+interface ILoginParam {
+  email: string;
+  password: string;
+}
+
+export async function postUserLogin(value: ILoginParam) {
+  const { data } = await axios.post('/users/login/', value);
+  console.log(data);
 }
