@@ -25,3 +25,9 @@ export async function postUserLogin(value: ILoginParam) {
   const { data } = await axios.post('/users/login/', value);
   console.log(data);
 }
+
+export async function getAquaplant() {
+  const { data } = await axios.get('/aquaplant');
+
+  return data
+}
