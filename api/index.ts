@@ -4,6 +4,7 @@ import axios from "axios";
 const AUTH_TOKEN = '727e64e274231becb6848cbcb7a740c1a7bea0f2';
 const BASE_URL = 'http://54.180.156.194:8000';
 // test
+// test2
 axios.defaults.baseURL = BASE_URL;
 axios.interceptors.request.use(async (config) => {
  
