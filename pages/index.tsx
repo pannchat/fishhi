@@ -1,25 +1,28 @@
-import type { NextPage } from "next";
-import Head from "next/head";
-import Image from "next/image";
-import React from "react";
-import FHNavbar, { FHMainNavbar } from "../components/FHNavbar";
-import PostBox from "../components/PostBox";
-import Search from "../components/search";
-import SearchInput from "../components/search/searchInput";
-import Spacing from "../shared/commonComponent/spacing";
-import ImagePath from "../shared/imagePath";
-import styles from "../styles/Home.module.css";
+import type { NextPage } from 'next';
+import Head from 'next/head';
+import Image from 'next/image';
+import React from 'react';
+import FHNavbar, { FHMainNavbar } from '../components/FHNavbar';
+import PostBox from '../components/PostBox';
+import Search from '../components/search';
+import SearchInput from '../components/search/searchInput';
+import Spacing from '../shared/commonComponent/spacing';
+import useFishList from '../shared/hooks/useFishList';
+
+import usePostUserLogin from '../shared/hooks/usePostUserLogin';
+import ImagePath from '../shared/imagePath';
+import styles from '../styles/Home.module.css';
 
 const dummy = [
   {
     image: ImagePath.thumb,
-    title: "1번 포스트",
-    nickname: "관리자",
+    title: '1번 포스트',
+    nickname: '관리자',
   },
   {
     image: ImagePath.thumb2,
-    title: "2번 포스트",
-    nickname: "관리자",
+    title: '2번 포스트',
+    nickname: '관리자',
   },
 ];
 
@@ -42,14 +45,10 @@ const Home: NextPage = () => {
           <div
             key={`postBox${index}`}
             style={{
-              cursor: "pointer",
+              cursor: 'pointer',
             }}
           >
-            <PostBox
-              image={value.image}
-              nickname={value.nickname}
-              title={value.title}
-            />
+            <PostBox image={value.image} nickname={value.nickname} title={value.title} />
             <Spacing height={10} />
           </div>
         );
