@@ -7,6 +7,7 @@ import CalcSupplies from './calcSupplies';
 import SuppliesCarousel from './suppliesCarousel';
 //테스트
 const CalcFishTank = () => {
+
   const {
     faceFrontRef,
     faceBackRef,
@@ -14,6 +15,7 @@ const CalcFishTank = () => {
     faceLeftRef,
     faceRightRef,
     faceTopRef,
+    containerRef,
     tankWidth,
     tankHeight,
     tankDepth,
@@ -25,14 +27,20 @@ const CalcFishTank = () => {
     setThickness,
     setTankSand,
     calculate,
+    tankReorder,
   } = useCalcFishBowl();
+
   const [isShowDetail, setIsShowDetail] = useState<boolean>(false);
+
   const handleClickSwitch = () => {
     setIsShowDetail(!isShowDetail);
   };
+
+
   useEffect(() => {
     if (faceFrontRef.current) faceFrontRef.current.style.width = '100px';
   }, []);
+
   return (
     <div>
       <h1
@@ -44,7 +52,7 @@ const CalcFishTank = () => {
       </h1>
       <div className="flex-box--main">
         <div className="main-section__tank-preview">
-          <div className="main-section__tank-container">
+          <div className="main-section__tank-container" ref={containerRef}>
             <div className="main-section__tank">
               <div className="face faceFront" ref={faceFrontRef}>
                 <b>fishhi.kr</b>
