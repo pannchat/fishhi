@@ -1,13 +1,9 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import Input, { IInputProps } from "../../shared/commonComponent/input";
-import LinkCustom from "../../shared/commonComponent/link";
-import UrlPath from "../../shared/urlPath";
-import {
-  searchFocusState,
-  searchSuggestionState,
-  searchTextState,
-} from "./stores/searchData";
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import Input, { IInputProps } from '../../shared/commonComponent/input';
+import LinkCustom from '../../shared/commonComponent/link';
+import UrlPath from '../../shared/urlPath';
+import { searchFocusState, searchSuggestionState, searchTextState } from './stores/searchData';
 
 export interface ISearchKeywordProps {
   id: number;
@@ -22,40 +18,36 @@ export interface ISearchKeywordData {
 export interface ISearchInputProps extends IInputProps {}
 const SEARCH_KEYWORD_1: ISearchKeywordData = {
   data: [
-    { id: 1, name: "라쿤 타이거 새우", keyword: ["비쉬림프", "쉬림프"] },
-    { id: 2, name: "오렌지 타이거 새우", keyword: ["비쉬림프"] },
-    { id: 3, name: "크리스탈 화이트 새우", keyword: ["오토신"] },
-    { id: 5, name: "다리오다리오", keyword: ["스칼렛바디스"] },
-    { id: 6, name: "아프리카발톱개구리", keyword: ["똥고기"] },
-    { id: 7, name: "구라미", keyword: ["똥고기"] },
-    { id: 8, name: "코리도라스 하스타투스", keyword: ["Corydoras hastatus"] },
+    { id: 1, name: '라쿤 타이거 새우', keyword: ['비쉬림프', '쉬림프'] },
+    { id: 2, name: '오렌지 타이거 새우', keyword: ['비쉬림프'] },
+    { id: 3, name: '크리스탈 화이트 새우', keyword: ['오토신'] },
+    { id: 5, name: '다리오다리오', keyword: ['스칼렛바디스'] },
+    { id: 6, name: '아프리카발톱개구리', keyword: ['똥고기'] },
+    { id: 7, name: '구라미', keyword: ['똥고기'] },
+    { id: 8, name: '코리도라스 하스타투스', keyword: ['Corydoras hastatus'] },
     {
       id: 9,
-      name: "코리도라스 듀프리카레우스",
-      keyword: ["Corydoras duplicareus", "듀플리"],
+      name: '코리도라스 듀프리카레우스',
+      keyword: ['Corydoras duplicareus', '듀플리'],
     },
-    { id: 10, name: "코리도라스 스터바이", keyword: ["Corydoras sterbai"] },
+    { id: 10, name: '코리도라스 스터바이', keyword: ['Corydoras sterbai'] },
   ],
 };
 const SEARCH_KEYWORD_2 = {
   data: [
     {
       id: 1,
-      name: "아누비아스 나나",
-      keyword: ["비쉬림프", "쉬림프"],
-      classification: "plant",
+      name: '아누비아스 나나',
+      keyword: ['비쉬림프', '쉬림프'],
+      classification: 'plant',
     },
   ],
 };
 
 const SearchInput = () => {
   const [text, setText] = useRecoilState<string>(searchTextState);
-  console.log(text);
-  const url =
-    text && text.length > 0 ? UrlPath.Search + `?searchText=${text}` : "";
-  const [suggestion, setSuggestion] = useRecoilState<ISearchKeywordProps[]>(
-    searchSuggestionState
-  );
+  const url = text && text.length > 0 ? UrlPath.Search + `?searchText=${text}` : '';
+  const [suggestion, setSuggestion] = useRecoilState<ISearchKeywordProps[]>(searchSuggestionState);
   const setSearchFocus = useSetRecoilState(searchFocusState);
   const data = [...SEARCH_KEYWORD_1.data, ...SEARCH_KEYWORD_2.data];
   const linkRef = useRef<HTMLElement>(null);
@@ -67,46 +59,43 @@ const SearchInput = () => {
     setSearchFocus(false);
   };
 
-  const onClickHandler = useCallback(
-    (e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
-      e.preventDefault();
-    },
-    []
-  );
+  const onClickHandler = useCallback((e: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
+    e.preventDefault();
+  }, []);
 
   const onKeyPressHandler = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
       const key = e.key;
-      if (key === "Enter" && linkRef.current) {
+      if (key === 'Enter' && linkRef.current) {
         if (url.length > 0) {
           linkRef.current.click();
           return;
         }
-        alert("검색어를 입력해 주세요");
+        alert('검색어를 입력해 주세요');
       }
     },
-    [linkRef, url]
+    [linkRef, url],
   );
   const onChangeHandler = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       let text = e.target.value;
       let matches: ISearchKeywordProps[] = [];
       let matches2: ISearchKeywordProps[] = [];
-      text = text.replace("\\", "");
+      text = text.replace('\\', '');
       if (text.length > 0) {
-        matches = data.filter((dt) => {
-          const regex = new RegExp(`${text}`, "gi");
+        matches = data.filter(dt => {
+          const regex = new RegExp(`${text}`, 'gi');
           // var test = [...dt.email,...dt.first_name];
 
           return dt.name.match(regex);
         });
       }
       if (text.length > 0) {
-        matches2 = data.filter((dt) => {
-          const regex = new RegExp(`\\${text}`, "gi");
+        matches2 = data.filter(dt => {
+          const regex = new RegExp(`\\${text}`, 'gi');
           // var test = [...dt.email,...dt.first_name];
           let test = null;
-          dt.keyword.map((e) => {
+          dt.keyword.map(e => {
             if (e.match(regex)) {
               test = dt.keyword;
               return;
@@ -123,12 +112,12 @@ const SearchInput = () => {
       }
       setText(text);
     },
-    [text, suggestion]
+    [text, suggestion],
   );
 
   useEffect(() => {
     if (linkRef.current) {
-      linkRef.current.addEventListener("event", (e) => {
+      linkRef.current.addEventListener('event', e => {
         console.log(e);
       });
     }
@@ -144,7 +133,7 @@ const SearchInput = () => {
         onFocus={onFocushandler}
         onBlur={onBlurHandler}
         style={{
-          width: "100%",
+          width: '100%',
           border: `1px solid #d2d2d2`,
           borderRadius: 10,
           height: 50,

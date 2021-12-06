@@ -1,4 +1,5 @@
 import axios from "axios";
+import { IAquaplant } from "../shared/interface";
 
 const BASE_URL = 'http://54.180.156.194:8000';
 axios.defaults.baseURL = BASE_URL;
@@ -23,11 +24,11 @@ interface ILoginParam {
 
 export async function postUserLogin(value: ILoginParam) {
   const { data } = await axios.post('/users/login/', value);
-  console.log(data);
+  
 }
 
 export async function getAquaplant() {
-  const { data } = await axios.get('/aquaplant');
+  const { data } = await axios.get<IAquaplant[]>('/aquaplant/');
 
   return data
 }

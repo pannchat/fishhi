@@ -1,17 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useMemo } from "react";
-import ListView from "../../../shared/commonComponent/listView";
-import Spacing from "../../../shared/commonComponent/spacing";
-import useSpeciesDetailData, {
-  SpeciesBaseInfo,
-  SpeciesSpecInfo,
-  SPECIES_NAME,
-} from "../hooks/useSpeciesDetailData";
-import SpecBox from "../specBox";
+import React, { useMemo } from 'react';
+import ListView from '../../../shared/commonComponent/listView';
+import Spacing from '../../../shared/commonComponent/spacing';
+import useSpeciesDetailData, { SpeciesBaseInfo, SpeciesSpecInfo, SPECIES_NAME } from '../hooks/useSpeciesDetailData';
+import SpecBox from '../specBox';
 const SPECIES_DETAIL_GAP = 20;
 const SpeciesDetail = (props: { id: string }) => {
   const { id } = props;
-  console.log("speciesDetail -> ", id);
   const { detailData } = useSpeciesDetailData(id);
 
   if (!detailData) return null;
@@ -36,12 +31,7 @@ const SpeciesDetailBase = (props: { data: SpeciesBaseInfo }) => {
     <div className="species-detail-base">
       <h1 className="species-detail-title"> {name} </h1>
       <div className="species-detail-image">
-        <img
-          className="detail-image"
-          src={thumbnail}
-          width="100%"
-          height="100%"
-        />
+        <img className="detail-image" src={thumbnail} width="100%" height="100%" />
       </div>
 
       <style jsx>{`
@@ -74,15 +64,12 @@ interface ISpeciesDetailSpecData {
   value: SpeciesBaseInfoKeys;
 }
 
-const SpeciesDetailSpecs = (props: {
-  data: SpeciesSpecInfo;
-  title: string;
-}) => {
+const SpeciesDetailSpecs = (props: { data: SpeciesSpecInfo; title: string }) => {
   const { data, title } = props;
   const keys = Object.keys(data);
   const specs = useMemo(() => {
     let tempSpecs: ISpeciesDetailSpecData[] = [];
-    keys.map((specKey) => {
+    keys.map(specKey => {
       tempSpecs.push({
         id: specKey,
         value: (data as any)[specKey],
@@ -106,7 +93,7 @@ const SpeciesDetailSpecs = (props: {
               spec={props.value}
               width="100%"
               height={50}
-              color={"#d2d2d2"}
+              color={'#d2d2d2'}
               specColor="white"
             />
           );
