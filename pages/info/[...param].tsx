@@ -10,7 +10,7 @@ const InfoPageDetail = () => {
   const id = param ? param[1] : null;
   if (!species) return null;
   if (!id) return <Species species={species} />;
-  return <SpeciesDetail id={id} />;
+  return <SpeciesDetail id={id} type={species} />;
 };
 
 export default InfoPageDetail;
