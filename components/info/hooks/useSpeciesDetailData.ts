@@ -28,7 +28,7 @@ export default function useSpeciesDetailData(id: string, type: string): ISpecies
     }
     return null;
   }, [data, id]);
-  console.log(filteredData);
+
   const base = useMemo(() => {
     if (filteredData) {
       const { id, name, thumbnail } = filteredData;

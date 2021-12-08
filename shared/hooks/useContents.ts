@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import useSWR from 'swr';
-import { getAquaplant } from '../../api';
+import { getAquaplant, getFishListApi } from '../../api';
 import { ISpecies, ISpeciesList } from '../interface';
 
 export default function useContents(type: string) {
@@ -9,13 +9,17 @@ export default function useContents(type: string) {
       return getAquaplant();
     }
 
+    if (type === 'fish') {
+      return getFishListApi();
+    }
+
     return null;
   });
 
   const contentsData = useMemo(() => {
     const tempData: ISpecies[] = [];
     if (data) {
-      data.map(spec => {
+      data.map((spec: any) => {
         const { id, min_pH, max_pH, name, images, max_temperature, min_temperature, description } = spec;
         tempData.push({
           id: id,
