@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode } from 'react';
 
 interface IListViewProps<T> {
   column: number;
@@ -10,9 +10,10 @@ interface IListViewProps<T> {
 
 const ListView = <T extends unknown>(props: IListViewProps<T>) => {
   const { column, columnSize, gap, list, ListItem } = props;
+
   return (
     <div className="list-view__wrapper">
-      {list.map((value, index) => (
+      {list?.map((value, index) => (
         <ListItem key={`listViewItem${index}`} {...value} />
       ))}
       <style jsx>{`

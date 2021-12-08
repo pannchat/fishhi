@@ -1,24 +1,15 @@
-import { useMemo } from "react";
-import { FISH_LIST, IFishListData } from "../../../shared/dummy";
+import { useMemo } from 'react';
+import useContents from '../../../shared/hooks/useContents';
+import { ISpecies } from '../../../shared/interface';
 
-export type SpeciesBaseInfo = {
-  id: string;
-  name: string;
-  species: string;
-  thumbnail: string
-}
+export interface ISpeciesBaseInfo extends Pick<ISpecies, 'id' | 'name' | 'thumbnail'> {}
 
-export type SpeciesSpecInfo = {
-  minPH: number;
-  maxPH: number;
-  minTemperature: number;
-  maxTemperature: number;
-  standardLength: number;
-}
+export interface ISpeciesDetailInfo extends Pick<ISpecies, 'minPH' | 'maxPH' | 'minTemperature' | 'maxTemperature'> {}
+
 export interface ISpeciesDetailProps {
-  base: SpeciesBaseInfo;
-  spec: SpeciesSpecInfo;
-  description: string[];
+  base: ISpeciesBaseInfo | null;
+  spec: ISpeciesDetailInfo | null;
+  description: string[] | null;
 }
 
 export const SPECIES_NAME = {
@@ -27,38 +18,53 @@ export const SPECIES_NAME = {
   minTemperature: '최소 온도',
   maxTemperature: '최대 온도',
   standardLength: '평균 길이',
-}
+};
 
-export default function useSpeciesDetailData(id: string) {
-  const data = FISH_LIST.data;
-  const detailData = data.filter((item) => id === String(item.id) )
-  const refinedDetailData = useMemo(() => {
-    if(detailData.length > 0){
-      const tempInfo = {} as ISpeciesDetailProps;
-      const currentData = detailData[0];
-      
-      const { id, thumbnail, species, name, description, ...rest } = currentData;
-      const base = {
-        id: String(id),
-        thumbnail: thumbnail,
-        species: species,
-        name: name,
-      }
-      const spec = {
-        ...rest
-      }
-      const refinedDescription = description.split(/\r?\n/);
-      tempInfo['description'] = refinedDescription;
-      tempInfo['base'] = base;
-      tempInfo['spec'] = spec
-      return tempInfo;
+export default function useSpeciesDetailData(id: string, type: string): ISpeciesDetailProps {
+  const { data } = useContents(type);
+  const filteredData = useMemo(() => {
+    if (data && data.length > 0) {
+      return data.filter(dataItem => String(dataItem.id) === id)[0];
+    }
+    return null;
+  }, [data, id]);
+  console.log(filteredData);
+  const base = useMemo(() => {
+    if (filteredData) {
+      const { id, name, thumbnail } = filteredData;
+      return {
+        id,
+        name,
+        thumbnail,
+      } as ISpeciesBaseInfo;
     }
 
-    return null
-  }, [
-    detailData
-  ])
+    return null;
+  }, [filteredData]);
+
+  const spec = useMemo(() => {
+    if (filteredData) {
+      const { minPH, maxPH, minTemperature, maxTemperature } = filteredData;
+      return {
+        minPH,
+        maxPH,
+        minTemperature,
+        maxTemperature,
+      } as ISpeciesDetailInfo;
+    }
+    return null;
+  }, [filteredData]);
+
+  const refinedDescription = useMemo(() => {
+    if (filteredData) {
+      const { description } = filteredData;
+      return description.split(`\n`);
+    }
+    return [''];
+  }, [filteredData]);
   return {
-    detailData: refinedDetailData
-  }
+    base,
+    spec,
+    description: refinedDescription,
+  } as ISpeciesDetailProps;
 }
