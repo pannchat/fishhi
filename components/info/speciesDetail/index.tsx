@@ -1,21 +1,21 @@
+/* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
-import React, { useMemo } from "react";
-import ListView from "../../../shared/commonComponent/listView";
-import Spacing from "../../../shared/commonComponent/spacing";
+import React, { useMemo } from 'react';
+import ListView from '../../../shared/commonComponent/listView';
+import Spacing from '../../../shared/commonComponent/spacing';
 import useSpeciesDetailData, {
-  SpeciesBaseInfo,
-  SpeciesSpecInfo,
+  ISpeciesBaseInfo,
+  ISpeciesDetailInfo,
   SPECIES_NAME,
-} from "../hooks/useSpeciesDetailData";
-import SpecBox from "../specBox";
+} from '../hooks/useSpeciesDetailData';
+import SpecBox from '../specBox';
 const SPECIES_DETAIL_GAP = 20;
-const SpeciesDetail = (props: { id: string }) => {
-  const { id } = props;
-  console.log("speciesDetail -> ", id);
-  const { detailData } = useSpeciesDetailData(id);
+const SpeciesDetail = (props: { id: string; type: string }) => {
+  const { id, type } = props;
+  const { base, spec, description } = useSpeciesDetailData(id, type);
 
-  if (!detailData) return null;
-  const { base, spec, description } = detailData;
+  if (!base || !spec || !description) return null;
+
   return (
     <div>
       <SpeciesDetailBase data={base} />
@@ -29,19 +29,17 @@ const SpeciesDetail = (props: { id: string }) => {
 
 export default SpeciesDetail;
 
-const SpeciesDetailBase = (props: { data: SpeciesBaseInfo }) => {
-  const { name, thumbnail, species } = props.data;
+const SpeciesDetailBase = (props: { data: ISpeciesBaseInfo }) => {
+  const { name, thumbnail } = props.data;
 
   return (
     <div className="species-detail-base">
       <h1 className="species-detail-title"> {name} </h1>
       <div className="species-detail-image">
-        <img
-          className="detail-image"
-          src={thumbnail}
-          width="100%"
-          height="100%"
-        />
+        {thumbnail.map((value, index) => {
+          const { image_url } = value;
+          return <img key={`speciesDetailImage${index}`} className="detail-image" src={image_url} height="100%" />;
+        })}
       </div>
 
       <style jsx>{`
@@ -59,30 +57,28 @@ const SpeciesDetailBase = (props: { data: SpeciesBaseInfo }) => {
 
         .detail-image {
           position: absolute;
-          top: 0;
-          left: 0;
+          transform: translate(-50%, -50%);
+          top: 50%;
+          left: 50%;
         }
       `}</style>
     </div>
   );
 };
 
-type SpeciesBaseInfoKeys = keyof SpeciesSpecInfo;
+type ISpeciesBaseInfoKeys = keyof ISpeciesDetailInfo;
 
 interface ISpeciesDetailSpecData {
   id: string;
-  value: SpeciesBaseInfoKeys;
+  value: ISpeciesBaseInfoKeys;
 }
 
-const SpeciesDetailSpecs = (props: {
-  data: SpeciesSpecInfo;
-  title: string;
-}) => {
+const SpeciesDetailSpecs = (props: { data: ISpeciesDetailInfo; title: string }) => {
   const { data, title } = props;
   const keys = Object.keys(data);
   const specs = useMemo(() => {
     let tempSpecs: ISpeciesDetailSpecData[] = [];
-    keys.map((specKey) => {
+    keys.map(specKey => {
       tempSpecs.push({
         id: specKey,
         value: (data as any)[specKey],
@@ -106,7 +102,7 @@ const SpeciesDetailSpecs = (props: {
               spec={props.value}
               width="100%"
               height={50}
-              color={"#d2d2d2"}
+              color={'#d2d2d2'}
               specColor="white"
             />
           );

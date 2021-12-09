@@ -1,24 +1,15 @@
-import { useMemo } from "react";
-import { FISH_LIST, IFishListData } from "../../../shared/dummy";
+import { useMemo } from 'react';
+import useSWR from 'swr';
+import { getAquaplantDetail } from '../../../api';
+import useContents from '../../../shared/hooks/useContents';
+import { ISpecies } from '../../../shared/interface';
 
-export type SpeciesBaseInfo = {
-  id: string;
-  name: string;
-  species: string;
-  thumbnail: string
-}
-
-export type SpeciesSpecInfo = {
-  minPH: number;
-  maxPH: number;
-  minTemperature: number;
-  maxTemperature: number;
-  standardLength: number;
-}
+export interface ISpeciesBaseInfo extends Pick<ISpecies, 'id' | 'name' | 'thumbnail'> {}
+export interface ISpeciesDetailInfo extends Pick<ISpecies, 'minPH' | 'maxPH' | 'minTemperature' | 'maxTemperature'> {}
 export interface ISpeciesDetailProps {
-  base: SpeciesBaseInfo;
-  spec: SpeciesSpecInfo;
-  description: string[];
+  base: ISpeciesBaseInfo | null;
+  spec: ISpeciesDetailInfo | null;
+  description: string[] | null;
 }
 
 export const SPECIES_NAME = {
@@ -27,38 +18,54 @@ export const SPECIES_NAME = {
   minTemperature: '최소 온도',
   maxTemperature: '최대 온도',
   standardLength: '평균 길이',
-}
+};
 
-export default function useSpeciesDetailData(id: string) {
-  const data = FISH_LIST.data;
-  const detailData = data.filter((item) => id === String(item.id) )
-  const refinedDetailData = useMemo(() => {
-    if(detailData.length > 0){
-      const tempInfo = {} as ISpeciesDetailProps;
-      const currentData = detailData[0];
-      
-      const { id, thumbnail, species, name, description, ...rest } = currentData;
-      const base = {
-        id: String(id),
-        thumbnail: thumbnail,
-        species: species,
-        name: name,
-      }
-      const spec = {
-        ...rest
-      }
-      const refinedDescription = description.split(/\r?\n/);
-      tempInfo['description'] = refinedDescription;
-      tempInfo['base'] = base;
-      tempInfo['spec'] = spec
-      return tempInfo;
+export default function useSpeciesDetailData(id: string, type: string): ISpeciesDetailProps {
+  const { data, error } = useSWR(['useContentDetail', id, type], () => {
+    if (type === 'aquaplant') {
+      return getAquaplantDetail(id);
     }
 
-    return null
-  }, [
-    detailData
-  ])
+    return null;
+  });
+
+  const base = useMemo(() => {
+    if (data) {
+      const { id, name, images } = data;
+
+      return {
+        id,
+        name,
+        thumbnail: images,
+      } as ISpeciesBaseInfo;
+    }
+
+    return null;
+  }, [data]);
+
+  const spec = useMemo(() => {
+    if (data) {
+      const { min_pH, max_pH, min_temperature, max_temperature } = data;
+      return {
+        minPH: min_pH,
+        maxPH: max_pH,
+        minTemperature: min_temperature,
+        maxTemperature: max_temperature,
+      } as ISpeciesDetailInfo;
+    }
+    return null;
+  }, [data]);
+
+  const refinedDescription = useMemo(() => {
+    if (data) {
+      const { description } = data;
+      return description.split(`\n`);
+    }
+    return [''];
+  }, [data]);
   return {
-    detailData: refinedDetailData
-  }
+    base,
+    spec,
+    description: refinedDescription,
+  } as ISpeciesDetailProps;
 }
