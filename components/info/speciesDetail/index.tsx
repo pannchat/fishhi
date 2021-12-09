@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
 import React, { useMemo } from 'react';
 import ListView from '../../../shared/commonComponent/listView';
@@ -37,15 +38,7 @@ const SpeciesDetailBase = (props: { data: ISpeciesBaseInfo }) => {
       <div className="species-detail-image">
         {thumbnail.map((value, index) => {
           const { image_url } = value;
-          return (
-            <img
-              key={`speciesDetailImage${index}`}
-              className="detail-image"
-              src={image_url}
-              width="100%"
-              height="100%"
-            />
-          );
+          return <img key={`speciesDetailImage${index}`} className="detail-image" src={image_url} height="100%" />;
         })}
       </div>
 
@@ -64,8 +57,9 @@ const SpeciesDetailBase = (props: { data: ISpeciesBaseInfo }) => {
 
         .detail-image {
           position: absolute;
-          top: 0;
-          left: 0;
+          transform: translate(-50%, -50%);
+          top: 50%;
+          left: 50%;
         }
       `}</style>
     </div>
