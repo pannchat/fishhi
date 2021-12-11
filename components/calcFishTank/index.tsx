@@ -43,13 +43,6 @@ const CalcFishTank = () => {
 
   return (
     <div>
-      <h1
-        style={{
-          textAlign: 'center',
-        }}
-      >
-        수조 물양 계산기
-      </h1>
       <div className="flex-box--main">
         <div className="main-section__tank-preview">
           <div className="main-section__tank-container" ref={containerRef}>

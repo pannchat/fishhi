@@ -1,4 +1,5 @@
 import type { NextPage } from 'next';
+import { useRouter } from 'next/dist/client/router';
 import Head from 'next/head';
 import Image from 'next/image';
 import React from 'react';
@@ -29,18 +30,9 @@ const dummy = [
 
 const MAIN_COL_GAP = 30;
 const Home: NextPage = () => {
+  const router = useRouter();
   return (
     <div className="app__wrapper">
-      <h1
-        style={{
-          fontSize: 24,
-          fontWeight: 700,
-        }}
-      >
-        피쉬하이
-      </h1>
-
-      <Search />
       <Spacing height={MAIN_COL_GAP} />
       <Main />
       <style jsx>

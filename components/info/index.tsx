@@ -18,7 +18,6 @@ const INFO_CATEGORY_DUMMY = [
 const Info = () => {
   return (
     <div className="info__wrapper">
-      <h1 className="info-title">fishHi백과</h1>
       <h4 className="info-subtitle">
         찾고 싶은 카테고리를
         <br />
@@ -26,12 +25,6 @@ const Info = () => {
       </h4>
       <CategoryList data={INFO_CATEGORY_DUMMY} />
       <style jsx>{`
-        .info-title {
-          font-size: 20px;
-          padding-top: 10px;
-          padding-left: 10px;
-        }
-
         .info-subtitle {
           font-weight: 400;
           font-size: 18px;

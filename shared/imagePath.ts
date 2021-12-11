@@ -5,6 +5,10 @@ export default class ImagePath {
     return `${PREFIX}/back.svg`;
   }
 
+  static get Search() {
+    return `${PREFIX}/search.png`;
+  }
+
   static get search2() {
     return `${PREFIX}/search2.svg`;
   }
