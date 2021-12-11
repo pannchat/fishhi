@@ -200,7 +200,7 @@ export default function useCalcFishBowl() {
           newElement.setAttribute(
             'style',
             `width:100%;
-            height:${refCurrent === faceBottomRef.current? '100%' : styleTankSand - 10 + 'px'};
+            height:${refCurrent === faceBottomRef.current? '100%' : styleTankSand - 5 + 'px'};
             position:absolute;
             ${refCurrent === faceBackRef.current ? 'top:0' : 'bottom:0'};
             background-color:rgba(150, 96, 29, 0.714);
