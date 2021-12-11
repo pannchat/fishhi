@@ -18,6 +18,7 @@ const CalcFishTank = () => {
     tankWidth,
     tankHeight,
     tankDepth,
+    waterLevel,
     thickness,
     tankSand,
     setTankWidth,
@@ -25,6 +26,7 @@ const CalcFishTank = () => {
     setTankHeight,
     setThickness,
     setTankSand,
+    setWaterLevel,
     calculate,
     tankReorder,
   } = useCalcFishBowl();
@@ -117,12 +119,12 @@ const CalcFishTank = () => {
         />
 
         <TankInput
-          value={tankSand}
+          value={waterLevel}
           onChange={value => {
-            setTankSand(value);
+            setWaterLevel(value);
           }}
-          name="tankSand"
-          label="바닥재"
+          name="waterLevel"
+          label="수위"
           unit="cm"
         />
       </div>

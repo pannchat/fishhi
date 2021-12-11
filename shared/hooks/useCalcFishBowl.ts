@@ -189,23 +189,25 @@ export default function useCalcFishBowl() {
       changeSideStyle(values);
       changeTopBottomStyle(values);
       if (styleTankSand > 0 && styleTankSand) {
-        
-        const newElement = document.createElement('div');
-        newElement.setAttribute(
-          'style',
-          `width:100%;
-          height:${styleTankSand-10}px;
-          position:absolute;
-          bottom:0;
-          background-color:rgba(150, 96, 29, 0.714);
-          margin:0px;`,
-        );
-        if (faceFrontRef.current && faceLeftRef.current && faceRightRef.current) {
-          faceFrontRef.current.appendChild(newElement);
-          faceLeftRef.current.appendChild(newElement);
-          faceRightRef.current.appendChild(newElement);
-          
+      const faceRefArr = [faceFrontRef.current, faceLeftRef.current, faceRightRef.current, faceBackRef.current, faceBottomRef.current];
+      faceRefArr.forEach((refCurrent)=>{
+        if(refCurrent){
+          const newElement = document.createElement('div');
+          newElement.setAttribute(
+            'style',
+            `width:100%;
+            height:${refCurrent === faceBottomRef.current? '100%' : styleTankSand - 10 + 'px'};
+            position:absolute;
+            ${refCurrent === faceBackRef.current ? 'top:0' : 'bottom:0'};
+            background-color:rgba(150, 96, 29, 0.714);
+            margin:0px;`,
+          );
+
+          refCurrent.appendChild(newElement);
         }
+      })
+
+        
       }
       tankReorder();
     }
