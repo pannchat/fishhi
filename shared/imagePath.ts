@@ -5,14 +5,14 @@ export default class ImagePath {
     return `${PREFIX}/back.svg`;
   }
 
-  static get search2(){
+  static get search2() {
     return `${PREFIX}/search2.svg`;
   }
 
   static get aquarium() {
     return `${PREFIX}/aquarium.svg`;
   }
-  
+
   static get aquaPlant() {
     return `${PREFIX}/aquaPlant.svg`;
   }
@@ -22,7 +22,7 @@ export default class ImagePath {
   }
 
   static get aquarium2() {
-    return `${PREFIX}/aquarium2.svg`
+    return `${PREFIX}/aquarium2.svg`;
   }
 
   static get thumb() {
@@ -42,6 +42,14 @@ export default class ImagePath {
   }
 
   static get shrimp() {
-    return `${PREFIX}/shrimp.jpeg`
+    return `${PREFIX}/shrimp.jpeg`;
+  }
+
+  static get fishIcon() {
+    return `${PREFIX}/fish_icon.png`;
+  }
+
+  static arrow(direction: 'right' | 'left' | 'up' | 'down') {
+    return `${PREFIX}/arrow_${direction}.png`;
   }
 }
