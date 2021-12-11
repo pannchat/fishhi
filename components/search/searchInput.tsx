@@ -85,7 +85,6 @@ const SearchInput = () => {
       if (text.length > 0) {
         matches = data.filter(dt => {
           const regex = new RegExp(`${text}`, 'gi');
-          // var test = [...dt.email,...dt.first_name];
 
           return dt.name.match(regex);
         });
@@ -93,7 +92,6 @@ const SearchInput = () => {
       if (text.length > 0) {
         matches2 = data.filter(dt => {
           const regex = new RegExp(`\\${text}`, 'gi');
-          // var test = [...dt.email,...dt.first_name];
           let test = null;
           dt.keyword.map(e => {
             if (e.match(regex)) {
