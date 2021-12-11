@@ -1,28 +1,31 @@
-import React from "react";
-import { useSpeciesData } from "../hooks/useSpeciesData";
-import ListView from "../../../shared/commonComponent/listView";
-import { IFishListData } from "../../../shared/dummy";
-import useMouseHover from "../../../shared/hooks/useMouseHover";
-import LinkCustom from "../../../shared/commonComponent/link";
-import UrlPath from "../../../shared/urlPath";
-import { FishSpeciesName } from "../../../shared/enum";
-import { getEumEntries } from "../../../shared/funtion";
+/* eslint-disable @next/next/no-img-element */
+/* eslint-disable jsx-a11y/alt-text */
+import React from 'react';
+import ListView from '../../../shared/commonComponent/listView';
+import useMouseHover from '../../../shared/hooks/useMouseHover';
+import LinkCustom from '../../../shared/commonComponent/link';
+import UrlPath from '../../../shared/urlPath';
+import { FishSpeciesName } from '../../../shared/enum';
+import { getEumEntries } from '../../../shared/funtion';
+import useContents from '../../../shared/hooks/useContents';
+import { IAquaplant, ISpecies } from '../../../shared/interface';
 
 const Species = (props: { species: string }) => {
   const { species } = props;
-  const { dataList } = useSpeciesData(species);
+  const { data } = useContents(species);
   const { refinedObj } = getEumEntries(FishSpeciesName);
   const speciesName = refinedObj[species];
+  if (data && data.length < 1) return null;
 
   return (
     <div>
       <h1 className="species-list-title">{speciesName}</h1>
       <ListView
-        list={dataList}
+        list={data}
         column={2}
-        columnSize={"50%"}
+        columnSize={'50%'}
         gap={10}
-        ListItem={(props: IFishListData) => <SpeciesItem {...props} />}
+        ListItem={(props: ISpecies) => <SpeciesItem data={props} species={species} />}
       />
 
       <style jsx>{`
@@ -36,24 +39,16 @@ const Species = (props: { species: string }) => {
 
 export default Species;
 
-export const SpeciesItem = (props: IFishListData) => {
+export const SpeciesItem = (props: { data: ISpecies; species: string }) => {
+  const { data, species } = props;
+  const { thumbnail, name, id } = data;
   const { isHover, onMouseEnterHandler, onMouseLeaveHandler } = useMouseHover();
-  const { thumbnail, name, id, species } = props;
 
   return (
     <LinkCustom href={UrlPath.speciesDetail(species as string, String(id))}>
-      <div
-        className="info-detail-item"
-        onMouseEnter={onMouseEnterHandler}
-        onMouseLeave={onMouseLeaveHandler}
-      >
+      <div className="info-detail-item" onMouseEnter={onMouseEnterHandler} onMouseLeave={onMouseLeaveHandler}>
         <div className="info-detail-item-thumbnail">
-          <img
-            className="item__image"
-            src={thumbnail}
-            width={"100%"}
-            height={"100%"}
-          />
+          <img className="item__image" src={thumbnail[0].image_url} width={'100%'} height={'100%'} />
         </div>
         <div className="info-detail-item-description">
           <p className="info-detail-item__title">{name}</p>
@@ -90,7 +85,7 @@ export const SpeciesItem = (props: IFishListData) => {
           font-weight: 700;
           text-align: center;
           margin-top: 5px;
-          text-decoration: ${isHover ? "underline" : "none"};
+          text-decoration: ${isHover ? 'underline' : 'none'};
         }
       `}</style>
     </LinkCustom>

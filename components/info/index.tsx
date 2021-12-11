@@ -1,19 +1,18 @@
-import React from "react";
-import CategoryList from "../../shared/commonComponent/category";
-import { useFishList } from "../../shared/hooks/useFishList";
+import React from 'react';
+import CategoryList from '../../shared/commonComponent/category';
 
 const INFO_CATEGORY_DUMMY = [
   {
-    id: "fish",
-    label: "어종",
+    id: 'fish',
+    label: '어종',
   },
   {
-    id: "waterPlant",
-    label: "수초",
+    id: 'aquaplant',
+    label: '수초',
   },
   {
-    id: "medicine",
-    label: "약품",
+    id: 'medicine',
+    label: '약품',
   },
 ];
 const Info = () => {

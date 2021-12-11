@@ -1,8 +1,7 @@
-import { useRouter } from "next/dist/client/router";
-import React from "react";
-import Species from "../../components/info/species";
-import SpeciesDetail from "../../components/info/speciesDetail";
-import { useFishList } from "../../shared/hooks/useFishList";
+import { useRouter } from 'next/dist/client/router';
+import React from 'react';
+import Species from '../../components/info/species';
+import SpeciesDetail from '../../components/info/speciesDetail';
 
 const InfoPageDetail = () => {
   const router = useRouter();
@@ -11,7 +10,7 @@ const InfoPageDetail = () => {
   const id = param ? param[1] : null;
   if (!species) return null;
   if (!id) return <Species species={species} />;
-  return <SpeciesDetail id={id} />;
+  return <SpeciesDetail id={id} type={species} />;
 };
 
 export default InfoPageDetail;
