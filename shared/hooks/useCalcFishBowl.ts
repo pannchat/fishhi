@@ -23,8 +23,8 @@ export default function useCalcFishBowl() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const checkValidation = useCallback(() => {
-    if(tankSand > tankHeight){
-      alert("바닥재가 높이보다 클 수 없습니다.");
+    if (tankSand > tankHeight) {
+      alert('바닥재가 높이보다 클 수 없습니다.');
       return false;
     }
     if (Math.min(tankWidth, tankDepth, tankHeight, tankSand, waterLevel, tankWeight) < 0) {
@@ -193,25 +193,29 @@ export default function useCalcFishBowl() {
       changeSideStyle(values);
       changeTopBottomStyle(values);
       if (styleTankSand > 0 && styleTankSand) {
-      const faceRefArr = [faceFrontRef.current, faceLeftRef.current, faceRightRef.current, faceBackRef.current, faceBottomRef.current];
-      faceRefArr.forEach((refCurrent)=>{
-        if(refCurrent){
-          const newElement = document.createElement('div');
-          newElement.setAttribute(
-            'style',
-            `width:100%;
-            height:${refCurrent === faceBottomRef.current? '100%' : styleTankSand - 5 + 'px'};
+        const faceRefArr = [
+          faceFrontRef.current,
+          faceLeftRef.current,
+          faceRightRef.current,
+          faceBackRef.current,
+          faceBottomRef.current,
+        ];
+        faceRefArr.forEach(refCurrent => {
+          if (refCurrent) {
+            const newElement = document.createElement('div');
+            newElement.setAttribute(
+              'style',
+              `width:100%;
+            height:${refCurrent === faceBottomRef.current ? '100%' : styleTankSand - 5 + 'px'};
             position:absolute;
             ${refCurrent === faceBackRef.current ? 'top:0' : 'bottom:0'};
             background-color:rgba(150, 96, 29, 0.714);
             margin:0px;`,
-          );
+            );
 
-          refCurrent.appendChild(newElement);
-        }
-      })
-
-        
+            refCurrent.appendChild(newElement);
+          }
+        });
       }
       tankReorder();
     }
