@@ -14,9 +14,11 @@ const CalcFishTank = () => {
     faceLeftRef,
     faceRightRef,
     faceTopRef,
+    containerRef,
     tankWidth,
     tankHeight,
     tankDepth,
+    waterLevel,
     thickness,
     tankSand,
     setTankWidth,
@@ -24,15 +26,21 @@ const CalcFishTank = () => {
     setTankHeight,
     setThickness,
     setTankSand,
+    setWaterLevel,
     calculate,
+    tankReorder,
   } = useCalcFishBowl();
+
   const [isShowDetail, setIsShowDetail] = useState<boolean>(false);
+
   const handleClickSwitch = () => {
     setIsShowDetail(!isShowDetail);
   };
+
   useEffect(() => {
     if (faceFrontRef.current) faceFrontRef.current.style.width = '100px';
   }, []);
+
   return (
     <div>
       <h1
@@ -44,7 +52,7 @@ const CalcFishTank = () => {
       </h1>
       <div className="flex-box--main">
         <div className="main-section__tank-preview">
-          <div className="main-section__tank-container">
+          <div className="main-section__tank-container" ref={containerRef}>
             <div className="main-section__tank">
               <div className="face faceFront" ref={faceFrontRef}>
                 <b>fishhi.kr</b>
@@ -111,12 +119,12 @@ const CalcFishTank = () => {
         />
 
         <TankInput
-          value={tankSand}
+          value={waterLevel}
           onChange={value => {
-            setTankSand(value);
+            setWaterLevel(value);
           }}
-          name="tankSand"
-          label="바닥재"
+          name="waterLevel"
+          label="수위"
           unit="cm"
         />
       </div>
@@ -177,7 +185,7 @@ const CalcFishTank = () => {
           display: flex;
           align-items: center;
           width: 100%;
-          height: 500px;
+          height: 300px;
           margin: 10px 0;
           flex-direction: row;
           justify-content: center;
