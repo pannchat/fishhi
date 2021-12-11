@@ -7,7 +7,6 @@ import CalcSupplies from './calcSupplies';
 import SuppliesCarousel from './suppliesCarousel';
 //테스트
 const CalcFishTank = () => {
-
   const {
     faceFrontRef,
     faceBackRef,
@@ -35,7 +34,6 @@ const CalcFishTank = () => {
   const handleClickSwitch = () => {
     setIsShowDetail(!isShowDetail);
   };
-
 
   useEffect(() => {
     if (faceFrontRef.current) faceFrontRef.current.style.width = '100px';
@@ -185,7 +183,7 @@ const CalcFishTank = () => {
           display: flex;
           align-items: center;
           width: 100%;
-          height: 500px;
+          height: 300px;
           margin: 10px 0;
           flex-direction: row;
           justify-content: center;

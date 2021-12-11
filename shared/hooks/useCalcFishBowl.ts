@@ -161,7 +161,7 @@ export default function useCalcFishBowl() {
       let styleTankDepth = (tankDepth / min) * TANK_STYLE_RATIO;
       let styleTankSand = (tankSand / min) * TANK_STYLE_RATIO;
       let styleWaterLevel = (waterLevel / min) * TANK_STYLE_RATIO;
-
+      // 계산 로직
       if (Math.max(styleTankWidth, styleTankDepth, styleTankHeight) > 200) {
         var scale = 200 / Math.max(styleTankWidth, styleTankDepth, styleTankHeight);
         styleTankWidth *= scale;
@@ -184,11 +184,26 @@ export default function useCalcFishBowl() {
         height: styleTankHeight,
         depth: styleTankDepth,
       };
-
       initFishTank();
       changeFrontRearStyle(values);
       changeSideStyle(values);
       changeTopBottomStyle(values);
+      if (styleTankSand > 0 && styleTankSand) {
+        
+        const newElement = document.createElement('div');
+        newElement.setAttribute(
+          'style',
+          `width:100%;
+          height:${styleTankSand-10}px;
+          position:absolute;
+          bottom:0;
+          background-color:rgba(150, 96, 29, 0.714);
+          margin:0px;`,
+        );
+        if (faceFrontRef.current) {
+          faceFrontRef.current.appendChild(newElement);
+        }
+      }
       tankReorder();
     }
   }, [
