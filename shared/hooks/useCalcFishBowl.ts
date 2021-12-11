@@ -200,8 +200,11 @@ export default function useCalcFishBowl() {
           background-color:rgba(150, 96, 29, 0.714);
           margin:0px;`,
         );
-        if (faceFrontRef.current) {
+        if (faceFrontRef.current && faceLeftRef.current && faceRightRef.current) {
           faceFrontRef.current.appendChild(newElement);
+          faceLeftRef.current.appendChild(newElement);
+          faceRightRef.current.appendChild(newElement);
+          
         }
       }
       tankReorder();
