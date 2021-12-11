@@ -7,6 +7,7 @@ import { RecoilRoot } from 'recoil';
 import { AppContextType, NextPageContext } from 'next/dist/shared/lib/utils';
 import { GetStaticProps } from 'next';
 import { SWRConfig } from 'swr';
+import Navbar from '../shared/commonComponent/navBar';
 
 const FOOTER_ITEMS = [
   {
@@ -64,6 +65,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <SWRConfig>
       <RecoilRoot>
         <div className="app">
+          <Navbar />
           <Component {...pageProps} />
           <Footer
             footerItems={FOOTER_ITEMS}

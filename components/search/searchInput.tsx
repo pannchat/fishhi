@@ -3,8 +3,13 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import Input, { IInputProps } from '../../shared/commonComponent/input';
 import LinkCustom from '../../shared/commonComponent/link';
+import ImagePath from '../../shared/imagePath';
 import UrlPath from '../../shared/urlPath';
 import { searchFocusState, searchSuggestionState, searchTextState } from './stores/searchData';
+
+export interface ISearchInputProps {
+  width?: string | number;
+}
 
 export interface ISearchKeywordProps {
   id: number;
@@ -45,7 +50,8 @@ const SEARCH_KEYWORD_2 = {
   ],
 };
 
-const SearchInput = () => {
+const SearchInput = (props: ISearchInputProps) => {
+  const { width = '100%' } = props;
   const [text, setText] = useRecoilState<string>(searchTextState);
   const url = text && text.length > 0 ? UrlPath.Search + `?searchText=${text}` : '';
   const [suggestion, setSuggestion] = useRecoilState<ISearchKeywordProps[]>(searchSuggestionState);
@@ -82,7 +88,7 @@ const SearchInput = () => {
       let matches: ISearchKeywordProps[] = [];
       let matches2: ISearchKeywordProps[] = [];
       const text = value.replace('\\', '');
-      console.log('debounce text =>', text);
+
       if (text.length > 0) {
         matches = data.filter(dt => {
           const regex = new RegExp(`${text}`, 'gi');
@@ -127,7 +133,18 @@ const SearchInput = () => {
     }
   }, [linkRef]);
   return (
-    <LinkCustom href={url} ref={linkRef}>
+    <LinkCustom
+      href={url}
+      ref={linkRef}
+      style={{
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        borderBottom: `1px solid #d2d2d2`,
+        paddingRight: 10,
+      }}
+    >
       <Input
         placeholder="검색어를 입력하세요"
         value={text}
@@ -137,14 +154,17 @@ const SearchInput = () => {
         onFocus={onFocushandler}
         onBlur={onBlurHandler}
         style={{
+          flexBasis: '80%',
           width: '100%',
-          border: `1px solid #d2d2d2`,
-          borderRadius: 10,
+          border: 'none',
+          outline: 'none',
           height: 50,
           fontSize: 16,
           paddingLeft: 10,
         }}
       />
+
+      <img src={ImagePath.Search} width={15} height={15} />
     </LinkCustom>
   );
 };

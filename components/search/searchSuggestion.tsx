@@ -2,7 +2,11 @@ import React from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { searchFocusState, searchSuggestionState, searchTextState } from './stores/searchData';
 
-const SearchSuggestion = () => {
+export interface ISearchSuggestionProps {
+  width?: string | number;
+}
+const SearchSuggestion = (props: ISearchSuggestionProps) => {
+  const { width = '100%' } = props;
   const suggestion = useRecoilValue(searchSuggestionState);
   const [searchText, setSearchText] = useRecoilState(searchTextState);
   const searchFocus = useRecoilValue(searchFocusState);
@@ -11,7 +15,12 @@ const SearchSuggestion = () => {
     setSearchText(value);
   };
   return (
-    <div className="search-suggestion__wrapper">
+    <div
+      className="search-suggestion__wrapper"
+      style={{
+        width: width,
+      }}
+    >
       {suggestion.length > 0 ? (
         suggestion.map((value, index) => {
           const { id, name } = value;
