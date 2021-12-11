@@ -1,3 +1,4 @@
+import { debounce, throttle } from 'lodash';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import Input, { IInputProps } from '../../shared/commonComponent/input';
@@ -76,12 +77,12 @@ const SearchInput = () => {
     },
     [linkRef, url],
   );
-  const onChangeHandler = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      let text = e.target.value;
+  const setSuggestionDebounce = useCallback(
+    debounce(value => {
       let matches: ISearchKeywordProps[] = [];
       let matches2: ISearchKeywordProps[] = [];
-      text = text.replace('\\', '');
+      const text = value.replace('\\', '');
+      console.log('debounce text =>', text);
       if (text.length > 0) {
         matches = data.filter(dt => {
           const regex = new RegExp(`${text}`, 'gi');
@@ -106,11 +107,16 @@ const SearchInput = () => {
       var result = new Set([...matches, ...matches2]); // 중복제거
 
       setSuggestion([...result]);
-      if (text.length > 0 && result.size > 0) {
-      }
+    }, 300),
+    [setSuggestion],
+  );
+  const onChangeHandler = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const text = e.target.value;
       setText(text);
+      setSuggestionDebounce(text);
     },
-    [text, suggestion],
+    [setText, setSuggestionDebounce],
   );
 
   useEffect(() => {
