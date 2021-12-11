@@ -23,6 +23,10 @@ export default function useCalcFishBowl() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const checkValidation = useCallback(() => {
+    if(tankSand > tankHeight){
+      alert("바닥재가 높이보다 클 수 없습니다.");
+      return false;
+    }
     if (Math.min(tankWidth, tankDepth, tankHeight, tankSand, waterLevel, tankWeight) < 0) {
       alert('ㅎㅎ😡');
       return false;
