@@ -132,30 +132,31 @@ export default function useCalcFishBowl() {
     [faceFrontRef, faceBackRef, faceLeftRef, faceRightRef],
   );
 
-  const setWater = useCallback(
-    (waterLevel: number) => {
-      if (faceFrontRef.current && faceBackRef.current && faceLeftRef.current && faceRightRef.current) {
-        const water = `<div style='width:100%; 
-        height:${waterLevel}px;
-        position:absolute;
-        top:0;
-        background-color:rgba(255, 255, 255, 0.714);
-        margin:0px'></div>`;
-        const backWater = `<div style='width:100%; 
-        height:${waterLevel}px;
-        position:absolute;
-        bottom:0;
-        background-color:rgba(255, 255, 255, 0.714);
-        margin:0px'></div>`;
 
-        faceFrontRef.current.innerHTML += water;
-        faceLeftRef.current.innerHTML += water;
-        faceRightRef.current.innerHTML += water;
-        faceBackRef.current.innerHTML += backWater;
-      }
-    },
-    [faceFrontRef, faceBackRef, faceLeftRef, faceRightRef],
-  );
+  // const setWater = useCallback(
+  //   (waterLevel: number) => {
+  //     if (faceFrontRef.current && faceBackRef.current && faceLeftRef.current && faceRightRef.current) {
+  //       const water = `<div style='width:100%; 
+  //       height:${waterLevel}px;
+  //       position:absolute;
+  //       bottom:0;
+  //       background-color:rgba(255, 255, 255, 0.714);
+  //       margin:0px'></div>`;
+  //       const backWater = `<div style='width:100%; 
+  //       height:${waterLevel}px;
+  //       position:absolute;
+  //       top:0;
+  //       background-color:rgba(255, 255, 255, 0.714);
+  //       margin:0px'></div>`;
+
+  //       faceFrontRef.current.innerHTML += water;
+  //       faceLeftRef.current.innerHTML += water;
+  //       faceRightRef.current.innerHTML += water;
+  //       faceBackRef.current.innerHTML += backWater;
+  //     }
+  //   },
+  //   [faceFrontRef, faceBackRef, faceLeftRef, faceRightRef],
+  // );
 
   const calculate = useCallback(() => {
     if (checkValidation()) {
@@ -179,9 +180,9 @@ export default function useCalcFishBowl() {
         setSand(styleTankSand);
       }
 
-      if (styleWaterLevel > 0 && styleWaterLevel) {
-        setWater(styleWaterLevel);
-      }
+      // if (styleWaterLevel > 0 && styleWaterLevel) {
+      //   setWater(styleWaterLevel);
+      // }
 
       const values = {
         width: styleTankWidth,
@@ -192,7 +193,7 @@ export default function useCalcFishBowl() {
       changeFrontRearStyle(values);
       changeSideStyle(values);
       changeTopBottomStyle(values);
-      if (styleTankSand > 0 && styleTankSand) {
+      if (styleTankSand > 0 && styleTankSand || styleWaterLevel > 0 && styleWaterLevel) {
         const faceRefArr = [
           faceFrontRef.current,
           faceLeftRef.current,
@@ -216,6 +217,22 @@ export default function useCalcFishBowl() {
             refCurrent.appendChild(newElement);
           }
         });
+        faceRefArr.forEach(refCurrent => {
+          if (refCurrent) {
+            const newElement = document.createElement('div');
+            newElement.setAttribute(
+              'style',
+              `width:100%;
+            height:${refCurrent === faceBottomRef.current ? '100%' : styleWaterLevel - 5 + 'px'};
+            position:absolute;
+            ${refCurrent === faceBackRef.current ? 'bottom:0' : 'top:0'};
+            background-color:rgba(255, 255, 255, 0.5);
+            margin:0px;`,
+            );
+
+            refCurrent.appendChild(newElement);
+          }
+        });
       }
       tankReorder();
     }
@@ -230,7 +247,7 @@ export default function useCalcFishBowl() {
     changeSideStyle,
     changeTopBottomStyle,
     setSand,
-    setWater,
+    // setWater,
     initFishTank,
   ]);
 
