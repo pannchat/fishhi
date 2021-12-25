@@ -96,7 +96,7 @@ const CalcFishTank = () => {
             setThickness(value);
           }}
           name="thickness"
-          label="유리두께"
+          label="두께"
           unit="T"
         />
 
@@ -116,7 +116,7 @@ const CalcFishTank = () => {
             setTankSand(value);
           }}
           name="tankSand"
-          label="바닥재"
+          label="수위"
           unit="cm"
         />
       </div>
@@ -177,7 +177,7 @@ const CalcFishTank = () => {
           display: flex;
           align-items: center;
           width: 100%;
-          height: 500px;
+          height: 300px;
           margin: 10px 0;
           flex-direction: row;
           justify-content: center;
@@ -265,20 +265,21 @@ const TankInput = (props: {
   return (
     <div
       style={{
-        width: 150,
+        width: '100%',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'space-around',
+        justifyContent: 'center',
+        margin: '0px 5px',
       }}
     >
-      <p
+      <div
         className="tank__input-label"
         style={{
           fontSize: labelSize,
         }}
       >
         {label}
-      </p>
+      </div>
       <input
         className="input"
         {...inputAttributes}
@@ -292,7 +293,7 @@ const TankInput = (props: {
           }
         }}
         style={{
-          width: 65,
+          width: '50px',
           height: '100%',
           outline: 'none',
           border: 'solid 1px #8c98a4',
@@ -309,7 +310,8 @@ const TankInput = (props: {
         }
         .tank__input-label {
           font-weight: 800;
-          flex-basis: 40%;
+          width:45px;
+          // margin-right:10px;
         }
 
         .size-unit {
