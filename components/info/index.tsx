@@ -23,6 +23,7 @@ const Info = () => {
         <br />
         선택해 주세요.
       </h4>
+
       <CategoryList data={INFO_CATEGORY_DUMMY} />
       <style jsx>{`
         .info-subtitle {
@@ -30,6 +31,7 @@ const Info = () => {
           font-size: 18px;
           padding-top: 10px;
           padding-left: 10px;
+          margin-bottom: 20px;
         }
       `}</style>
     </div>

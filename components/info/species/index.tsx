@@ -14,9 +14,10 @@ const Species = (props: { species: string }) => {
   const { species } = props;
   const { data } = useContents(species);
   const { refinedObj } = getEumEntries(FishSpeciesName);
+  console.log('species => ', species);
   const speciesName = refinedObj[species];
   if (data && data.length < 1) return null;
-
+  console.log('spciesName => ', speciesName);
   return (
     <div>
       <h1 className="species-list-title">{speciesName}</h1>
