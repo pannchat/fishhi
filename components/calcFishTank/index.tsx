@@ -149,7 +149,10 @@ const CalcFishTank = () => {
         계산하기
       </Button>
       <Spacing height={50} />
-      <CalcSupplies />
+      <div className=''>
+        <CalcSupplies />
+      </div>
+      
 
       <style jsx>{`
         .face {
