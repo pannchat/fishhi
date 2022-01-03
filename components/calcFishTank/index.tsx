@@ -134,7 +134,7 @@ const CalcFishTank = () => {
       <Button
         width={200}
         height={50}
-        color={'#4b5ab4'}
+        color={'#8aa1a1'}
         style={{
           color: 'white',
           fontSize: 16,
