@@ -14,9 +14,11 @@ const CalcFishTank = () => {
     faceLeftRef,
     faceRightRef,
     faceTopRef,
+    containerRef,
     tankWidth,
     tankHeight,
     tankDepth,
+    waterLevel,
     thickness,
     tankSand,
     setTankWidth,
@@ -24,27 +26,26 @@ const CalcFishTank = () => {
     setTankHeight,
     setThickness,
     setTankSand,
+    setWaterLevel,
     calculate,
+    tankReorder,
   } = useCalcFishBowl();
+
   const [isShowDetail, setIsShowDetail] = useState<boolean>(false);
+
   const handleClickSwitch = () => {
     setIsShowDetail(!isShowDetail);
   };
+
   useEffect(() => {
     if (faceFrontRef.current) faceFrontRef.current.style.width = '100px';
   }, []);
+
   return (
     <div>
-      <h1
-        style={{
-          textAlign: 'center',
-        }}
-      >
-        수조 물양 계산기
-      </h1>
       <div className="flex-box--main">
         <div className="main-section__tank-preview">
-          <div className="main-section__tank-container">
+          <div className="main-section__tank-container" ref={containerRef}>
             <div className="main-section__tank">
               <div className="face faceFront" ref={faceFrontRef}>
                 <b>fishhi.kr</b>
@@ -111,11 +112,11 @@ const CalcFishTank = () => {
         />
 
         <TankInput
-          value={tankSand}
+          value={waterLevel}
           onChange={value => {
-            setTankSand(value);
+            setWaterLevel(value);
           }}
-          name="tankSand"
+          name="waterLevel"
           label="수위"
           unit="cm"
         />
