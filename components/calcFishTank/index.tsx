@@ -35,6 +35,9 @@ const CalcFishTank = () => {
 
   const handleClickSwitch = () => {
     setIsShowDetail(!isShowDetail);
+    setTankSand(0);
+    setWaterLevel(0);
+    setThickness(0);
   };
 
   useEffect(() => {
