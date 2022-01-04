@@ -1,9 +1,15 @@
+import { debounce, throttle } from 'lodash';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import Input, { IInputProps } from '../../shared/commonComponent/input';
 import LinkCustom from '../../shared/commonComponent/link';
+import ImagePath from '../../shared/imagePath';
 import UrlPath from '../../shared/urlPath';
 import { searchFocusState, searchSuggestionState, searchTextState } from './stores/searchData';
+
+export interface ISearchInputProps {
+  width?: string | number;
+}
 
 export interface ISearchKeywordProps {
   id: number;
@@ -44,7 +50,8 @@ const SEARCH_KEYWORD_2 = {
   ],
 };
 
-const SearchInput = () => {
+const SearchInput = (props: ISearchInputProps) => {
+  const { width = '100%' } = props;
   const [text, setText] = useRecoilState<string>(searchTextState);
   const url = text && text.length > 0 ? UrlPath.Search + `?searchText=${text}` : '';
   const [suggestion, setSuggestion] = useRecoilState<ISearchKeywordProps[]>(searchSuggestionState);
@@ -76,16 +83,15 @@ const SearchInput = () => {
     },
     [linkRef, url],
   );
-  const onChangeHandler = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      let text = e.target.value;
+  const setSuggestionDebounce = useCallback(
+    debounce(value => {
       let matches: ISearchKeywordProps[] = [];
       let matches2: ISearchKeywordProps[] = [];
-      text = text.replace('\\', '');
+      const text = value.replace('\\', '');
+
       if (text.length > 0) {
         matches = data.filter(dt => {
           const regex = new RegExp(`${text}`, 'gi');
-          // var test = [...dt.email,...dt.first_name];
 
           return dt.name.match(regex);
         });
@@ -93,7 +99,6 @@ const SearchInput = () => {
       if (text.length > 0) {
         matches2 = data.filter(dt => {
           const regex = new RegExp(`\\${text}`, 'gi');
-          // var test = [...dt.email,...dt.first_name];
           let test = null;
           dt.keyword.map(e => {
             if (e.match(regex)) {
@@ -108,11 +113,16 @@ const SearchInput = () => {
       var result = new Set([...matches, ...matches2]); // 중복제거
 
       setSuggestion([...result]);
-      if (text.length > 0 && result.size > 0) {
-      }
+    }, 300),
+    [setSuggestion],
+  );
+  const onChangeHandler = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const text = e.target.value;
       setText(text);
+      setSuggestionDebounce(text);
     },
-    [text, suggestion],
+    [setText, setSuggestionDebounce],
   );
 
   useEffect(() => {
@@ -123,7 +133,18 @@ const SearchInput = () => {
     }
   }, [linkRef]);
   return (
-    <LinkCustom href={url} ref={linkRef}>
+    <LinkCustom
+      href={url}
+      ref={linkRef}
+      style={{
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        borderBottom: `1px solid #d2d2d2`,
+        paddingRight: 10,
+      }}
+    >
       <Input
         placeholder="검색어를 입력하세요"
         value={text}
@@ -133,14 +154,17 @@ const SearchInput = () => {
         onFocus={onFocushandler}
         onBlur={onBlurHandler}
         style={{
+          flexBasis: '80%',
           width: '100%',
-          border: `1px solid #d2d2d2`,
-          borderRadius: 10,
+          border: 'none',
+          outline: 'none',
           height: 50,
           fontSize: 16,
           paddingLeft: 10,
         }}
       />
+
+      <img src={ImagePath.Search} width={15} height={15} />
     </LinkCustom>
   );
 };
