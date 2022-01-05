@@ -1,11 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
-import React from 'react';
+import React,{useState} from 'react';
 import { useSuppliesProduct } from '../../shared/hooks/useSuppliesProduct';
-import { BsBookmark } from "react-icons/bs";
+import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
 
 const IMAGE_BASE_URL = 'https://fishhi.kr/thumbnails/';
 const CalcSupplies = () => {
   const { data } = useSuppliesProduct();
+  const [toggle, setToggle] = useState(true);
 
   if (!data) return <div></div>;
   return (
@@ -46,7 +47,10 @@ const CalcSupplies = () => {
                 </p>
               </div>
               <div className='test3'>
-                <BsBookmark size="25" color="#8aa1a1" />
+                {toggle 
+                  ? <BsBookmark size="25" color="#8aa1a1" style={{cursor:'pointer'}} onClick={()=>setToggle(true)}/>
+                  : <BsBookmarkFill size="25" color="#8aa1a1" style={{cursor:'pointer'}} onClick={()=>setToggle(false)}/>
+                }
               </div>
               
             </div>
