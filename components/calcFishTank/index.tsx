@@ -5,6 +5,7 @@ import Switch from '../../shared/commonComponent/switch';
 import useCalcFishBowl from '../../shared/hooks/useCalcFishBowl';
 import CalcSupplies from './calcSupplies';
 import SuppliesCarousel from './suppliesCarousel';
+
 //테스트
 const CalcFishTank = () => {
   const {
@@ -288,8 +289,16 @@ const TankInput = (props: {
         {label}
       </div>
       <input
+        type="number"
         className="input"
         {...inputAttributes}
+        style={{
+          width: '50px',
+          height: '100%',
+          outline: 'none',
+          border: 'solid 1px #8c98a4',
+          textAlign: 'center',
+        }}
         onChange={e => {
           if (onChange) {
             if (e.target.value.length > 0) {
@@ -298,13 +307,6 @@ const TankInput = (props: {
               onChange(0);
             }
           }
-        }}
-        style={{
-          width: '50px',
-          height: '100%',
-          outline: 'none',
-          border: 'solid 1px #8c98a4',
-          textAlign: 'center',
         }}
       />
 
@@ -326,10 +328,11 @@ const TankInput = (props: {
           font-weight: 500;
         }
         .input::-webkit-outer-spin-button,
-        &::-webkit-inner-spin-button {
-          -webkit-appearance: none;
-          margin: 0;
+        .input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
         }
+
         input + div {
           display: inline-block;
           width: 16px;
