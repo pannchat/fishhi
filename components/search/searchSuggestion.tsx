@@ -49,7 +49,6 @@ const SearchSuggestion = (props: ISearchSuggestionProps) => {
           width: 100%;
           border: ${showSuggenstion ? `1px solid #d2d2d2` : 'none'};
           opacity: ${showSuggenstion ? 1 : 0};
-          transition: 0.3s ease opacity, 0.1s ease height;
         }
         .search-suggestion-item {
           box-sizing: border-box;
@@ -67,6 +66,7 @@ const SearchSuggestion = (props: ISearchSuggestionProps) => {
           align-items: center;
           padding-left: 10px;
           height: ${showSuggenstion ? '45px' : '0px'};
+          transition: 0.3s ease opacity, 0.1s ease height;
         }
       `}</style>
     </div>
