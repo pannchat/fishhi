@@ -5,7 +5,6 @@ import Switch from '../../shared/commonComponent/switch';
 import useCalcFishBowl from '../../shared/hooks/useCalcFishBowl';
 import CalcSupplies from './calcSupplies';
 import SuppliesCarousel from './suppliesCarousel';
-
 //테스트
 const CalcFishTank = () => {
   const {
@@ -36,9 +35,6 @@ const CalcFishTank = () => {
 
   const handleClickSwitch = () => {
     setIsShowDetail(!isShowDetail);
-    setTankSand(0);
-    setWaterLevel(0);
-    setThickness(0);
   };
 
   useEffect(() => {
@@ -101,7 +97,7 @@ const CalcFishTank = () => {
             setThickness(value);
           }}
           name="thickness"
-          label="두께"
+          label="유리두께"
           unit="T"
         />
 
@@ -139,7 +135,7 @@ const CalcFishTank = () => {
       <Button
         width={200}
         height={50}
-        color={'#8aa1a1'}
+        color={'#4b5ab4'}
         style={{
           color: 'white',
           fontSize: 16,
@@ -154,10 +150,7 @@ const CalcFishTank = () => {
         계산하기
       </Button>
       <Spacing height={50} />
-      <div className=''>
-        <CalcSupplies />
-      </div>
-      
+      <CalcSupplies />
 
       <style jsx>{`
         .face {
@@ -273,32 +266,23 @@ const TankInput = (props: {
   return (
     <div
       style={{
-        width: '100%',
+        width: 150,
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center',
-        margin: '0px 5px',
+        justifyContent: 'space-around',
       }}
     >
-      <div
+      <p
         className="tank__input-label"
         style={{
           fontSize: labelSize,
         }}
       >
         {label}
-      </div>
+      </p>
       <input
-        type="number"
         className="input"
         {...inputAttributes}
-        style={{
-          width: '50px',
-          height: '100%',
-          outline: 'none',
-          border: 'solid 1px #8c98a4',
-          textAlign: 'center',
-        }}
         onChange={e => {
           if (onChange) {
             if (e.target.value.length > 0) {
@@ -307,6 +291,13 @@ const TankInput = (props: {
               onChange(0);
             }
           }
+        }}
+        style={{
+          width: 65,
+          height: '100%',
+          outline: 'none',
+          border: 'solid 1px #8c98a4',
+          textAlign: 'center',
         }}
       />
 
@@ -319,8 +310,7 @@ const TankInput = (props: {
         }
         .tank__input-label {
           font-weight: 800;
-          width:45px;
-          // margin-right:10px;
+          flex-basis: 40%;
         }
 
         .size-unit {
@@ -328,11 +318,10 @@ const TankInput = (props: {
           font-weight: 500;
         }
         .input::-webkit-outer-spin-button,
-        .input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
+        &::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
         }
-
         input + div {
           display: inline-block;
           width: 16px;

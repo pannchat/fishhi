@@ -27,24 +27,24 @@ const SupplyBox = (props: ISupplyBoxProps) => {
         src={`https://fishhi.kr/thumbnails/${img}`}
         alt={`${productName} 상품`}
         style={{
+          margin: 10,
           objectFit: "contain",
         }}
       />
       <div>
         <p className="supply-product-name">{productName}</p>
-        <p>권장 사용량 : {recommendedUsage1}L 당 {recommendedUsage2}cc</p>
-        <p>내 어항 사용량 :{" "}
+        권장 사용량 : {recommendedUsage1}L 당 {recommendedUsage2}cc
+        {/* <br />내 어항 사용량 :{" "}
             <b>
-              {/* {capacity
+              {capacity
                 ? `${(
                     (capacity / recommendedUsage1) *
                     el.recommendedUsage2
                   ).toFixed(2)}cc`
-                : "?"} */}
-                5.2
+                : "?"}
             </b>{" "}
             권장
-        </p>
+            <br /> */}
         {/* <a className="open">상세 설명서 보기</a> */}
       </div>
 
