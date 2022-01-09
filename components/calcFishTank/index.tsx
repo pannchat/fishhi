@@ -5,6 +5,7 @@ import Switch from '../../shared/commonComponent/switch';
 import useCalcFishBowl from '../../shared/hooks/useCalcFishBowl';
 import CalcSupplies from './calcSupplies';
 import SuppliesCarousel from './suppliesCarousel';
+
 //테스트
 const CalcFishTank = () => {
   const {
@@ -14,9 +15,11 @@ const CalcFishTank = () => {
     faceLeftRef,
     faceRightRef,
     faceTopRef,
+    containerRef,
     tankWidth,
     tankHeight,
     tankDepth,
+    waterLevel,
     thickness,
     tankSand,
     setTankWidth,
@@ -24,27 +27,29 @@ const CalcFishTank = () => {
     setTankHeight,
     setThickness,
     setTankSand,
+    setWaterLevel,
     calculate,
+    tankReorder,
   } = useCalcFishBowl();
+
   const [isShowDetail, setIsShowDetail] = useState<boolean>(false);
+
   const handleClickSwitch = () => {
     setIsShowDetail(!isShowDetail);
+    setTankSand(0);
+    setWaterLevel(0);
+    setThickness(0);
   };
+
   useEffect(() => {
     if (faceFrontRef.current) faceFrontRef.current.style.width = '100px';
   }, []);
+
   return (
     <div>
-      <h1
-        style={{
-          textAlign: 'center',
-        }}
-      >
-        수조 물양 계산기
-      </h1>
       <div className="flex-box--main">
         <div className="main-section__tank-preview">
-          <div className="main-section__tank-container">
+          <div className="main-section__tank-container" ref={containerRef}>
             <div className="main-section__tank">
               <div className="face faceFront" ref={faceFrontRef}>
                 <b>fishhi.kr</b>
@@ -96,7 +101,7 @@ const CalcFishTank = () => {
             setThickness(value);
           }}
           name="thickness"
-          label="유리두께"
+          label="두께"
           unit="T"
         />
 
@@ -111,12 +116,12 @@ const CalcFishTank = () => {
         />
 
         <TankInput
-          value={tankSand}
+          value={waterLevel}
           onChange={value => {
-            setTankSand(value);
+            setWaterLevel(value);
           }}
-          name="tankSand"
-          label="바닥재"
+          name="waterLevel"
+          label="수위"
           unit="cm"
         />
       </div>
@@ -134,7 +139,7 @@ const CalcFishTank = () => {
       <Button
         width={200}
         height={50}
-        color={'#4b5ab4'}
+        color={'#8aa1a1'}
         style={{
           color: 'white',
           fontSize: 16,
@@ -149,7 +154,10 @@ const CalcFishTank = () => {
         계산하기
       </Button>
       <Spacing height={50} />
-      <CalcSupplies />
+      <div className=''>
+        <CalcSupplies />
+      </div>
+      
 
       <style jsx>{`
         .face {
@@ -177,7 +185,7 @@ const CalcFishTank = () => {
           display: flex;
           align-items: center;
           width: 100%;
-          height: 500px;
+          height: 300px;
           margin: 10px 0;
           flex-direction: row;
           justify-content: center;
@@ -265,23 +273,32 @@ const TankInput = (props: {
   return (
     <div
       style={{
-        width: 150,
+        width: '100%',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'space-around',
+        justifyContent: 'center',
+        margin: '0px 5px',
       }}
     >
-      <p
+      <div
         className="tank__input-label"
         style={{
           fontSize: labelSize,
         }}
       >
         {label}
-      </p>
+      </div>
       <input
+        type="number"
         className="input"
         {...inputAttributes}
+        style={{
+          width: '50px',
+          height: '100%',
+          outline: 'none',
+          border: 'solid 1px #8c98a4',
+          textAlign: 'center',
+        }}
         onChange={e => {
           if (onChange) {
             if (e.target.value.length > 0) {
@@ -290,13 +307,6 @@ const TankInput = (props: {
               onChange(0);
             }
           }
-        }}
-        style={{
-          width: 65,
-          height: '100%',
-          outline: 'none',
-          border: 'solid 1px #8c98a4',
-          textAlign: 'center',
         }}
       />
 
@@ -309,7 +319,8 @@ const TankInput = (props: {
         }
         .tank__input-label {
           font-weight: 800;
-          flex-basis: 40%;
+          width:45px;
+          // margin-right:10px;
         }
 
         .size-unit {
@@ -317,10 +328,11 @@ const TankInput = (props: {
           font-weight: 500;
         }
         .input::-webkit-outer-spin-button,
-        &::-webkit-inner-spin-button {
-          -webkit-appearance: none;
-          margin: 0;
+        .input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
         }
+
         input + div {
           display: inline-block;
           width: 16px;

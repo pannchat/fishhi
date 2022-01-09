@@ -1,12 +1,12 @@
-import React from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
-import {
-  searchFocusState,
-  searchSuggestionState,
-  searchTextState,
-} from "./stores/searchData";
+import React from 'react';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { searchFocusState, searchSuggestionState, searchTextState } from './stores/searchData';
 
-const SearchSuggestion = () => {
+export interface ISearchSuggestionProps {
+  width?: string | number;
+}
+const SearchSuggestion = (props: ISearchSuggestionProps) => {
+  const { width = '100%' } = props;
   const suggestion = useRecoilValue(searchSuggestionState);
   const [searchText, setSearchText] = useRecoilState(searchTextState);
   const searchFocus = useRecoilValue(searchFocusState);
@@ -15,7 +15,12 @@ const SearchSuggestion = () => {
     setSearchText(value);
   };
   return (
-    <div className="search-suggestion__wrapper">
+    <div
+      className="search-suggestion__wrapper"
+      style={{
+        width: width,
+      }}
+    >
       {suggestion.length > 0 ? (
         suggestion.map((value, index) => {
           const { id, name } = value;
@@ -39,12 +44,11 @@ const SearchSuggestion = () => {
         .search-suggestion__wrapper {
           position: absolute;
           top: 49px;
-          height: auto;
+          height: ${showSuggenstion ? 'auto' : '0px'};
           background-color: white;
           width: 100%;
-          border: ${showSuggenstion ? `1px solid #d2d2d2` : "none"};
+          border: ${showSuggenstion ? `1px solid #d2d2d2` : 'none'};
           opacity: ${showSuggenstion ? 1 : 0};
-          transition: 0.3s ease opacity;
         }
         .search-suggestion-item {
           box-sizing: border-box;
@@ -58,10 +62,11 @@ const SearchSuggestion = () => {
         .search-suggestion--no-suggestion {
           font-size: 16px;
           font-weight: 700;
-          height: 45px;
           display: flex;
           align-items: center;
           padding-left: 10px;
+          height: ${showSuggenstion ? '45px' : '0px'};
+          transition: 0.3s ease opacity, 0.1s ease height;
         }
       `}</style>
     </div>

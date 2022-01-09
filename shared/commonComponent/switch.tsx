@@ -18,12 +18,12 @@ interface ISwitchProps {
 const Switch = (props: ISwitchProps) => {
   const {
     label,
-    labelSize = 14,
+    labelSize = 20,
     labelWeight = 400,
     defaultColor = "grey",
-    color = "#4b5ab4",
-    buttonHeight = 20,
-    buttonWidth = 20,
+    color = "#8aa1a1",
+    buttonHeight = 25,
+    buttonWidth = 25,
     buttonColor = "white",
     style,
     isActive,
@@ -45,6 +45,7 @@ const Switch = (props: ISwitchProps) => {
           style={{
             fontSize: labelSize,
             fontWeight: labelWeight,
+            color: 'grey',
           }}
         >
           {label}
