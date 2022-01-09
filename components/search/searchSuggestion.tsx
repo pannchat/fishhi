@@ -1,12 +1,12 @@
-import React from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { searchFocusState, searchSuggestionState, searchTextState } from './stores/searchData';
+import React from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
+import {
+  searchFocusState,
+  searchSuggestionState,
+  searchTextState,
+} from "./stores/searchData";
 
-export interface ISearchSuggestionProps {
-  width?: string | number;
-}
-const SearchSuggestion = (props: ISearchSuggestionProps) => {
-  const { width = '100%' } = props;
+const SearchSuggestion = () => {
   const suggestion = useRecoilValue(searchSuggestionState);
   const [searchText, setSearchText] = useRecoilState(searchTextState);
   const searchFocus = useRecoilValue(searchFocusState);
@@ -15,12 +15,7 @@ const SearchSuggestion = (props: ISearchSuggestionProps) => {
     setSearchText(value);
   };
   return (
-    <div
-      className="search-suggestion__wrapper"
-      style={{
-        width: width,
-      }}
-    >
+    <div className="search-suggestion__wrapper">
       {suggestion.length > 0 ? (
         suggestion.map((value, index) => {
           const { id, name } = value;
@@ -44,11 +39,12 @@ const SearchSuggestion = (props: ISearchSuggestionProps) => {
         .search-suggestion__wrapper {
           position: absolute;
           top: 49px;
-          height: ${showSuggenstion ? 'auto' : '0px'};
+          height: auto;
           background-color: white;
           width: 100%;
-          border: ${showSuggenstion ? `1px solid #d2d2d2` : 'none'};
+          border: ${showSuggenstion ? `1px solid #d2d2d2` : "none"};
           opacity: ${showSuggenstion ? 1 : 0};
+          transition: 0.3s ease opacity;
         }
         .search-suggestion-item {
           box-sizing: border-box;
@@ -62,11 +58,10 @@ const SearchSuggestion = (props: ISearchSuggestionProps) => {
         .search-suggestion--no-suggestion {
           font-size: 16px;
           font-weight: 700;
+          height: 45px;
           display: flex;
           align-items: center;
           padding-left: 10px;
-          height: ${showSuggenstion ? '45px' : '0px'};
-          transition: 0.3s ease opacity, 0.1s ease height;
         }
       `}</style>
     </div>

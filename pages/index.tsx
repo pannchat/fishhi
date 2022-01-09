@@ -1,9 +1,7 @@
 import type { NextPage } from 'next';
-import { useRouter } from 'next/dist/client/router';
 import Head from 'next/head';
 import Image from 'next/image';
 import React from 'react';
-import Main from '../components';
 import FHNavbar, { FHMainNavbar } from '../components/FHNavbar';
 import PostBox from '../components/PostBox';
 import Search from '../components/search';
@@ -28,13 +26,33 @@ const dummy = [
   },
 ];
 
-const MAIN_COL_GAP = 30;
 const Home: NextPage = () => {
-  const router = useRouter();
   return (
     <div className="app__wrapper">
-      <Spacing height={MAIN_COL_GAP} />
-      <Main />
+      <h1
+        style={{
+          fontSize: 24,
+          fontWeight: 700,
+        }}
+      >
+        피쉬하이
+      </h1>
+
+      <Search />
+      <Spacing height={10} />
+      {dummy.map((value, index) => {
+        return (
+          <div
+            key={`postBox${index}`}
+            style={{
+              cursor: 'pointer',
+            }}
+          >
+            <PostBox image={value.image} nickname={value.nickname} title={value.title} />
+            <Spacing height={10} />
+          </div>
+        );
+      })}
       <style jsx>
         {`
           .app__wrapper {

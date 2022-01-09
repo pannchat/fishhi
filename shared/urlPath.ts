@@ -7,11 +7,9 @@ export default class UrlPath {
     return '/search';
   }
 
-  static get FishInfo() {
-    return '/info/fish';
+  static speciesDetail(species: string, id: string) {
+    return `/info/${species}/${id}`
   }
 
-  static speciesDetail(species: string, id: string) {
-    return `/info/${species}/${id}`;
-  }
+
 }

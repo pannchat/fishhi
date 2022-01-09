@@ -1,12 +1,11 @@
-import React, { InputHTMLAttributes, RefObject } from 'react';
-import { CSSProperties } from 'styled-components';
+import React, { InputHTMLAttributes, RefObject } from "react";
+import { CSSProperties } from "styled-components";
 
 export interface IInputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   labelStyle?: CSSProperties;
-  alignDirection?: 'row' | 'col';
+  alignDirection?: "row" | "col";
   ref?: RefObject<HTMLInputElement>;
-  style?: CSSProperties;
   // placeholder?: string;
   // style?: CSSProperties;
   // onChange?: (e?: any) => void;
@@ -15,14 +14,9 @@ export interface IInputProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 const Input = (props: IInputProps) => {
-  const { label, labelStyle, alignDirection, width, ...inputProps } = props;
+  const { label, labelStyle, alignDirection, ...inputProps } = props;
   return (
-    <div
-      style={{
-        width: width,
-        flexBasis: props.style?.flexBasis,
-      }}
-    >
+    <div>
       {label && (
         <label htmlFor={inputProps.name} style={labelStyle}>
           {label}

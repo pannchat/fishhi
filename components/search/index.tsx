@@ -1,14 +1,8 @@
-import React from 'react';
-import SearchInput from './searchInput';
-import SearchSuggestion from './searchSuggestion';
+import React from "react";
+import SearchInput from "./searchInput";
+import SearchSuggestion from "./searchSuggestion";
 
-export interface ISearchProps {
-  width?: string | number;
-  height?: string | number;
-}
-
-const Search = (props: ISearchProps) => {
-  const { width, height } = props;
+const Search = () => {
   return (
     <div className="search__wrapper">
       <SearchInput />
@@ -18,9 +12,6 @@ const Search = (props: ISearchProps) => {
         .search__wrapper {
           position: relative;
           width: 100%;
-          margin-left: auto;
-          margin-right: auto;
-          z-index: 1;
         }
       `}</style>
     </div>
