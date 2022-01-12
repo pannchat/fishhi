@@ -2,7 +2,7 @@ import { useRouter } from 'next/dist/client/router';
 import React from 'react';
 import Species from '../../components/info/species';
 import SpeciesDetail from '../../components/info/speciesDetail';
-
+// merge
 const InfoPageDetail = () => {
   const router = useRouter();
   const { param } = router.query;

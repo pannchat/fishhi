@@ -2,7 +2,7 @@ import React from 'react';
 import Title from '../shared/commonComponent/title';
 import ImagePath from '../shared/imagePath';
 import UrlPath from '../shared/urlPath';
-
+// merge
 const Main = () => {
   return (
     <div className="main__wrapper">

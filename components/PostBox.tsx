@@ -1,6 +1,6 @@
-import React from "react";
-import { CSSProperties } from "styled-components";
-
+import React from 'react';
+import { CSSProperties } from 'styled-components';
+// merge
 interface IPostBoxProps extends IPostBoxInfoProps {
   width?: string | number;
   height?: string | number;
@@ -16,10 +16,10 @@ const PostBox = (props: IPostBoxProps) => {
         {image && (
           <img
             src={image}
-            width={"100%"}
+            width={'100%'}
             height={190}
             style={{
-              objectFit: "cover",
+              objectFit: 'cover',
             }}
           />
         )}

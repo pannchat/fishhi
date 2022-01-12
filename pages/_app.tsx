@@ -59,7 +59,7 @@ const FOOTER_ITEMS = [
     },
   },
 ];
-
+// for merge
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <SWRConfig>
