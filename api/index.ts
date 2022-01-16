@@ -1,11 +1,12 @@
 import axios from 'axios';
+import { IGetSuppliesProductResponse } from '../shared/hooks/useSuppliesProduct';
 import { IAquaplant } from '../shared/interface';
 
 const BASE_URL = 'http://54.180.156.194:8000';
 axios.defaults.baseURL = BASE_URL;
 
 export async function getSuppliesProduct() {
-  const { data } = await axios.get('https://fishhi.kr/supplies_product.json');
+  const { data } = await axios.get<IGetSuppliesProductResponse>('https://fishhi.kr/supplies_product.json');
 
   return data;
 }

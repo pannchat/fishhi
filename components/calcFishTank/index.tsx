@@ -3,11 +3,12 @@ import Button from '../../shared/commonComponent/button';
 import Spacing from '../../shared/commonComponent/spacing';
 import Switch from '../../shared/commonComponent/switch';
 import useCalcFishBowl from '../../shared/hooks/useCalcFishBowl';
+import { IGetSuppliesProductResponse } from '../../shared/hooks/useSuppliesProduct';
 import CalcSupplies from './calcSupplies';
 import SuppliesCarousel from './suppliesCarousel';
 
 //테스트
-const CalcFishTank = () => {
+const CalcFishTank = (props?: { initData: IGetSuppliesProductResponse }) => {
   const {
     faceFrontRef,
     faceBackRef,
@@ -154,10 +155,9 @@ const CalcFishTank = () => {
         계산하기
       </Button>
       <Spacing height={50} />
-      <div className=''>
-        <CalcSupplies />
+      <div className="">
+        <CalcSupplies initData={props?.initData} />
       </div>
-      
 
       <style jsx>{`
         .face {
@@ -319,7 +319,7 @@ const TankInput = (props: {
         }
         .tank__input-label {
           font-weight: 800;
-          width:45px;
+          width: 45px;
           // margin-right:10px;
         }
 
@@ -329,8 +329,8 @@ const TankInput = (props: {
         }
         .input::-webkit-outer-spin-button,
         .input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
+          -webkit-appearance: none;
+          margin: 0;
         }
 
         input + div {
