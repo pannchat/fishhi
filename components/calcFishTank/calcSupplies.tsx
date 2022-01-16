@@ -1,17 +1,17 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useState } from 'react';
-import { useSuppliesProduct } from '../../shared/hooks/useSuppliesProduct';
+import { IGetSuppliesProductResponse, useSuppliesProduct } from '../../shared/hooks/useSuppliesProduct';
 import { BsBookmark, BsBookmarkFill } from 'react-icons/bs';
 
 const IMAGE_BASE_URL = 'https://fishhi.kr/thumbnails/';
-const CalcSupplies = () => {
-  const { data } = useSuppliesProduct();
+const CalcSupplies = (props?: { initData?: IGetSuppliesProductResponse }) => {
+  const { data } = useSuppliesProduct(props?.initData);
   const [toggle, setToggle] = useState(true);
   // commit
   if (!data) return <div></div>;
   return (
     <div className="calc-supplies">
-      {data.map((value: any, index: number) => {
+      {data.map((value, index) => {
         const { img, productName, recommendedUsage1, recommendedUsage2 } = value;
         return (
           <li className="search-list" key={`searchList${index}`}>
@@ -20,11 +20,12 @@ const CalcSupplies = () => {
                 src={`https://fishhi.kr/thumbnails/${img}`}
                 alt={`${productName} 상품`}
                 style={{
-                  objectFit: 'cover',
+                  objectFit: 'contain',
                   objectPosition: 'center center',
                   width: '120px',
                   height: '120px',
                   marginRight: '10px',
+                  aspectRatio: '1/1',
                 }}
               />
               <div className="test2">
@@ -66,6 +67,7 @@ const CalcSupplies = () => {
       <style jsx>{`
         .search-list {
           display: flex;
+          cursor: pointer;
         }
         .supplies-items {
           display: flex;
@@ -96,3 +98,6 @@ const CalcSupplies = () => {
 };
 
 export default CalcSupplies;
+function InferGetStaticPropsType<T>() {
+  throw new Error('Function not implemented.');
+}
