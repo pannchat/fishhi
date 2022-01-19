@@ -1,0 +1,33 @@
+.addDict-body{
+    padding:10px;
+    display:flex;
+    flex-direction: column;
+
+    &__input-box{
+        display:flex;
+        box-sizing: border-box;
+        width:100%;
+        margin-bottom: 20px;
+        & > div {
+            display: flex;
+            justify-content: end;
+            width:100%;
+            margin-right: 10px;
+            font-size: 12pt;
+            color:#bdbdbd;
+            padding: 5px;
+            
+        }
+        & > input{
+            width:100%;
+            height:35px;
+            padding:6px 12px;
+            border-radius: 5px;
+            border:0.1rem solid #b1bbc4;
+            font-size:14pt;
+            &::placeholder{
+                color:#b1bbc4;
+            }
+        }
+    }
+}

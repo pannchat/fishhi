@@ -46,8 +46,19 @@ const thumb: CSSProperties = {
   height: 100,
   padding: 4,
   boxSizing: 'border-box',
+  position: 'relative',
 };
-
+const thumbClose: CSSProperties = {
+  position: 'absolute',
+  right: '5px',
+  width: '20px',
+  height: '20px',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  backgroundColor: 'rgba(0,0,0,0.3)',
+  color: 'white',
+};
 const thumbInner = {
   display: 'flex',
   minWidth: 0,
@@ -59,53 +70,53 @@ const img = {
   width: 'auto',
   height: '100%',
 };
-
+interface Ifile {
+  name: React.Key | null | undefined;
+  preview: string | undefined;
+}
 function Previews(props: any) {
   const [files, setFiles]: any = useState([]);
-  const [test, setTest] = useState([]);
   const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/gif, image/jpg, image/jpeg',
     onDrop: acceptedFiles => {
-      setFiles(
-        acceptedFiles.map(file =>{
-        console.log(file)
+      setFiles([
+        ...acceptedFiles.map(file => {
           return Object.assign(file, {
             preview: URL.createObjectURL(file),
-          })
-          
-        }
-        ),
-      );
-      console.log(acceptedFiles);
-    
+          });
+        }),
+      ]);
     },
     maxFiles: 5,
     maxSize: 15728640,
     onDropRejected: () => {
-      alert('에러');
+      alert('지원하지 않는 타입의 확장자입니다.');
     },
   });
-  //   (function test(){
-  //     setFiles([{
-  //         name:'test',
-  //         preview:'https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=http%3A%2F%2Fcfile4.uf.tistory.com%2Fimage%2F24611E4853FDAE0B148760'
-  //       }]);
-
-  //   })();
-//   const thumbs = files.map((file: { name: React.Key | null | undefined; preview: string | undefined }) => (
-//     <div style={thumb} key={file.name}>
-//       <div style={{position:'absolute'}}>x</div>
-//       <div style={thumbInner}>
-//         <img src={file.preview} style={img} />
-//       </div>
-//     </div>
-//   ));
+  function removeFile(targetFileName: React.Key | null | undefined) {
+    setFiles(
+      files.filter((fItem: Ifile) => {
+        console.log(fItem.name, targetFileName, fItem.name === targetFileName)
+        return fItem.name !== targetFileName;
+      }),
+    );
+    console.log(files)
+  }
+  const thumbs = files.map((file: Ifile) => (
+    <div style={thumb} key={file.name}>
+      <div style={thumbClose} onClick={() => removeFile(file.name)}>
+        x
+      </div>
+      <div style={thumbInner}>
+        <img src={file.preview} style={img} />
+      </div>
+    </div>
+  ));
 
   useEffect(
     () => () => {
       // Make sure to revoke the data uris to avoid memory leaks
       files.forEach((file: { preview: string }) => URL.revokeObjectURL(file.preview));
-      setTest([])
     },
     [files],
   );
@@ -131,7 +142,7 @@ function Previews(props: any) {
         <input {...getInputProps()} />
         <p>여기에 파일을 끌어놓거나 클릭해주세요.</p>
       </div>
-      <aside style={thumbsContainer}>{test}</aside>
+      <aside style={thumbsContainer}>{thumbs}</aside>
     </section>
   );
 }
