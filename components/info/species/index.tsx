@@ -10,9 +10,9 @@ import { getEumEntries } from '../../../shared/funtion';
 import useContents from '../../../shared/hooks/useContents';
 import { IAquaplant, ISpecies } from '../../../shared/interface';
 
-const Species = (props: { species: string }) => {
-  const { species } = props;
-  const { data } = useContents(species);
+const Species = (props: { species: string; initData?: any }) => {
+  const { species, initData } = props;
+  const { data } = useContents(species, initData);
   const { refinedObj } = getEumEntries(FishSpeciesName);
   const speciesName = refinedObj[species];
   if (data && data.length < 1) return null;
@@ -43,7 +43,7 @@ export const SpeciesItem = (props: { data: ISpecies; species: string }) => {
   const { data, species } = props;
   const { thumbnail, name, id } = data;
   const { isHover, onMouseEnterHandler, onMouseLeaveHandler } = useMouseHover();
-
+  if (!thumbnail || thumbnail.length < 1) return <></>;
   return (
     <LinkCustom href={UrlPath.speciesDetail(species as string, String(id))}>
       <div className="info-detail-item" onMouseEnter={onMouseEnterHandler} onMouseLeave={onMouseLeaveHandler}>
