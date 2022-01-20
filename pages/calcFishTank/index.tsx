@@ -15,7 +15,6 @@ export async function getStaticProps() {
 
 const CalcFishTankPage = (props: { suppliesProduct: IGetSuppliesProductResponse }) => {
   const { suppliesProduct } = props;
-
   return <CalcFishTank initData={suppliesProduct} />;
 };
 

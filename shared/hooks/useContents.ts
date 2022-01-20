@@ -3,18 +3,23 @@ import useSWR from 'swr';
 import { getAquaplant, getFishListApi } from '../../api';
 import { ISpecies, ISpeciesList } from '../interface';
 
-export default function useContents(type: string) {
-  const { data, error } = useSWR(`contents_${type}`, () => {
-    if (type === 'aquaplant') {
-      return getAquaplant();
-    }
+export default function useContents(type: string, initData?: any) {
+  console.log('SWR', initData);
+  const { data, error } = useSWR(
+    `contents_${type}`,
+    () => {
+      if (type === 'aquaplant') {
+        return getAquaplant();
+      }
 
-    if (type === 'fish') {
-      return getFishListApi();
-    }
+      if (type === 'fish') {
+        return getFishListApi();
+      }
 
-    return null;
-  });
+      return null;
+    },
+    { fallbackData: initData },
+  );
 
   const contentsData = useMemo(() => {
     const tempData: ISpecies[] = [];
