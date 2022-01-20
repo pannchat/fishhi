@@ -33,7 +33,8 @@ const thumbsContainer: CSSProperties = {
   display: 'flex',
   flexDirection: 'row',
   flexWrap: 'wrap',
-  marginTop: '16',
+  marginTop: '16px',
+  justifyContent:'space-between',
 };
 
 const thumb: CSSProperties = {
