@@ -1,18 +1,18 @@
 import React, { useMemo } from "react";
 import { useRouter } from "next/dist/client/router";
 import { SEARCH_PAGE_KEY } from "../../pages/search";
-import { FISH_LIST } from "../../shared/dummy";
+// import { FISH_LIST } from "../../shared/dummy";
 
 const SearchResult = () => {
   const router = useRouter();
   const { query } = router;
   const searchText = query[SEARCH_PAGE_KEY] as string;
-  const resultList = FISH_LIST.data;
-  const result = useMemo(() => {
-    return resultList.filter(
-      (result) => result.name.indexOf(searchText) !== -1
-    );
-  }, [resultList]);
+  // const resultList = FISH_LIST.data;
+  // const result = useMemo(() => {
+  //   return resultList.filter(
+  //     (result) => result.name.indexOf(searchText) !== -1
+  //   );
+  // }, [resultList]);
 
   return (
     <div>
@@ -20,7 +20,7 @@ const SearchResult = () => {
       <p>검색어 : {searchText}</p>
       <h6>검색 결과 데이터 : </h6>
       <p>
-        {result?.length > 0
+        {/* {result?.length > 0
           ? result.map((resultItem) => {
               const { id, name } = resultItem;
               return (
@@ -30,7 +30,7 @@ const SearchResult = () => {
                 />
               );
             })
-          : "검색결과가 없습니다."}
+          : "검색결과가 없습니다."} */}
       </p>
     </div>
   );
