@@ -74,13 +74,14 @@ const img = {
 interface Ifile {
   name: React.Key | null | undefined;
   preview: string | undefined;
+  setFiles?: (value?: any) => void;
 }
 function Previews(props: any) {
-  const [files, setFiles]: any = useState([]);
+  
   const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/gif, image/jpg, image/jpeg',
     onDrop: acceptedFiles => {
-      setFiles([
+      props.setFiles([
         ...acceptedFiles.map(file => {
           return Object.assign(file, {
             preview: URL.createObjectURL(file),
@@ -95,15 +96,13 @@ function Previews(props: any) {
     },
   });
   function removeFile(targetFileName: React.Key | null | undefined) {
-    setFiles(
-      files.filter((fItem: Ifile) => {
-        console.log(fItem.name, targetFileName, fItem.name === targetFileName)
+    props.setFiles(
+      props.files.filter((fItem: Ifile) => {
         return fItem.name !== targetFileName;
       }),
     );
-    console.log(files)
   }
-  const thumbs = files.map((file: Ifile) => (
+  const thumbs = props.files.map((file: Ifile) => (
     <div style={thumb} key={file.name}>
       <div style={thumbClose} onClick={() => removeFile(file.name)}>
         x
@@ -117,9 +116,9 @@ function Previews(props: any) {
   useEffect(
     () => () => {
       // Make sure to revoke the data uris to avoid memory leaks
-      files.forEach((file: { preview: string }) => URL.revokeObjectURL(file.preview));
+      props.files.forEach((file: { preview: string }) => URL.revokeObjectURL(file.preview));
     },
-    [files],
+    [props.files],
   );
   const { isDragActive, isDragAccept, isDragReject } = useDropzone({ accept: 'image/*' });
 
