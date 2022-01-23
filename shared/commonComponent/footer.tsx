@@ -1,7 +1,11 @@
-import React from "react";
-import { CSSProperties } from "styled-components";
-import LinkCustom from "./link";
-import Spacing from "./spacing";
+/* eslint-disable @next/next/no-img-element */
+import { AspectRatio } from '@chakra-ui/layout';
+import { Skeleton } from '@chakra-ui/skeleton';
+import React from 'react';
+import { CSSProperties } from 'styled-components';
+import CustomImage from './image';
+import LinkCustom from './link';
+import Spacing from './spacing';
 
 interface IFooterProps {
   footerItems: IFooterItemProps[];
@@ -57,7 +61,8 @@ const FooterItem = (props: IFooterItemProps) => {
 
   return (
     <div className="footer-item" style={{ ...style }}>
-      {image && <img src={image} width={width} height={height} />}
+      {image && <CustomImage src={image} width={width} height={height} ratio={1 / 1} useSkeleton />}
+
       <p className="footer-label">{text}</p>
 
       <style jsx>{`

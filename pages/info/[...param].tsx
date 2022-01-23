@@ -2,6 +2,7 @@ import { GetStaticPaths } from 'next';
 import { useRouter } from 'next/dist/client/router';
 import React from 'react';
 import { getAquaplant, getFishListApi } from '../../api';
+import ErrorView from '../../components/errorView';
 import Species from '../../components/info/species';
 import SpeciesDetail from '../../components/info/speciesDetail';
 import { IAquaplant } from '../../shared/interface';
@@ -24,12 +25,20 @@ export async function getStaticProps(value: any) {
   }
 
   if (category === 'aquaplant') {
-    const data = await getAquaplant();
-    return {
-      props: {
-        data: data,
-      },
-    };
+    try {
+      const data = await getAquaplant();
+      return {
+        props: {
+          data: data,
+        },
+      };
+    } catch {
+      return {
+        props: {
+          data: 'error',
+        },
+      };
+    }
   }
 
   return {
@@ -45,6 +54,9 @@ const InfoPageDetail = <T extends unknown>(props: { data: T }) => {
   const { param } = router.query;
   const species = param ? param[0] : null;
   const id = param ? param[1] : null;
+  if (data === 'error') {
+    return <ErrorView />;
+  }
   if (!species) return null;
   if (!id) return <Species species={species} initData={data} />;
   return <SpeciesDetail id={id} type={species} />;
