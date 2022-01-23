@@ -30,6 +30,8 @@ const Info = () => {
           font-size: 18px;
           padding-top: 10px;
           padding-left: 10px;
+          margin-top: 10px;
+          margin-bottom: 20px;
         }
       `}</style>
     </div>

@@ -9,12 +9,14 @@ import { FishSpeciesName } from '../../../shared/enum';
 import { getEumEntries } from '../../../shared/funtion';
 import useContents from '../../../shared/hooks/useContents';
 import { IAquaplant, ISpecies } from '../../../shared/interface';
+import { AspectRatio } from '@chakra-ui/react';
 
-const Species = (props: { species: string; initData?: any }) => {
+const Species = <T extends unknown>(props: { species: string; initData?: T }) => {
   const { species, initData } = props;
   const { data } = useContents(species, initData);
   const { refinedObj } = getEumEntries(FishSpeciesName);
   const speciesName = refinedObj[species];
+  console.log('speciesName => ', speciesName);
   if (data && data.length < 1) return null;
 
   return (
@@ -47,9 +49,10 @@ export const SpeciesItem = (props: { data: ISpecies; species: string }) => {
   return (
     <LinkCustom href={UrlPath.speciesDetail(species as string, String(id))}>
       <div className="info-detail-item" onMouseEnter={onMouseEnterHandler} onMouseLeave={onMouseLeaveHandler}>
-        <div className="info-detail-item-thumbnail">
+        <AspectRatio ratio={1 / 1} border="1px solid #e5e5e5" borderRadius={10}>
           <img className="item__image" src={thumbnail[0].image_url} width={'100%'} height={'100%'} />
-        </div>
+        </AspectRatio>
+
         <div className="info-detail-item-description">
           <p className="info-detail-item__title">{name}</p>
         </div>
