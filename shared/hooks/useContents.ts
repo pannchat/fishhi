@@ -4,7 +4,6 @@ import { getAquaplant, getFishListApi } from '../../api';
 import { ISpecies, ISpeciesList } from '../interface';
 
 export default function useContents(type: string, initData?: any) {
-  console.log('SWR', initData);
   const { data, error } = useSWR(
     `contents_${type}`,
     () => {

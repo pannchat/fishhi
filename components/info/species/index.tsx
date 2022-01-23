@@ -16,9 +16,8 @@ const Species = <T extends unknown>(props: { species: string; initData?: T }) =>
   const { data } = useContents(species, initData);
   const { refinedObj } = getEumEntries(FishSpeciesName);
   const speciesName = refinedObj[species];
-  console.log('speciesName => ', speciesName);
-  if (data && data.length < 1) return null;
 
+  if (data && data.length < 1) return null;
   return (
     <div>
       <h1 className="species-list-title">{speciesName}</h1>

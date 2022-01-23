@@ -53,6 +53,10 @@ export default class ImagePath {
     return `${PREFIX}/fish_icon.png`;
   }
 
+  static get warning() {
+    return `${PREFIX}/warning.png`;
+  }
+
   static arrow(direction: 'right' | 'left' | 'up' | 'down') {
     return `${PREFIX}/arrow_${direction}.png`;
   }
