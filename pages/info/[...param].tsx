@@ -15,37 +15,37 @@ export async function getStaticPaths() {
 export async function getStaticProps(value: any) {
   const category = value.params.param[0] as string;
 
-  if (category === 'fish') {
-    const data = await getFishListApi();
-    return {
-      props: {
-        data,
-      },
-    };
-  }
+  try {
+    if (category === 'fish') {
+      const data = await getFishListApi();
+      return {
+        props: {
+          data,
+        },
+      };
+    }
 
-  if (category === 'aquaplant') {
-    try {
+    if (category === 'aquaplant') {
       const data = await getAquaplant();
       return {
         props: {
           data: data,
         },
       };
-    } catch {
-      return {
-        props: {
-          data: 'error',
-        },
-      };
     }
-  }
 
-  return {
-    props: {
-      data: null,
-    },
-  };
+    return {
+      props: {
+        data: null,
+      },
+    };
+  } catch {
+    return {
+      props: {
+        data: 'error',
+      },
+    };
+  }
 }
 // merge
 const InfoPageDetail = <T extends unknown>(props: { data: T }) => {
