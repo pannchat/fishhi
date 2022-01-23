@@ -13,9 +13,9 @@ export async function getStaticPaths() {
 }
 export async function getStaticProps(value: any) {
   const category = value.params.param[0] as string;
-  let data: any;
+
   if (category === 'fish') {
-    data = await getFishListApi();
+    const data = await getFishListApi();
     return {
       props: {
         data,
@@ -24,18 +24,22 @@ export async function getStaticProps(value: any) {
   }
 
   if (category === 'aquaplant') {
-    data = await getAquaplant();
+    const data = await getAquaplant();
     return {
       props: {
-        data: data as IAquaplant[],
+        data: data,
       },
     };
   }
 
-  return null;
+  return {
+    props: {
+      data: null,
+    },
+  };
 }
 // merge
-const InfoPageDetail = (props: { data: any }) => {
+const InfoPageDetail = <T extends unknown>(props: { data: T }) => {
   const { data } = props;
   const router = useRouter();
   const { param } = router.query;

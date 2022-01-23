@@ -31,7 +31,6 @@ export default SpeciesDetail;
 
 const SpeciesDetailBase = (props: { data: ISpeciesBaseInfo }) => {
   const { name, thumbnail } = props.data;
-
   return (
     <div className="species-detail-base">
       <h1 className="species-detail-title"> {name} </h1>
