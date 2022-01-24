@@ -9,7 +9,7 @@ const palette = {
   pink: '#ffc9c9',
 };
 
-const Alert = styled.div<{ variant: string }>`
+const Alert = styled.div<{ variant: string; }>`
   width: auto;
   box-sizing: border-box;
   margin: 10px;
@@ -31,11 +31,10 @@ interface IFish {
   source: string;
   source_url: string;
   scientific_name: string;
-  images : {image_url: string}[];
-} 
+}
 function addDictionary() {
   const [files, setFiles]: any = useState([]);
-  const {fish, setFish} = useState<IFish>({
+  const [fish, setFish] = useState<IFish>({
     species: '',
     standard_length: 0,
     aquarium_minimum_size: 0,
@@ -47,9 +46,20 @@ function addDictionary() {
     source: '',
     source_url: '',
     scientific_name: '',
-    images : [{image_url: ''}]
   });
-  console.log(files);
+  const dummy: IFish = {
+    species: '금붕어',
+    standard_length: 7,
+    aquarium_minimum_size: 10,
+    min_temperature: 20,
+    max_temperature: 30,
+    min_pH: 5,
+    max_pH: 7,
+    description: '먹성이 좋음',
+    source: '물고기닷컴',
+    source_url: 'http://naver.com',
+    scientific_name: 'gold fish',
+  };
   const addFish = async () => {
     const images = await uploadImage();
     const formData = new FormData();
@@ -110,38 +120,21 @@ function addDictionary() {
       <Alert variant={palette.gray}>fish_info</Alert>
       <img src="https://fishhi.s3.ap-northeast-2.amazonaws.com/fis…3165623_64FC5590-17B6-49CF-8A6B-B3DE11AD612A.jpeg" />
       <div className={styles['addDict-body']}>
-        <div className={styles['addDict-body__input-box']}>
-          <div>species</div>
-          <input placeholder="금붕어"></input>
-        </div>
-        <div className={styles['addDict-body__input-box']}>
-          <div>standard_length</div>
-          <input placeholder="5"></input>
-        </div>
-        <div className={styles['addDict-body__input-box']}>
-          <div>aquarium_minimum_size</div>
-          <input placeholder="30"></input>
-        </div>
-        <div className={styles['addDict-body__input-box']}>
-          <div>min_temperature</div>
-          <input placeholder="15"></input>
-        </div>
-        <div className={styles['addDict-body__input-box']}>
-          <div>max_temperature</div>
-          <input placeholder="20"></input>
-        </div>
-        <div className={styles['addDict-body__input-box']}>
-          <div>min_pH</div>
-          <input placeholder="5"></input>
-        </div>
-        <div className={styles['addDict-body__input-box']}>
-          <div>max_pH</div>
-          <input placeholder="6"></input>
-        </div>
-        <div className={styles['addDict-body__input-box']}>
-          <div>description</div>
-          <input placeholder="뒤돌면 까먹음"></input>
-        </div>
+        {Object.keys(fish).map((item: any) => {
+          return (
+            <div className={styles['addDict-body__input-box']}>
+              <div>{item}</div>
+              <input id={item} placeholder={dummy[item]} onChange={(e) => {
+                setFish({
+                  ...fish,
+                  [e.target.id]: e.target.value
+                });
+              }}></input>
+            </div>
+          );
+        })}
+
+
         <Previews files={files} setFiles={setFiles} />
         <button onClick={() => addFish()}>업로드</button>
       </div>
