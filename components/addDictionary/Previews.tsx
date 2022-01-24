@@ -1,6 +1,7 @@
 import React, { CSSProperties, useState, useMemo, useEffect } from 'react';
 import styled from 'styled-components';
 import { useDropzone } from 'react-dropzone';
+import styles from './index.module.scss';
 
 const baseStyle: CSSProperties = {
   flex: 1,
@@ -75,6 +76,7 @@ interface Ifile {
   name: React.Key | null | undefined;
   preview: string | undefined;
   setFiles?: (value?: any) => void;
+  // isMain: boolean;
 }
 function Previews(props: any) {
   
@@ -82,9 +84,10 @@ function Previews(props: any) {
     accept: 'image/gif, image/jpg, image/jpeg',
     onDrop: acceptedFiles => {
       props.setFiles([
-        ...acceptedFiles.map(file => {
+        ...acceptedFiles.map((file,idx) => {
           return Object.assign(file, {
             preview: URL.createObjectURL(file),
+            // isMain: idx === 0 ? true : false
           });
         }),
       ]);
@@ -102,11 +105,26 @@ function Previews(props: any) {
       }),
     );
   }
-  const thumbs = props.files.map((file: Ifile) => (
-    <div style={thumb} key={file.name}>
+  function setMainImage(targetFileName: React.Key | null | undefined, targetIdx:number) {
+    props.setFiles(
+      props.files.map((fItem: Ifile,idx:number) => {
+        return {
+        ...fItem,
+        isMain: fItem.name === targetFileName && targetIdx === idx ? true : false
+        }
+      }),
+    );
+  }
+
+  const thumbs = props.files.map((file: Ifile,idx:number) => (
+    <div style={thumb} key={`${file.name}-${idx}`} onClick={()=>setMainImage(file.name,idx)}>
       <div style={thumbClose} onClick={() => removeFile(file.name)}>
         x
       </div>
+      {/* {file.isMain ? <div className={styles['main-image']} onClick={() => removeFile(file.name)}>
+        대표
+      </div>
+      : null} */}
       <div style={thumbInner}>
         <img src={file.preview} style={img} />
       </div>
@@ -117,6 +135,7 @@ function Previews(props: any) {
     () => () => {
       // Make sure to revoke the data uris to avoid memory leaks
       props.files.forEach((file: { preview: string }) => URL.revokeObjectURL(file.preview));
+      console.log(props.files);
     },
     [props.files],
   );
