@@ -3,6 +3,7 @@ import { AspectRatio } from '@chakra-ui/layout';
 import { Skeleton } from '@chakra-ui/skeleton';
 import React from 'react';
 import { CSSProperties } from 'styled-components';
+import useFooterVisible from '../hooks/useFooterVisible';
 import CustomImage from './image';
 import LinkCustom from './link';
 import Spacing from './spacing';
@@ -14,6 +15,8 @@ interface IFooterProps {
 
 const Footer = (props: IFooterProps) => {
   const { footerItems, style } = props;
+  const { isFooterVisible } = useFooterVisible();
+  if (!isFooterVisible) return <></>;
   return (
     <>
       <div className="footer" style={style}>

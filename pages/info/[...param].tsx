@@ -5,7 +5,7 @@ import { getAquaplant, getFishListApi } from '../../api';
 import ErrorView from '../../components/errorView';
 import Species from '../../components/info/species';
 import SpeciesDetail from '../../components/info/speciesDetail';
-import { IAquaplant } from '../../shared/interface';
+
 export async function getStaticPaths() {
   return {
     paths: [{ params: { param: ['fish'] } }, { params: { param: ['aquaplant'] } }, { params: { param: ['medicine'] } }],
@@ -30,6 +30,14 @@ export async function getStaticProps(value: any) {
       return {
         props: {
           data: data,
+        },
+      };
+    }
+
+    if (category === 'medicine') {
+      return {
+        props: {
+          data: 'error',
         },
       };
     }

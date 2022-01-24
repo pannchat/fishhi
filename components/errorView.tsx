@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Button from '../shared/commonComponent/button';
 import CustomImage from '../shared/commonComponent/image';
 import Spacing from '../shared/commonComponent/spacing';
+import useFooterVisible from '../shared/hooks/useFooterVisible';
 import ImagePath from '../shared/imagePath';
 
 const ErrorView = () => {
+  const { setIsFooterVisible } = useFooterVisible();
+  useEffect(() => {
+    setIsFooterVisible(false);
+  }, []);
   return (
     <div className="error-view__wrapper">
       <div className="error-view">
