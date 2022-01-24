@@ -8,7 +8,7 @@ import SpeciesDetail from '../../components/info/speciesDetail';
 
 export async function getStaticPaths() {
   return {
-    paths: [{ params: { param: ['fish'] } }, { params: { param: ['aquaplant'] } }, { params: { param: ['medicine'] } }],
+    paths: [{ params: { param: ['fish'] } }, { params: { param: ['aquaplant'] } }, { params: { param: ['supplies'] } }],
     fallback: false,
   };
 }
