@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import useSWR from 'swr';
-import { getAquaplantDetail } from '../../../api';
+import { getAquaplantDetail, getSuppliesApi } from '../../../api';
 import useContents from '../../../shared/hooks/useContents';
 import { ISpecies } from '../../../shared/interface';
 

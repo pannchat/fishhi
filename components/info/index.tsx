@@ -11,8 +11,8 @@ const INFO_CATEGORY_DUMMY = [
     label: '수초',
   },
   {
-    id: 'medicine',
-    label: '약품',
+    id: 'supplies',
+    label: '용품',
   },
 ];
 const Info = () => {
