@@ -44,10 +44,12 @@ const CalcFishTank = (props?: { initData: IGetSuppliesProductResponse }) => {
 
   useEffect(() => {
     if (faceFrontRef.current) faceFrontRef.current.style.width = '100px';
-  }, []);
+  }, [faceFrontRef]);
 
   return (
     <div>
+      <h1 className="title">물양계산기</h1>
+      <h3 className="description">본인 어항에 맞는 약품 용량을 계산해보세요!!</h3>
       <div className="flex-box--main">
         <div className="main-section__tank-preview">
           <div className="main-section__tank-container" ref={containerRef}>
@@ -160,6 +162,15 @@ const CalcFishTank = (props?: { initData: IGetSuppliesProductResponse }) => {
       </div>
 
       <style jsx>{`
+        .title {
+          text-align: center;
+          margin-bottom: 5px;
+        }
+
+        .description {
+          text-align: center;
+          color: #9e9e9e;
+        }
         .face {
           margin: 0px;
           padding: 0px;
