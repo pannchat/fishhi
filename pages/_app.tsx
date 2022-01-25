@@ -11,7 +11,7 @@ import Navbar from '../shared/commonComponent/navBar';
 
 const FOOTER_ITEMS = [
   {
-    itemKey: 'calculrator',
+    itemKey: 'calculator',
     href: '/',
     text: '물양계산기',
     image: ImagePath.calculator,
