@@ -13,6 +13,10 @@ export default class ImagePath {
     return `${PREFIX}/search2.svg`;
   }
 
+  static get aquariumIcon() {
+    return `${PREFIX}/aquariumIcon.png`;
+  }
+
   static get aquarium() {
     return `${PREFIX}/aquarium.svg`;
   }
@@ -55,6 +59,10 @@ export default class ImagePath {
 
   static get warning() {
     return `${PREFIX}/warning.png`;
+  }
+
+  static get calculator() {
+    return `${PREFIX}/calculator.png`;
   }
 
   static arrow(direction: 'right' | 'left' | 'up' | 'down') {

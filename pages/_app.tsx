@@ -11,10 +11,10 @@ import Navbar from '../shared/commonComponent/navBar';
 
 const FOOTER_ITEMS = [
   {
-    itemKey: 'hone',
+    itemKey: 'calculrator',
     href: '/',
-    text: '홈',
-    image: ImagePath.home,
+    text: '물양계산기',
+    image: ImagePath.calculator,
     width: 35,
     height: 35,
     style: {
@@ -23,36 +23,37 @@ const FOOTER_ITEMS = [
     },
   },
   {
-    itemKey: 'calculrator',
-    href: '/calcFishTank',
-    text: '어항계산기',
-    image: ImagePath.aquarium,
-    width: 40,
-    height: 40,
-    style: {
-      flexBasis: '25%',
-      cursor: 'pointer',
-    },
-  },
-  {
-    itemKey: 'info',
-    text: '피쉬하이 백과',
-    href: '/info',
+    itemKey: 'fish',
+    href: '/info/fish',
+    text: '어종',
     image: ImagePath.fishes,
-    width: 40,
-    height: 40,
+    width: 35,
+    height: 35,
     style: {
       flexBasis: '25%',
       cursor: 'pointer',
     },
   },
+
   {
-    itemKey: 'auth',
-    text: '미정',
-    href: '/',
+    itemKey: 'aquaplant',
+    text: '수초',
+    href: '/info/aquaplant',
     image: ImagePath.aquaPlant,
     width: 40,
     height: 40,
+    style: {
+      flexBasis: '25%',
+      cursor: 'pointer',
+    },
+  },
+  {
+    itemKey: 'supplies',
+    text: '용품',
+    href: '/info/supplies',
+    image: ImagePath.aquariumIcon,
+    width: 38,
+    height: 38,
     style: {
       flexBasis: '25%',
       cursor: 'pointer',

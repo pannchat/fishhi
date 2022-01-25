@@ -3,7 +3,9 @@ import { useRouter } from 'next/dist/client/router';
 import Head from 'next/head';
 import Image from 'next/image';
 import React from 'react';
+import { getSuppliesProduct } from '../api';
 import Main from '../components';
+import CalcFishTank from '../components/calcFishTank';
 import FHNavbar, { FHMainNavbar } from '../components/FHNavbar';
 import PostBox from '../components/PostBox';
 import Search from '../components/search';
@@ -12,6 +14,7 @@ import Spacing from '../shared/commonComponent/spacing';
 import useFishList from '../shared/hooks/useFishList';
 
 import usePostUserLogin from '../shared/hooks/usePostUserLogin';
+import { IGetSuppliesProductResponse } from '../shared/hooks/useSuppliesProduct';
 import ImagePath from '../shared/imagePath';
 import styles from '../styles/Home.module.css';
 
@@ -28,13 +31,28 @@ const dummy = [
   },
 ];
 
+export async function getStaticProps() {
+  const suppliesProduct = await getSuppliesProduct();
+
+  return {
+    props: {
+      suppliesProduct,
+    },
+  };
+}
+
+interface IHomeProps {
+  suppliesProduct: IGetSuppliesProductResponse;
+}
+
 const MAIN_COL_GAP = 30;
-const Home: NextPage = () => {
+const Home: NextPage<IHomeProps> = (props: { suppliesProduct: IGetSuppliesProductResponse }) => {
+  const { suppliesProduct } = props;
   const router = useRouter();
   return (
     <div className="app__wrapper">
       <Spacing height={MAIN_COL_GAP} />
-      <Main />
+      <CalcFishTank initData={suppliesProduct} />
       <style jsx>
         {`
           .app__wrapper {
