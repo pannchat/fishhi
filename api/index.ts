@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { ISuppliesParams } from '../components/info/hooks/useGetSupplies';
 import { getParamsString } from '../shared/funtion';
-import { IFish } from '../shared/hooks/useContents';
+import { IFishListResponse } from '../shared/hooks/useContents';
 import { IGetSuppliesProductResponse } from '../shared/hooks/useSuppliesProduct';
 import { IAquaplant } from '../shared/interface';
 
@@ -15,7 +15,7 @@ export async function getSuppliesProduct() {
 }
 
 export async function getFishListApi() {
-  const { data } = await axios.get<IFish[]>('/fish/');
+  const { data } = await axios.get<IFishListResponse>('/fish/');
 
   return data;
 }
@@ -40,7 +40,12 @@ export async function getAquaplantDetail(id: string) {
   return data;
 }
 
-export async function getSuppliesApi(param?: ISuppliesParams) {
-  const { data } = await axios.get(`/supplies${param ? `?${getParamsString(param)}` : ''}`);
+export async function getSuppliesCalculate(param?: ISuppliesParams) {
+  const { data } = await axios.get(`/supplies/calculate/${param ? `?${getParamsString(param)}` : ''}`);
+  return data;
+}
+
+export async function getSupplies() {
+  const { data } = await axios.get('/supplies');
   return data;
 }

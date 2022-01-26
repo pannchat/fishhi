@@ -4,17 +4,8 @@ import React, { useCallback, useState } from 'react';
 import ImagePath from '../shared/imagePath';
 import SlidingPane from 'react-sliding-pane';
 import { useSlidePane } from '../shared/hooks/useSlidePane';
-interface IFish {
-  id: number;
-  name: string;
-  keyword: string[];
-}
 
-interface IFishDummy {
-  data: IFish[];
-}
-
-const FISH_DUMMY_DATA: IFishDummy = {
+const FISH_DUMMY_DATA = {
   data: [
     { id: 1, name: '라쿤 타이거 새우', keyword: ['비쉬림프', '쉬림프'] },
     { id: 2, name: '오렌지 타이거 새우', keyword: ['비쉬림프'] },
@@ -64,13 +55,13 @@ const FHNavbar = () => {
   const router = useRouter();
   const [search, setSearch] = useState('');
   const [text, setText] = useState('');
-  const [suggestion, setSuggestion] = useState<IFish[] | null>(null);
+  const [suggestion, setSuggestion] = useState<any | null>(null);
   const { data } = FISH_DUMMY_DATA;
   const { isPaneOpen, isPaneOpenLeft, isPaneOpenBottom, onClickPane } = useSlidePane();
   const onChangeHandler = useCallback(
     text => {
-      let matches: IFish[] = [];
-      let matches2: IFish[] = [];
+      let matches: any = [];
+      let matches2: any = [];
       text = text.replace('\\', '');
       if (text.length > 0) {
         matches = data.filter(dt => {
@@ -153,7 +144,7 @@ const FHNavbar = () => {
         }}
       >
         {suggestion && suggestion.length > 0 ? (
-          suggestion.map((suggestion, i) => (
+          suggestion.map((suggestion: any, i: number) => (
             <SearchResultList key={i}>
               {suggestion.name} <hr />
             </SearchResultList>

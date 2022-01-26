@@ -3,12 +3,71 @@ import useSWR from 'swr';
 import { getAquaplant, getFishListApi } from '../../api';
 import { ISpecies, ISpeciesList } from '../interface';
 
-export interface IFish {
+export interface ISupplyListItem {
   id: number;
-  species: string;
-  description: string;
+  product_name: string;
   thumbnail: string;
 }
+
+export interface IFishListItem {
+  id: number;
+  species: string;
+  thumbnail: string;
+  description?: string;
+}
+
+export interface IFishListResponse {
+  count: number;
+  next: any;
+  previous: any;
+  result: IFishListItem[];
+}
+
+export interface ISupply {
+  id: number;
+  category: string;
+  product_name: string;
+  manufacturer: string;
+  manual_text: string;
+  base_medicine: string;
+  standard_amount: number;
+  input_amount: number;
+  input_unit: string;
+  disease: string;
+  spec: string;
+  pump_amount: string;
+  source: string;
+  source_url: string;
+  images: {
+    image_url: string[];
+  };
+  manual_images: {
+    image_url: string[];
+  };
+}
+
+// {
+//   'id' : 1
+//   'category' : 'medicine',
+//   'product_name' : '생선용 박카스',
+//   'manufacturer' : '농심',
+//   'manual_text' : '힘이 쑥쑥~',
+//   'base_medicine': '카페인',
+//   'standard_amount' : 100,
+//   'input_amount' : 100,
+//   'input_unit' : 'ml',
+//   'disease' : '만성피로',
+//   'spec' : '',
+//   'pump_amount' : '',
+//   'source' : '박지원 뇌',
+//   'source_url' : 'fishhi.com',
+//   'images' : [
+//       {'image_url' : 'supplies_images_1.jpg'}
+//   ],
+//   'manual_images' : [
+//       {'image_url' : 'supplies_manual_iamge_1.jpg'}
+//   ]
+// }
 
 export default function useContents(type: string, initData?: any) {
   const { data, error } = useSWR(
@@ -20,6 +79,10 @@ export default function useContents(type: string, initData?: any) {
 
       if (type === 'fish') {
         return getFishListApi();
+      }
+
+      if (type === 'supplies') {
+        return;
       }
 
       return null;
@@ -47,7 +110,7 @@ export default function useContents(type: string, initData?: any) {
     }
 
     if (data && type === 'fish') {
-      data.map((fish: IFish, index: number) => {
+      data.map((fish: IFishListItem, index: number) => {
         const { id, species, thumbnail, description } = fish;
         tempData.push({
           id: id,
