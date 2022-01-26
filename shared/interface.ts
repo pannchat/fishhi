@@ -19,12 +19,12 @@ export interface IAquaplant extends ICreature {
 export interface ISpecies {
   id: number;
   name: string;
-  thumbnail: ICreatureImage[];
-  minPH: number;
-  maxPH: number;
-  minTemperature: number;
-  maxTemperature: number;
-  description: string;
+  thumbnail: string;
+  minPH?: number;
+  maxPH?: number;
+  minTemperature?: number;
+  maxTemperature?: number;
+  description?: string;
   standardLength?: number;
 }
 

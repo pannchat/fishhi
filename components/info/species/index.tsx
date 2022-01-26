@@ -10,6 +10,8 @@ import { getEumEntries } from '../../../shared/funtion';
 import useContents from '../../../shared/hooks/useContents';
 import { IAquaplant, ISpecies } from '../../../shared/interface';
 import { AspectRatio } from '@chakra-ui/react';
+import ImagePath from '../../../shared/imagePath';
+import Spacing from '../../../shared/commonComponent/spacing';
 
 const Species = <T extends unknown>(props: { species: string; initData?: T }) => {
   const { species, initData } = props;
@@ -19,22 +21,24 @@ const Species = <T extends unknown>(props: { species: string; initData?: T }) =>
 
   if (data && data.length < 1) return null;
   return (
-    <div>
+    <section>
+      <Spacing height={20} />
       <h1 className="species-list-title">{speciesName}</h1>
+      <Spacing height={20} />
       <ListView
         list={data}
         column={2}
         columnSize={'50%'}
-        gap={10}
+        gap={20}
         ListItem={(props: ISpecies) => <SpeciesItem data={props} species={species} />}
       />
-
+      <Spacing height={50} />
       <style jsx>{`
         .species-list-title {
           padding-left: 5px;
         }
       `}</style>
-    </div>
+    </section>
   );
 };
 
@@ -44,12 +48,39 @@ export const SpeciesItem = (props: { data: ISpecies; species: string }) => {
   const { data, species } = props;
   const { thumbnail, name, id } = data;
   const { isHover, onMouseEnterHandler, onMouseLeaveHandler } = useMouseHover();
-  if (!thumbnail || thumbnail.length < 1) return <></>;
+  const onErrorHandler = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    e.currentTarget.style.position = 'absolute';
+    e.currentTarget.style.transition = 'none';
+    e.currentTarget.style.transform = 'translate(-50%, -50%)';
+    e.currentTarget.style.top = '50%';
+    e.currentTarget.style.left = '50%';
+    e.currentTarget.style.width = '100px';
+    e.currentTarget.style.height = '50px';
+    e.currentTarget.src = ImagePath.placeholder;
+  };
   return (
     <LinkCustom href={UrlPath.speciesDetail(species as string, String(id))}>
       <div className="info-detail-item" onMouseEnter={onMouseEnterHandler} onMouseLeave={onMouseLeaveHandler}>
-        <AspectRatio ratio={1 / 1} border="1px solid #e5e5e5" borderRadius={10}>
-          <img className="item__image" src={thumbnail[0].image_url} width={'100%'} height={'100%'} />
+        <AspectRatio ratio={1 / 1} border="1px solid #e5e5e5" borderRadius={10} overflow={'hidden'}>
+          {thumbnail ? (
+            <img
+              key={thumbnail}
+              className="item__image"
+              src={thumbnail}
+              width={'100%'}
+              height={'100%'}
+              placeholder="이미지"
+              onError={onErrorHandler}
+            />
+          ) : (
+            <img
+              key={ImagePath.placeholder}
+              className="item__image --placeholder"
+              src={ImagePath.placeholder}
+              placeholder="이미지"
+              onError={onErrorHandler}
+            />
+          )}
         </AspectRatio>
 
         <div className="info-detail-item-description">
@@ -73,13 +104,25 @@ export const SpeciesItem = (props: { data: ISpecies; species: string }) => {
           border-radius: 10px;
         }
 
-        .item__image {
-          position: absolute;
-          top: 0;
-          left: 0;
+        .none-image {
+          font-size: 12px;
+          font-weight: 700;
+        }
 
+        .item__image {
           transform: scale(${isHover ? 1.2 : 1});
           transition: transform 0.3s ease;
+          object-fit: contain;
+        }
+
+        .item__image.--placeholder {
+          position: absolute;
+          transition: none;
+          transform: translate(-50%, -50%);
+          top: 50%;
+          left: 50%;
+          width: 100px;
+          height: 50px;
         }
 
         .info-detail-item__title {

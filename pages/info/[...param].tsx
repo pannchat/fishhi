@@ -65,6 +65,7 @@ const InfoPageDetail = <T extends unknown>(props: { data: T }) => {
   if (data === 'error') {
     return <ErrorView />;
   }
+
   if (!species) return null;
   if (!id) return <Species species={species} initData={data} />;
   return <SpeciesDetail id={id} type={species} />;
