@@ -87,10 +87,10 @@ function Previews(props: any) {
         ...acceptedFiles.map((file,idx) => {
           return Object.assign(file, {
             preview: URL.createObjectURL(file),
-            // isMain: idx === 0 ? true : false
           });
         }),
       ]);
+      props.setIsMain({name:acceptedFiles[0].name})
     },
     maxFiles: 5,
     maxSize: 15728640,
@@ -106,14 +106,16 @@ function Previews(props: any) {
     );
   }
   function setMainImage(targetFileName: React.Key | null | undefined, targetIdx:number) {
-    props.setFiles(
-      props.files.map((fItem: Ifile,idx:number) => {
-        return {
-        ...fItem,
-        isMain: fItem.name === targetFileName && targetIdx === idx ? true : false
+    
+      props.files.forEach((fItem: Ifile,idx:number) => {
+        if(fItem.name === targetFileName && targetIdx === idx){
+          props.setIsMain({
+            name: fItem.name
+          })
         }
-      }),
-    );
+
+      })
+
   }
 
   const thumbs = props.files.map((file: Ifile,idx:number) => (
@@ -121,10 +123,10 @@ function Previews(props: any) {
       <div style={thumbClose} onClick={() => removeFile(file.name)}>
         x
       </div>
-      {/* {file.isMain ? <div className={styles['main-image']} onClick={() => removeFile(file.name)}>
+      {file.name === props.isMain.name ? <div className={styles['main-image']} onClick={() => removeFile(file.name)}>
         대표
       </div>
-      : null} */}
+      : null}
       <div style={thumbInner}>
         <img src={file.preview} style={img} />
       </div>
