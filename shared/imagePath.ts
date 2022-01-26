@@ -65,6 +65,9 @@ export default class ImagePath {
     return `${PREFIX}/calculator.png`;
   }
 
+  static get placeholder() {
+    return `${PREFIX}/placeholder.png`;
+  }
   static arrow(direction: 'right' | 'left' | 'up' | 'down') {
     return `${PREFIX}/arrow_${direction}.png`;
   }

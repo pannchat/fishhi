@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { ISuppliesParams } from '../components/info/hooks/useGetSupplies';
 import { getParamsString } from '../shared/funtion';
+import { IFish } from '../shared/hooks/useContents';
 import { IGetSuppliesProductResponse } from '../shared/hooks/useSuppliesProduct';
 import { IAquaplant } from '../shared/interface';
 
@@ -14,7 +15,7 @@ export async function getSuppliesProduct() {
 }
 
 export async function getFishListApi() {
-  const { data } = await axios.get('/fish/');
+  const { data } = await axios.get<IFish[]>('/fish/');
 
   return data;
 }
