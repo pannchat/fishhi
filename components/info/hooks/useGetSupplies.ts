@@ -1,6 +1,5 @@
 export interface ISuppliesParams {
-  offset?: number;
-  limit?: number;
+  amount: number;
 }
 
 export default function useGetSupplies(param?: ISuppliesParams) {}

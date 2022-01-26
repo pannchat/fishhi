@@ -1,6 +1,7 @@
+import image from 'next/image';
 import { useMemo } from 'react';
 import useSWR from 'swr';
-import { getAquaplantDetail, getSuppliesApi } from '../../../api';
+import { getAquaplantDetail } from '../../../api';
 import useContents from '../../../shared/hooks/useContents';
 import { ISpecies } from '../../../shared/interface';
 
@@ -36,7 +37,7 @@ export default function useSpeciesDetailData(id: string, type: string): ISpecies
       return {
         id,
         name,
-        thumbnail: images,
+        thumbnail: images && images.length > 0 ? images[0].image_url : '',
       } as ISpeciesBaseInfo;
     }
 
