@@ -8,7 +8,7 @@ import CalcSupplies from './calcSupplies';
 import SuppliesCarousel from './suppliesCarousel';
 
 //테스트
-const CalcFishTank = (props?: { initData: IGetSuppliesProductResponse }) => {
+const CalcFishTank = (props?: { initData: IGetSuppliesProductResponse; }) => {
   const {
     faceFrontRef,
     faceBackRef,
@@ -335,7 +335,7 @@ const TankInput = (props: {
 
         input + div {
           display: inline-block;
-          width: 16px;
+          width: 25px;
           padding: 0 2px;
           vertical-align: bottom;
           font-size: 0.7rem;

@@ -4,14 +4,14 @@ import { darken } from "polished";
 import Previews from "./Previews";
 import styles from "./index.module.scss";
 import { Button, useToast, Slider, SliderTrack, SliderFilledTrack, SliderThumb, SliderMark } from "@chakra-ui/react";
-
 import axios from "axios";
+
 const palette = {
   gray: "#ced4da",
   pink: "#ffc9c9",
 };
 
-const Alert = styled.div<{ variant: string }>`
+const Alert = styled.div<{ variant: string; }>`
   width: auto;
   box-sizing: border-box;
   margin: 10px;
@@ -23,12 +23,12 @@ const Alert = styled.div<{ variant: string }>`
 
 interface IFish {
   species: string;
-  standard_length: number;
-  aquarium_minimum_size: number;
-  min_temperature: number;
-  max_temperature: number;
-  min_pH: number;
-  max_pH: number;
+  standard_length: number | null;
+  aquarium_minimum_size: number | null;
+  min_temperature: number | null;
+  max_temperature: number | null;
+  min_pH: number | null;
+  max_pH: number | null;
   description: string;
   source: string;
   source_url: string;
@@ -50,12 +50,12 @@ function addDictionary() {
   const toast = useToast();
   const [fish, setFish] = useState<IFish>({
     species: "",
-    standard_length: 0,
-    aquarium_minimum_size: 0,
-    min_temperature: 0,
-    max_temperature: 0,
-    min_pH: 0,
-    max_pH: 0,
+    standard_length: null,
+    aquarium_minimum_size: null,
+    min_temperature: null,
+    max_temperature: null,
+    min_pH: null,
+    max_pH: null,
     description: "",
     source: "",
     source_url: "",
@@ -76,7 +76,7 @@ function addDictionary() {
   };
 
   useEffect(() => {
-    console.log(isMain);
+
   });
 
   let mainImgUrl = "";
@@ -102,24 +102,34 @@ function addDictionary() {
 
     const imgarr = images.map((image, idx) => {
       return {
-        image_url: image,
-        is_main: isMain.name === files[idx].name ? true : false,
+        image_url: image.url,
+        is_main: isMain.name === image.filename ? true : false,
       };
     });
     dataForm["images"] = imgarr;
-
-    const fish = await axios.post("http://54.180.156.194:8000/fish/", JSON.stringify(dataForm), {
-      headers: { "Content-Type": "application/json" },
-    });
-
-    if (fish.status === 201) {
+    try {
+      const fish = await axios.post("http://54.180.156.194:8000/fish/", JSON.stringify(dataForm), {
+        headers: { "Content-Type": "application/json" },
+      });
+      if (fish.status === 201) {
+        toast({
+          description: "Fish Created",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+    } catch (e) {
       toast({
-        description: "Fish Created",
-        status: "success",
+        description: `${e}`,
+        status: "error",
         duration: 3000,
         isClosable: true,
       });
+
     }
+
+
     setSubmitState(false);
   };
 
@@ -131,7 +141,6 @@ function addDictionary() {
       } else {
         const images = await Promise.all(
           files.map(async (file: any) => {
-            console.log(file);
 
             let fishData = new FormData();
             fishData.append("filename", file.name);
@@ -142,7 +151,10 @@ function addDictionary() {
             });
 
             if (file.name === isMain.name) mainImgUrl = response.data.url;
-            return response.data.url;
+            return {
+              filename: file.name,
+              url: response.data.url
+            };
           }),
         );
         return images;
@@ -187,6 +199,6 @@ function addDictionary() {
       </div>
     </>
   );
-}
+};
 
 export default addDictionary;
