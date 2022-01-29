@@ -41,7 +41,7 @@ interface Ifile {
   setFiles?: (value?: any) => void;
 }
 
-function addDictionary() {
+function addFish() {
   const [files, setFiles] = useState<Ifile[]>([]);
   const [submitState, setSubmitState] = useState<boolean>(false);
   const [isMain, setIsMain] = useState<Ifile>({
@@ -201,4 +201,4 @@ function addDictionary() {
   );
 };
 
-export default addDictionary;
+export default addFish;
