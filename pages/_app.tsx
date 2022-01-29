@@ -8,6 +8,8 @@ import { AppContextType, NextPageContext } from 'next/dist/shared/lib/utils';
 import { GetStaticProps } from 'next';
 import { SWRConfig } from 'swr';
 import Navbar from '../shared/commonComponent/navBar';
+import { ChakraProvider } from "@chakra-ui/react"
+
 
 const FOOTER_ITEMS = [
   {
@@ -65,9 +67,12 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <SWRConfig>
       <RecoilRoot>
+       
         <div className="app">
           <Navbar />
+          <ChakraProvider>
           <Component {...pageProps} />
+          </ChakraProvider>
           <Footer
             footerItems={FOOTER_ITEMS}
             style={{
@@ -82,6 +87,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             }
           `}</style>
         </div>
+       
       </RecoilRoot>
     </SWRConfig>
   );
