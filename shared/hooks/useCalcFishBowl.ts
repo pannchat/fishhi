@@ -58,7 +58,7 @@ export default function useCalcFishBowl() {
   }, [faceFrontRef, faceBackRef, faceBottomRef, faceLeftRef, faceRightRef, faceTopRef]);
 
   const changeFrontRearStyle = useCallback(
-    (values: { width: number; height: number; depth: number }) => {
+    (values: { width: number; height: number; depth: number; }) => {
       if (faceFrontRef.current && faceBackRef.current) {
         const { width, height, depth } = values;
         // 어항 앞면
@@ -76,7 +76,7 @@ export default function useCalcFishBowl() {
   );
 
   const changeSideStyle = useCallback(
-    (values: { width: number; height: number; depth: number }) => {
+    (values: { width: number; height: number; depth: number; }) => {
       if (faceLeftRef.current && faceRightRef.current) {
         const { width, height, depth } = values;
         faceLeftRef.current.style.width = depth + 'px';
@@ -92,7 +92,7 @@ export default function useCalcFishBowl() {
   );
 
   const changeTopBottomStyle = useCallback(
-    (values: { width: number; height: number; depth: number }) => {
+    (values: { width: number; height: number; depth: number; }) => {
       if (faceTopRef.current && faceBottomRef.current) {
         const { width, height, depth } = values;
         faceTopRef.current.style.width = width + 'px';
@@ -273,7 +273,7 @@ export default function useCalcFishBowl() {
     });
   };
 
-  const clickCalculateHandle = useCallback(() => {}, []);
+  const clickCalculateHandle = useCallback(() => { }, []);
   return {
     faceFrontRef,
     faceBackRef,
