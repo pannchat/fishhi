@@ -100,9 +100,11 @@
     position: relative;
 }
 
-.main-section__tank-size .detail-setting {
-    display: var(--detail-display);
-}
+// .main-section__tank-size .detail-setting {
+//     display:  {
+//         isshowdetail? 'flex' : "none";
+//     }
+// }
 
 .faceBack {
     transform: translateZ(-50px);
@@ -160,4 +162,15 @@
     100% {
         transform: rotateY(360deg);
     }
+}
+
+.calculation-result {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    color: #393939;
+    margin: 25px 0;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
 }

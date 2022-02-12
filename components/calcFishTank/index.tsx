@@ -161,11 +161,13 @@ const CalcFishTank = (props?: { initData: IGetSuppliesProductResponse; }) => {
       >
         계산하기
       </Button>
-      <Spacing height={50} />
-      수조의 물 용량은 <b>{capacity}L</b> 입니다
+      <div className={styles['calculation-result']} >
+        <div>수조의 물 용량은 <b>{capacity}L</b> 입니다</div>
+        <div>{tankWeight ? `수조의 무게는 ${tankWeight}kg 입니다` : null}</div>
 
-      <br />
-      {tankWeight ? `수조의 무게는 ${tankWeight}kg 입니다` : null}
+      </div>
+
+
       <div className={styles[""]}>
         <CalcSupplies initData={props?.initData} />
       </div>
