@@ -74,27 +74,27 @@ const CalcFishTank = (props?: { initData: IGetSuppliesProductResponse; }) => {
 
       <div className={styles["main-section__tank-size"]}>
         <TankInput
-          value={tankWidth}
+          value={!tankWidth ? '' : tankWidth}
           name="tankWidth"
-          label="가로"
+          placeholder="가로"
           onChange={value => {
             setTankWidth(value);
           }}
           unit={'cm'}
         />
         <TankInput
-          value={tankHeight}
+          value={!tankHeight ? '' : tankHeight}
           name="tankHeight"
-          label="세로"
+          placeholder="세로"
           onChange={value => {
             setTankHeight(value);
           }}
           unit={'cm'}
         />
         <TankInput
-          value={tankDepth}
+          value={!tankDepth ? '' : tankDepth}
           name="tankDepth"
-          label="깊이"
+          placeholder="깊이"
           onChange={value => {
             setTankDepth(value);
           }}
@@ -104,32 +104,32 @@ const CalcFishTank = (props?: { initData: IGetSuppliesProductResponse; }) => {
       <Spacing height={15} />
       <div className={`${styles["main-section__tank-size"]} ${styles["detail-setting"]}`} style={{ display: isShowDetail ? 'flex' : 'none' }}>
         <TankInput
-          value={thickness}
+          value={!thickness ? '' : thickness}
           onChange={value => {
             setThickness(value);
           }}
           name="thickness"
-          label="두께"
+          placeholder="두께"
           unit="T"
         />
 
         <TankInput
-          value={tankSand}
+          value={!tankSand ? '' : tankSand}
           onChange={value => {
             setTankSand(value);
           }}
           name="tankSand"
-          label="바닥재"
+          placeholder="바닥재"
           unit="cm"
         />
 
         <TankInput
-          value={waterLevel}
+          value={!waterLevel ? '' : waterLevel}
           onChange={value => {
             setWaterLevel(value);
           }}
           name="waterLevel"
-          label="수위"
+          placeholder="수위"
           unit="cm"
         />
       </div>
@@ -181,8 +181,8 @@ export default CalcFishTank;
 
 const TankInput = (props: {
   onChange?: (value: number) => void;
-  label: string;
-  value: number;
+  label?: string;
+  value: number | string;
   placeholder?: string;
   name: string;
   unit: string;
@@ -200,20 +200,21 @@ const TankInput = (props: {
         margin: '0px 5px',
       }}
     >
-      <div
+      {/* <div
         className={styles["tank__input-label"]}
         style={{
           fontSize: labelSize,
         }}
       >
         {label}
-      </div>
+      </div> */}
       <input
         type="number"
+        pattern="\d*"
         className={styles["input"]}
         {...inputAttributes}
         style={{
-          width: '50px',
+          width: '100%',
           height: '100%',
           outline: 'none',
           border: 'solid 1px #8c98a4',
