@@ -200,21 +200,21 @@ const TankInput = (props: {
         margin: '0px 5px',
       }}
     >
-      {/* <div
+      {props.label ? <div
         className={styles["tank__input-label"]}
         style={{
           fontSize: labelSize,
-        }}
-      >
+        }}>
+
         {label}
-      </div> */}
+      </div> : null}
       <input
         type="number"
         pattern="\d*"
         className={styles["input"]}
         {...inputAttributes}
         style={{
-          width: '100%',
+          width: '70%',
           height: '100%',
           outline: 'none',
           border: 'solid 1px #8c98a4',
@@ -232,10 +232,6 @@ const TankInput = (props: {
       />
 
       <div className={styles["size-unit"]}>{unit}</div>
-
-      <style jsx>{`
-      
-      `}</style>
     </div>
   );
 };
