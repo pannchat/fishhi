@@ -22,6 +22,7 @@ export default function useCalcFishBowl() {
   const faceBottomRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
+
   const checkValidation = useCallback(() => {
     if (tankSand > tankHeight) {
       alert('바닥재가 높이보다 클 수 없습니다.');
@@ -57,8 +58,21 @@ export default function useCalcFishBowl() {
     });
   }, [faceFrontRef, faceBackRef, faceBottomRef, faceLeftRef, faceRightRef, faceTopRef]);
 
+  const calc = () => {
+    console.log(thickness);
+    if (thickness) {
+      var x = (((tankWidth * 10 * tankHeight * 10 * thickness * 2.5) / 1000000) * 2);
+      var y = (((tankHeight * 10 * ((tankDepth * 10) - thickness * 2) * thickness * 2.5) / 1000000) * 2);
+      var z = ((((tankWidth * 10) - thickness * 2) * ((tankDepth * 10) - thickness * 2) * thickness * 2.5) / 1000000);
+      var sum = x + y + z;
+      setTankWeight(Number(sum.toFixed(2)));
+    }
+    let calcValue = (tankWidth - thickness / 5) * (tankDepth - thickness / 5) * (tankHeight - tankSand - waterLevel - thickness / 10) / 1000;
+    setCapacity(Number(calcValue.toFixed(2)));
+  };
+
   const changeFrontRearStyle = useCallback(
-    (values: { width: number; height: number; depth: number }) => {
+    (values: { width: number; height: number; depth: number; }) => {
       if (faceFrontRef.current && faceBackRef.current) {
         const { width, height, depth } = values;
         // 어항 앞면
@@ -76,7 +90,7 @@ export default function useCalcFishBowl() {
   );
 
   const changeSideStyle = useCallback(
-    (values: { width: number; height: number; depth: number }) => {
+    (values: { width: number; height: number; depth: number; }) => {
       if (faceLeftRef.current && faceRightRef.current) {
         const { width, height, depth } = values;
         faceLeftRef.current.style.width = depth + 'px';
@@ -92,7 +106,7 @@ export default function useCalcFishBowl() {
   );
 
   const changeTopBottomStyle = useCallback(
-    (values: { width: number; height: number; depth: number }) => {
+    (values: { width: number; height: number; depth: number; }) => {
       if (faceTopRef.current && faceBottomRef.current) {
         const { width, height, depth } = values;
         faceTopRef.current.style.width = width + 'px';
@@ -159,6 +173,7 @@ export default function useCalcFishBowl() {
   // );
 
   const calculate = useCallback(() => {
+    calc();
     if (checkValidation()) {
       const min = Math.min(tankWidth, tankHeight, tankDepth);
       let styleTankWidth = (tankWidth / min) * TANK_STYLE_RATIO;
@@ -243,6 +258,8 @@ export default function useCalcFishBowl() {
     tankDepth,
     tankSand,
     waterLevel,
+    thickness,
+    tankWeight,
     changeFrontRearStyle,
     changeSideStyle,
     changeTopBottomStyle,
@@ -273,7 +290,7 @@ export default function useCalcFishBowl() {
     });
   };
 
-  const clickCalculateHandle = useCallback(() => {}, []);
+  const clickCalculateHandle = useCallback(() => { }, []);
   return {
     faceFrontRef,
     faceBackRef,

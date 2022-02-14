@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { darken } from "polished";
-import Previews from "./Previews";
+import Previews from "../../shared/hooks/usePreviews";
 import styles from "./index.module.scss";
 import { Button, useToast, Slider, SliderTrack, SliderFilledTrack, SliderThumb, SliderMark } from "@chakra-ui/react";
 import axios from "axios";
@@ -107,6 +107,7 @@ function addFish() {
       };
     });
     dataForm["images"] = imgarr;
+    console.log(dataForm);
     try {
       const fish = await axios.post("http://54.180.156.194:8000/fish/", JSON.stringify(dataForm), {
         headers: { "Content-Type": "application/json" },
@@ -145,7 +146,7 @@ function addFish() {
             let fishData = new FormData();
             fishData.append("filename", file.name);
             fishData.append("file", file);
-            fishData.append("key", "fish");
+            fishData.append("key", "fishhi/fish");
             let response = await axios.post("http://54.180.156.194:8000/upload_image", fishData, {
               headers: { "Content-Type": `multipart/form-data` },
             });
