@@ -7,9 +7,21 @@ import { IGetSuppliesProductResponse } from '../../shared/hooks/useSuppliesProdu
 import CalcSupplies from './calcSupplies';
 import SuppliesCarousel from './suppliesCarousel';
 import styles from './index.module.scss';
+import axios from 'axios';
 
 //테스트
-const CalcFishTank = (props?: { initData: IGetSuppliesProductResponse; }) => {
+
+export interface ISupplies {
+  'id': string,
+  'product_name': string,
+  'standard_amount': number,
+  'input_amount': number,
+  'input_unit': string,
+  'thumbnail': string,
+  'my_tank_input': string,
+}
+
+const CalcFishTank = () => {
   const {
     faceFrontRef,
     faceBackRef,
@@ -26,6 +38,7 @@ const CalcFishTank = (props?: { initData: IGetSuppliesProductResponse; }) => {
     tankSand,
     tankWeight,
     capacity,
+    suppliesList,
     setTankWidth,
     setTankDepth,
     setTankHeight,
@@ -33,6 +46,7 @@ const CalcFishTank = (props?: { initData: IGetSuppliesProductResponse; }) => {
     setTankSand,
     setWaterLevel,
     setTankWeight,
+    setSuppliesList,
     calculate,
     tankReorder,
   } = useCalcFishBowl();
@@ -49,6 +63,11 @@ const CalcFishTank = (props?: { initData: IGetSuppliesProductResponse; }) => {
 
   useEffect(() => {
     if (faceFrontRef.current) faceFrontRef.current.style.width = '100px';
+    async function initSuppliesList() {
+      const getSuppliesList = await axios.get(`http://54.180.156.194:8000/supplies/calculate/?amount=0`);
+      setSuppliesList(getSuppliesList.data)
+    }
+    initSuppliesList();
   }, [faceFrontRef]);
 
   return (
@@ -161,15 +180,15 @@ const CalcFishTank = (props?: { initData: IGetSuppliesProductResponse; }) => {
       >
         계산하기
       </Button>
-      <div className={styles['calculation-result']} >
-        <div>수조의 물 용량은 <b>{capacity}L</b> 입니다</div>
-        <div>{tankWeight ? `수조의 무게는 ${tankWeight}kg 입니다` : null}</div>
-
-      </div>
-
+      {capacity
+        ? <div className={styles['calculation-result']} >
+          <div>수조의 물 용량은 <b>{capacity}L</b> 입니다</div>
+          <div>{tankWeight ? `수조의 무게는 ${tankWeight}kg 입니다` : null}</div>
+        </div>
+        : null}
 
       <div className={styles[""]}>
-        <CalcSupplies initData={props?.initData} />
+        <CalcSupplies suppliesList={suppliesList} waterCapacity={capacity} />
       </div>
 
 

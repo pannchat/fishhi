@@ -52,7 +52,7 @@ const Home: NextPage<IHomeProps> = (props: { suppliesProduct: IGetSuppliesProduc
   return (
     <div className="app__wrapper">
       <Spacing height={MAIN_COL_GAP} />
-      <CalcFishTank initData={suppliesProduct} />
+      <CalcFishTank />
       <style jsx>
         {`
           .app__wrapper {

@@ -3,23 +3,20 @@ import React, { useState } from 'react';
 import { IGetSuppliesProductResponse, useSuppliesProduct } from '../../shared/hooks/useSuppliesProduct';
 import { BsBookmark, BsBookmarkFill } from 'react-icons/bs';
 import styles from './index.module.scss';
+import { ISupplies } from './index';
 
-const IMAGE_BASE_URL = 'https://fishhi.kr/thumbnails/';
-const CalcSupplies = (props?: { initData?: IGetSuppliesProductResponse; }) => {
-  const { data } = useSuppliesProduct(props?.initData);
+const CalcSupplies = (props: { suppliesList: ISupplies[], waterCapacity: number; }) => {
   const [toggle, setToggle] = useState(true);
-  // commit
-  if (!data) return <div></div>;
   return (
     <div className={styles["calc-supplies"]}>
-      {data.map((value, index) => {
-        const { img, productName, recommendedUsage1, recommendedUsage2 } = value;
+      {props.suppliesList.map((value, index) => {
+        const { id, product_name, standard_amount, input_amount, input_unit, thumbnail, my_tank_input } = value;
         return (
           <li className={styles["search-list"]} key={`searchList${index}`}>
             <div className={styles["supplies-items"]}>
               <img
-                src={`https://fishhi.kr/thumbnails/${img}`}
-                alt={`${productName} 상품`}
+                src={`${thumbnail}`}
+                alt={`${product_name} 상품`}
                 style={{
                   objectFit: 'contain',
                   objectPosition: 'center center',
@@ -30,20 +27,14 @@ const CalcSupplies = (props?: { initData?: IGetSuppliesProductResponse; }) => {
                 }}
               />
               <div className={styles["test2"]}>
-                <p className={styles["supply-product-name"]}>{productName}</p>
+                <p className={styles["supply-product-name"]}>{product_name}</p>
                 <p>
-                  권장 사용량 : {recommendedUsage1}L 당 {recommendedUsage2}cc
+                  권장 사용량 : {standard_amount}L 당 {input_amount}cc
                 </p>
                 <p>
                   내 어항 사용량 :{' '}
                   <b style={{ color: '#8aa1a1' }}>
-                    {/* {capacity
-                    ? `${(
-                        (capacity / recommendedUsage1) *
-                        el.recommendedUsage2
-                      ).toFixed(2)}cc`
-                    : "?"} */}
-                    5.2cc
+                    {`${props.waterCapacity ? (props.waterCapacity * (input_amount / standard_amount)).toFixed(2) + input_unit : '?'}`}
                   </b>{' '}
                   권장
                 </p>
@@ -71,6 +62,7 @@ const CalcSupplies = (props?: { initData?: IGetSuppliesProductResponse; }) => {
     </div>
   );
 };
+
 
 export default CalcSupplies;
 function InferGetStaticPropsType<T>() {
