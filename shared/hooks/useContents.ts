@@ -127,6 +127,7 @@ export default function useContents(type: string, initData?: any) {
       });
     }
 
+    // 용품 api
     if (data && type === "supplies") {
       data.map((supply: IContentData, index: number) => {
         const { id, product_name, thumbnail } = supply;
