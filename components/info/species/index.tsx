@@ -1,24 +1,24 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable jsx-a11y/alt-text */
-import React from 'react';
-import ListView from '../../../shared/commonComponent/listView';
-import useMouseHover from '../../../shared/hooks/useMouseHover';
-import LinkCustom from '../../../shared/commonComponent/link';
-import UrlPath from '../../../shared/urlPath';
-import { FishSpeciesName } from '../../../shared/enum';
-import { getEumEntries } from '../../../shared/funtion';
-import useContents from '../../../shared/hooks/useContents';
-import { IAquaplant, ISpecies } from '../../../shared/interface';
-import { AspectRatio } from '@chakra-ui/react';
-import ImagePath from '../../../shared/imagePath';
-import Spacing from '../../../shared/commonComponent/spacing';
+import React from "react";
+import ListView from "../../../shared/commonComponent/listView";
+import useMouseHover from "../../../shared/hooks/useMouseHover";
+import LinkCustom from "../../../shared/commonComponent/link";
+import UrlPath from "../../../shared/urlPath";
+import { FishSpeciesName } from "../../../shared/enum";
+import { getEumEntries } from "../../../shared/funtion";
+import useContents from "../../../shared/hooks/useContents";
+import { IAquaplant, ISpecies } from "../../../shared/interface";
+import { AspectRatio } from "@chakra-ui/react";
+import ImagePath from "../../../shared/imagePath";
+import Spacing from "../../../shared/commonComponent/spacing";
 
 const Species = <T extends unknown>(props: { species: string; initData?: T }) => {
   const { species, initData } = props;
   const { data } = useContents(species, initData);
   const { refinedObj } = getEumEntries(FishSpeciesName);
   const speciesName = refinedObj[species];
-
+  console.log("data => ", data);
   if (data && data.length < 1) return null;
   return (
     <section>
@@ -28,7 +28,7 @@ const Species = <T extends unknown>(props: { species: string; initData?: T }) =>
       <ListView
         list={data}
         column={2}
-        columnSize={'50%'}
+        columnSize={"50%"}
         gap={20}
         ListItem={(props: ISpecies) => <SpeciesItem data={props} species={species} />}
       />
@@ -49,26 +49,26 @@ export const SpeciesItem = (props: { data: ISpecies; species: string }) => {
   const { thumbnail, name, id } = data;
   const { isHover, onMouseEnterHandler, onMouseLeaveHandler } = useMouseHover();
   const onErrorHandler = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    e.currentTarget.style.position = 'absolute';
-    e.currentTarget.style.transition = 'none';
-    e.currentTarget.style.transform = 'translate(-50%, -50%)';
-    e.currentTarget.style.top = '50%';
-    e.currentTarget.style.left = '50%';
-    e.currentTarget.style.width = '100px';
-    e.currentTarget.style.height = '50px';
+    e.currentTarget.style.position = "absolute";
+    e.currentTarget.style.transition = "none";
+    e.currentTarget.style.transform = "translate(-50%, -50%)";
+    e.currentTarget.style.top = "50%";
+    e.currentTarget.style.left = "50%";
+    e.currentTarget.style.width = "100px";
+    e.currentTarget.style.height = "50px";
     e.currentTarget.src = ImagePath.placeholder;
   };
   return (
     <LinkCustom href={UrlPath.speciesDetail(species as string, String(id))}>
       <div className="info-detail-item" onMouseEnter={onMouseEnterHandler} onMouseLeave={onMouseLeaveHandler}>
-        <AspectRatio ratio={1 / 1} border="1px solid #e5e5e5" borderRadius={10} overflow={'hidden'}>
+        <AspectRatio ratio={1 / 1} border="1px solid #e5e5e5" borderRadius={10} overflow={"hidden"}>
           {thumbnail ? (
             <img
               key={thumbnail}
               className="item__image"
               src={thumbnail}
-              width={'100%'}
-              height={'100%'}
+              width={"100%"}
+              height={"100%"}
               placeholder="이미지"
               onError={onErrorHandler}
             />
@@ -130,7 +130,7 @@ export const SpeciesItem = (props: { data: ISpecies; species: string }) => {
           font-weight: 700;
           text-align: center;
           margin-top: 5px;
-          text-decoration: ${isHover ? 'underline' : 'none'};
+          text-decoration: ${isHover ? "underline" : "none"};
         }
       `}</style>
     </LinkCustom>
