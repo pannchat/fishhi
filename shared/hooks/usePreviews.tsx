@@ -1,6 +1,6 @@
 import React, { CSSProperties, useState, useMemo, useEffect } from 'react';
-import styled from 'styled-components';
 import { useDropzone } from 'react-dropzone';
+import styles from './index.module.scss';
 
 const baseStyle: CSSProperties = {
   flex: 1,
@@ -34,7 +34,7 @@ const thumbsContainer: CSSProperties = {
   flexDirection: 'row',
   flexWrap: 'wrap',
   marginTop: '16px',
-  justifyContent:'space-between',
+  justifyContent: 'space-between',
 };
 
 const thumb: CSSProperties = {
@@ -74,19 +74,22 @@ const img = {
 interface Ifile {
   name: React.Key | null | undefined;
   preview: string | undefined;
+  setFiles?: (value?: any) => void;
+  // isMain: boolean;
 }
 function Previews(props: any) {
-  const [files, setFiles]: any = useState([]);
+
   const { getRootProps, getInputProps } = useDropzone({
     accept: 'image/gif, image/jpg, image/jpeg',
     onDrop: acceptedFiles => {
-      setFiles([
-        ...acceptedFiles.map(file => {
+      props.setFiles([
+        ...acceptedFiles.map((file, idx) => {
           return Object.assign(file, {
             preview: URL.createObjectURL(file),
           });
         }),
       ]);
+      props.setIsMain({ name: acceptedFiles[0].name });
     },
     maxFiles: 5,
     maxSize: 15728640,
@@ -95,31 +98,58 @@ function Previews(props: any) {
     },
   });
   function removeFile(targetFileName: React.Key | null | undefined) {
-    setFiles(
-      files.filter((fItem: Ifile) => {
-        console.log(fItem.name, targetFileName, fItem.name === targetFileName)
+    props.setFiles(
+      props.files.filter((fItem: Ifile) => {
         return fItem.name !== targetFileName;
       }),
     );
-    console.log(files)
+    for (let i of props.files) {
+      console.log(i.name, i.name !== targetFileName);
+      if (i.name !== targetFileName) {
+        setMainImage(i.name);
+        break;
+      }
+    }
   }
-  const thumbs = files.map((file: Ifile) => (
-    <div style={thumb} key={file.name}>
+  function setMainImage(targetFileName: React.Key | null | undefined) {
+
+    props.files.forEach((fItem: Ifile, idx: number) => {
+      if (fItem.name === targetFileName) {
+        props.setIsMain({
+          name: fItem.name
+        });
+      }
+
+    });
+
+  }
+
+  const thumbs = props.files.map((file: Ifile, idx: number) => (
+    <div style={thumb} key={`${file.name}-${idx}`} onClick={() => setMainImage(file.name)}>
       <div style={thumbClose} onClick={() => removeFile(file.name)}>
         x
       </div>
+      {file.name === props.isMain.name ? <div className={styles['main-image']} onClick={() => removeFile(file.name)}>
+        대표
+      </div>
+        : null}
       <div style={thumbInner}>
         <img src={file.preview} style={img} />
       </div>
     </div>
   ));
 
-  useEffect(
-    () => () => {
-      // Make sure to revoke the data uris to avoid memory leaks
-      files.forEach((file: { preview: string }) => URL.revokeObjectURL(file.preview));
-    },
-    [files],
+  useEffect(() => {
+    if (props.files.length > 0) {
+      setMainImage(props.files[0].name);
+    }
+    // Make sure to revoke the data uris to avoid memory leaks
+    return () => {
+      props.files.forEach((file: { preview: string; }) => URL.revokeObjectURL(file.preview));
+    };
+  },
+
+    [props.files],
   );
   const { isDragActive, isDragAccept, isDragReject } = useDropzone({ accept: 'image/*' });
 

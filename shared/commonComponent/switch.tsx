@@ -46,6 +46,7 @@ const Switch = (props: ISwitchProps) => {
             fontSize: labelSize,
             fontWeight: labelWeight,
             color: 'grey',
+            marginRight: '5px',
           }}
         >
           {label}

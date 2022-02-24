@@ -1,4 +1,6 @@
+import axios from 'axios';
 import { useCallback, useRef, useState } from 'react';
+import { ISupplies } from '../../components/calcFishTank/index';
 
 const TANK_STYLE_RATIO = 100;
 
@@ -12,7 +14,7 @@ export default function useCalcFishBowl() {
   const [waterLevel, setWaterLevel] = useState<number>(0);
   const [thickness, setThickness] = useState<number>(0);
   const [capacity, setCapacity] = useState<number>(0);
-
+  const [suppliesList, setSuppliesList] = useState<ISupplies[]>([]);
   // refs
   const faceFrontRef = useRef<HTMLDivElement>(null);
   const faceBackRef = useRef<HTMLDivElement>(null);
@@ -21,6 +23,7 @@ export default function useCalcFishBowl() {
   const faceTopRef = useRef<HTMLDivElement>(null);
   const faceBottomRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+
 
   const checkValidation = useCallback(() => {
     if (tankSand > tankHeight) {
@@ -57,8 +60,25 @@ export default function useCalcFishBowl() {
     });
   }, [faceFrontRef, faceBackRef, faceBottomRef, faceLeftRef, faceRightRef, faceTopRef]);
 
+  const calc = async() => {
+    
+    if (thickness) {
+      var x = (((tankWidth * 10 * tankHeight * 10 * thickness * 2.5) / 1000000) * 2);
+      var y = (((tankHeight * 10 * ((tankDepth * 10) - thickness * 2) * thickness * 2.5) / 1000000) * 2);
+      var z = ((((tankWidth * 10) - thickness * 2) * ((tankDepth * 10) - thickness * 2) * thickness * 2.5) / 1000000);
+      var sum = x + y + z;
+      setTankWeight(Number(sum.toFixed(2)));
+    }
+    let calcValue = (tankWidth - thickness / 5) * (tankDepth - thickness / 5) * (tankHeight - tankSand - waterLevel - thickness / 10) / 1000;
+    setCapacity(Number(calcValue.toFixed(2)));
+
+    const getSuppliesList = await axios.get(`http://54.180.156.194:8000/supplies/calculate/?amount=${Number(calcValue.toFixed(2))}`);
+    setSuppliesList(getSuppliesList.data)
+    
+  };
+
   const changeFrontRearStyle = useCallback(
-    (values: { width: number; height: number; depth: number }) => {
+    (values: { width: number; height: number; depth: number; }) => {
       if (faceFrontRef.current && faceBackRef.current) {
         const { width, height, depth } = values;
         // 어항 앞면
@@ -76,7 +96,7 @@ export default function useCalcFishBowl() {
   );
 
   const changeSideStyle = useCallback(
-    (values: { width: number; height: number; depth: number }) => {
+    (values: { width: number; height: number; depth: number; }) => {
       if (faceLeftRef.current && faceRightRef.current) {
         const { width, height, depth } = values;
         faceLeftRef.current.style.width = depth + 'px';
@@ -92,7 +112,7 @@ export default function useCalcFishBowl() {
   );
 
   const changeTopBottomStyle = useCallback(
-    (values: { width: number; height: number; depth: number }) => {
+    (values: { width: number; height: number; depth: number; }) => {
       if (faceTopRef.current && faceBottomRef.current) {
         const { width, height, depth } = values;
         faceTopRef.current.style.width = width + 'px';
@@ -132,33 +152,8 @@ export default function useCalcFishBowl() {
     [faceFrontRef, faceBackRef, faceLeftRef, faceRightRef],
   );
 
-
-  // const setWater = useCallback(
-  //   (waterLevel: number) => {
-  //     if (faceFrontRef.current && faceBackRef.current && faceLeftRef.current && faceRightRef.current) {
-  //       const water = `<div style='width:100%; 
-  //       height:${waterLevel}px;
-  //       position:absolute;
-  //       bottom:0;
-  //       background-color:rgba(255, 255, 255, 0.714);
-  //       margin:0px'></div>`;
-  //       const backWater = `<div style='width:100%; 
-  //       height:${waterLevel}px;
-  //       position:absolute;
-  //       top:0;
-  //       background-color:rgba(255, 255, 255, 0.714);
-  //       margin:0px'></div>`;
-
-  //       faceFrontRef.current.innerHTML += water;
-  //       faceLeftRef.current.innerHTML += water;
-  //       faceRightRef.current.innerHTML += water;
-  //       faceBackRef.current.innerHTML += backWater;
-  //     }
-  //   },
-  //   [faceFrontRef, faceBackRef, faceLeftRef, faceRightRef],
-  // );
-
   const calculate = useCallback(() => {
+    calc();
     if (checkValidation()) {
       const min = Math.min(tankWidth, tankHeight, tankDepth);
       let styleTankWidth = (tankWidth / min) * TANK_STYLE_RATIO;
@@ -243,11 +238,13 @@ export default function useCalcFishBowl() {
     tankDepth,
     tankSand,
     waterLevel,
+    thickness,
+    tankWeight,
+    suppliesList,
     changeFrontRearStyle,
     changeSideStyle,
     changeTopBottomStyle,
     setSand,
-    // setWater,
     initFishTank,
   ]);
 
@@ -273,7 +270,7 @@ export default function useCalcFishBowl() {
     });
   };
 
-  const clickCalculateHandle = useCallback(() => {}, []);
+  const clickCalculateHandle = useCallback(() => { }, []);
   return {
     faceFrontRef,
     faceBackRef,
@@ -290,6 +287,7 @@ export default function useCalcFishBowl() {
     waterLevel,
     thickness,
     capacity,
+    suppliesList,
     setTankWidth,
     setTankHeight,
     setTankDepth,
@@ -298,7 +296,9 @@ export default function useCalcFishBowl() {
     setWaterLevel,
     setThickness,
     setCapacity,
+    setSuppliesList,
     calculate,
     tankReorder,
+    
   };
 }

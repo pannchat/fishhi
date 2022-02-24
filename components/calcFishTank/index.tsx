@@ -6,9 +6,22 @@ import useCalcFishBowl from '../../shared/hooks/useCalcFishBowl';
 import { IGetSuppliesProductResponse } from '../../shared/hooks/useSuppliesProduct';
 import CalcSupplies from './calcSupplies';
 import SuppliesCarousel from './suppliesCarousel';
+import styles from './index.module.scss';
+import axios from 'axios';
 
 //테스트
-const CalcFishTank = (props?: { initData: IGetSuppliesProductResponse }) => {
+
+export interface ISupplies {
+  'id': string,
+  'product_name': string,
+  'standard_amount': number,
+  'input_amount': number,
+  'input_unit': string,
+  'thumbnail': string,
+  'my_tank_input': string,
+}
+
+const CalcFishTank = () => {
   const {
     faceFrontRef,
     faceBackRef,
@@ -23,12 +36,17 @@ const CalcFishTank = (props?: { initData: IGetSuppliesProductResponse }) => {
     waterLevel,
     thickness,
     tankSand,
+    tankWeight,
+    capacity,
+    suppliesList,
     setTankWidth,
     setTankDepth,
     setTankHeight,
     setThickness,
     setTankSand,
     setWaterLevel,
+    setTankWeight,
+    setSuppliesList,
     calculate,
     tankReorder,
   } = useCalcFishBowl();
@@ -40,56 +58,62 @@ const CalcFishTank = (props?: { initData: IGetSuppliesProductResponse }) => {
     setTankSand(0);
     setWaterLevel(0);
     setThickness(0);
+    setTankWeight(0);
   };
 
   useEffect(() => {
     if (faceFrontRef.current) faceFrontRef.current.style.width = '100px';
+    async function initSuppliesList() {
+      const getSuppliesList = await axios.get(`http://54.180.156.194:8000/supplies/calculate/?amount=0`);
+      setSuppliesList(getSuppliesList.data)
+    }
+    initSuppliesList();
   }, [faceFrontRef]);
 
   return (
     <div>
-      <h1 className="title">물양계산기</h1>
-      <h3 className="description">본인 어항에 맞는 약품 용량을 계산해보세요!!</h3>
-      <div className="flex-box--main">
-        <div className="main-section__tank-preview">
-          <div className="main-section__tank-container" ref={containerRef}>
-            <div className="main-section__tank">
-              <div className="face faceFront" ref={faceFrontRef}>
+      <h1 className={styles["title"]}>물양계산기</h1>
+      <h3 className={styles["description"]}>본인 어항에 맞는 약품 용량을 계산해보세요!!</h3>
+      <div className={styles["flex-box--main"]}>
+        <div className={styles["main-section__tank-preview"]}>
+          <div className={styles["main-section__tank-container"]} ref={containerRef}>
+            <div className={styles["main-section__tank"]}>
+              <div className={`${styles["face"]} ${styles["faceFront"]}`} ref={faceFrontRef}>
                 <b>fishhi.kr</b>
               </div>
-              <div className="face faceBack" ref={faceBackRef}></div>
-              <div className="face faceLeft" ref={faceLeftRef}></div>
-              <div className="face faceRight" ref={faceRightRef}></div>
-              <div className="face faceTop" ref={faceTopRef}></div>
-              <div className="face faceBottom" ref={faceBottomRef}></div>
+              <div className={`${styles["face"]} ${styles["faceBack"]}`} ref={faceBackRef}></div>
+              <div className={`${styles["face"]} ${styles["faceLeft"]}`} ref={faceLeftRef}></div>
+              <div className={`${styles["face"]} ${styles["faceRight"]}`} ref={faceRightRef}></div>
+              <div className={`${styles["face"]} ${styles["faceTop"]}`} ref={faceTopRef}></div>
+              <div className={`${styles["face"]} ${styles["faceBottom"]}`} ref={faceBottomRef}></div>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="main-section__tank-size">
+      <div className={styles["main-section__tank-size"]}>
         <TankInput
-          value={tankWidth}
+          value={!tankWidth ? '' : tankWidth}
           name="tankWidth"
-          label="가로"
+          placeholder="가로"
           onChange={value => {
             setTankWidth(value);
           }}
           unit={'cm'}
         />
         <TankInput
-          value={tankHeight}
+          value={!tankHeight ? '' : tankHeight}
           name="tankHeight"
-          label="세로"
+          placeholder="세로"
           onChange={value => {
             setTankHeight(value);
           }}
           unit={'cm'}
         />
         <TankInput
-          value={tankDepth}
+          value={!tankDepth ? '' : tankDepth}
           name="tankDepth"
-          label="깊이"
+          placeholder="깊이"
           onChange={value => {
             setTankDepth(value);
           }}
@@ -97,34 +121,34 @@ const CalcFishTank = (props?: { initData: IGetSuppliesProductResponse }) => {
         />
       </div>
       <Spacing height={15} />
-      <div className="main-section__tank-size detail-setting">
+      <div className={`${styles["main-section__tank-size"]} ${styles["detail-setting"]}`} style={{ display: isShowDetail ? 'flex' : 'none' }}>
         <TankInput
-          value={thickness}
+          value={!thickness ? '' : thickness}
           onChange={value => {
             setThickness(value);
           }}
           name="thickness"
-          label="두께"
+          placeholder="두께"
           unit="T"
         />
 
         <TankInput
-          value={tankSand}
+          value={!tankSand ? '' : tankSand}
           onChange={value => {
             setTankSand(value);
           }}
           name="tankSand"
-          label="바닥재"
+          placeholder="바닥재"
           unit="cm"
         />
 
         <TankInput
-          value={waterLevel}
+          value={!waterLevel ? '' : waterLevel}
           onChange={value => {
             setWaterLevel(value);
           }}
           name="waterLevel"
-          label="수위"
+          placeholder="수위"
           unit="cm"
         />
       </div>
@@ -156,114 +180,18 @@ const CalcFishTank = (props?: { initData: IGetSuppliesProductResponse }) => {
       >
         계산하기
       </Button>
-      <Spacing height={50} />
-      <div className="">
-        <CalcSupplies initData={props?.initData} />
+      {capacity
+        ? <div className={styles['calculation-result']} >
+          <div>수조의 물 용량은 <b>{capacity}L</b> 입니다</div>
+          <div>{tankWeight ? `수조의 무게는 ${tankWeight}kg 입니다` : null}</div>
+        </div>
+        : null}
+
+      <div className={styles[""]}>
+        <CalcSupplies suppliesList={suppliesList} waterCapacity={capacity} />
       </div>
 
-      <style jsx>{`
-        .title {
-          text-align: center;
-          margin-bottom: 5px;
-        }
 
-        .description {
-          text-align: center;
-          color: #9e9e9e;
-        }
-        .face {
-          margin: 0px;
-          padding: 0px;
-          width: 100px;
-          height: 100px;
-          position: absolute;
-          top: 80px;
-          left: 50px;
-          box-sizing: border-box;
-          border: 5px solid #76899d;
-          /* background-color: rgba(126, 200, 223, 0.3); */
-          background-color: rgba(18, 129, 159, 0.3);
-        }
-
-        .main-section__tank-size {
-          display: flex;
-          justify-content: space-around;
-          align-items: center;
-          width: 100%;
-        }
-
-        .flex-box--main {
-          display: flex;
-          align-items: center;
-          width: 100%;
-          height: 300px;
-          margin: 10px 0;
-          flex-direction: row;
-          justify-content: center;
-          max-width: 720px;
-          flex-wrap: wrap;
-          flex-basis: 720px;
-        }
-
-        .main-section__tank-preview {
-          display: flex;
-          /* position: fixed; */
-          /* top:30%; */
-          flex-direction: column;
-          align-items: center;
-          width: 300px;
-          margin-bottom: auto;
-        }
-
-        .main-section__tank-container {
-          perspective: 1000px;
-          width: 200px;
-          height: 250px;
-          margin-top: 30px;
-          display: flex;
-          justify-content: center;
-        }
-
-        .main-section__tank {
-          margin: 0px;
-          width: 200px;
-          height: 250px;
-          animation: spin 15s infinite linear;
-          -webkit-animation: spin 15s infinite linear;
-          display: block;
-          box-sizing: content-box;
-          transform-style: preserve-3d;
-          position: relative;
-        }
-
-        .main-section__tank-size.detail-setting {
-          display: ${isShowDetail ? 'flex' : 'none'};
-        }
-
-        .faceBack {
-          transform: translateZ(-50px);
-        }
-
-        .faceFront {
-          transform: translateZ(50px);
-        }
-
-        .faceLeft {
-          transform: translateX(50px) rotateY(-90deg);
-        }
-
-        .faceRight {
-          transform: translateX(-50px) rotateY(90deg);
-        }
-
-        .faceTop {
-          transform: translateY(-45px) rotateX(90deg);
-        }
-
-        .faceBottom {
-          transform: translateY(45px) rotateX(-90deg);
-        }
-      `}</style>
     </div>
   );
 };
@@ -272,8 +200,8 @@ export default CalcFishTank;
 
 const TankInput = (props: {
   onChange?: (value: number) => void;
-  label: string;
-  value: number;
+  label?: string;
+  value: number | string;
   placeholder?: string;
   name: string;
   unit: string;
@@ -291,20 +219,21 @@ const TankInput = (props: {
         margin: '0px 5px',
       }}
     >
-      <div
-        className="tank__input-label"
+      {props.label ? <div
+        className={styles["tank__input-label"]}
         style={{
           fontSize: labelSize,
-        }}
-      >
+        }}>
+
         {label}
-      </div>
+      </div> : null}
       <input
         type="number"
-        className="input"
+        pattern="\d*"
+        className={styles["input"]}
         {...inputAttributes}
         style={{
-          width: '50px',
+          width: '70%',
           height: '100%',
           outline: 'none',
           border: 'solid 1px #8c98a4',
@@ -321,37 +250,7 @@ const TankInput = (props: {
         }}
       />
 
-      <div className="size-unit">{unit}</div>
-
-      <style jsx>{`
-        .main-section__tank {
-          width: 300px;
-          height: 300px;
-        }
-        .tank__input-label {
-          font-weight: 800;
-          width: 45px;
-          // margin-right:10px;
-        }
-
-        .size-unit {
-          font-size: 14px;
-          font-weight: 500;
-        }
-        .input::-webkit-outer-spin-button,
-        .input::-webkit-inner-spin-button {
-          -webkit-appearance: none;
-          margin: 0;
-        }
-
-        input + div {
-          display: inline-block;
-          width: 16px;
-          padding: 0 2px;
-          vertical-align: bottom;
-          font-size: 0.7rem;
-        }
-      `}</style>
+      <div className={styles["size-unit"]}>{unit}</div>
     </div>
   );
 };
