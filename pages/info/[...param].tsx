@@ -115,7 +115,7 @@ const InfoPageDetail = <T extends unknown>(props: { data: T }) => {
 
   if (!species) return null;
   if (!id) return <Species species={species} initData={data} />;
-  return <SpeciesDetail id={id} type={species} />;
+  return <SpeciesDetail id={id} type={species} initData={data} />;
 };
 
 export default InfoPageDetail;

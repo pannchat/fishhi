@@ -2,7 +2,14 @@ import axios from "axios";
 import { getParamsString } from "../shared/funtion";
 import { IFishListResponse } from "../shared/hooks/useContents";
 import { IGetSuppliesProductResponse } from "../shared/hooks/useSuppliesProduct";
-import { IAquaplant, IContentsParams, IFishRetriveData, ISuppliesItem, ISupplyRetriveData } from "../shared/interface";
+import {
+  IAquaplant,
+  IAquaPlantRetriveData,
+  IContentsParams,
+  IFishRetriveData,
+  ISuppliesItem,
+  ISupplyRetriveData,
+} from "../shared/interface";
 const BASE_URL = "http://54.180.156.194:8000";
 axios.defaults.baseURL = BASE_URL;
 
@@ -39,7 +46,7 @@ export async function getAquaplantApi(params?: IContentsParams) {
 }
 
 export async function getAquaplantRetriveApi(id: string) {
-  const { data } = await axios.get<IAquaplant>(`/aquaplant/${id}/`);
+  const { data } = await axios.get<IAquaPlantRetriveData>(`/aquaplant/${id}/`);
   return data;
 }
 
