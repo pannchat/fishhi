@@ -1,7 +1,8 @@
+import { get } from "lodash";
 import { useMemo } from "react";
 import useSWR from "swr";
-import { getAquaplant, getFishListApi, getSupplies } from "../../api";
-import { ISpecies, ISpeciesList } from "../interface";
+import { getAquaplantApi, getFishListApi, getSupplies } from "../../api";
+import { IContentsParams, ISpecies, ISpeciesList, ISuppliesItem } from "../interface";
 
 export interface ISupplyListItem {
   id: number;
@@ -69,12 +70,12 @@ export interface ISupply {
 //   ]
 // }
 
-export default function useContents(type: string, initData?: any) {
+export default function useContents(type: string, initData?: any, params?: IContentsParams) {
   const { data, error } = useSWR(
-    `contents_${type}`,
+    [`contents`, type, params],
     () => {
       if (type === "aquaplant") {
-        return getAquaplant();
+        return getAquaplantApi(params);
       }
 
       if (type === "fish") {
@@ -82,7 +83,7 @@ export default function useContents(type: string, initData?: any) {
       }
 
       if (type === "supplies") {
-        return getSupplies();
+        return getSupplies(params);
       }
 
       return null;

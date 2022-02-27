@@ -1,7 +1,6 @@
-import { GetStaticPaths } from "next";
 import { useRouter } from "next/dist/client/router";
 import React from "react";
-import { getAquaplant, getFishListApi, getSupplies } from "../../api";
+import { getAquaplantApi, getFishListApi, getSupplies } from "../../api";
 import ErrorView from "../../components/errorView";
 import Species from "../../components/info/species";
 import SpeciesDetail from "../../components/info/speciesDetail";
@@ -26,7 +25,7 @@ export async function getStaticProps(value: any) {
     }
 
     if (category === "aquaplant") {
-      const data = await getAquaplant();
+      const data = await getAquaplantApi({ offset: 8 });
       return {
         props: {
           data: data,

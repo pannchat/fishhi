@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable jsx-a11y/alt-text */
-import React from "react";
+import React, { useCallback, useMemo } from "react";
 import ListView from "../../../shared/commonComponent/listView";
 import useMouseHover from "../../../shared/hooks/useMouseHover";
 import LinkCustom from "../../../shared/commonComponent/link";
@@ -18,7 +18,7 @@ const Species = <T extends unknown>(props: { species: string; initData?: T }) =>
   const { data } = useContents(species, initData);
   const { refinedObj } = getEumEntries(FishSpeciesName);
   const speciesName = refinedObj[species];
-  console.log("data => ", data);
+
   if (data && data.length < 1) return null;
   return (
     <section>
@@ -46,9 +46,16 @@ export default Species;
 
 export const SpeciesItem = (props: { data: ISpecies; species: string }) => {
   const { data, species } = props;
-  const { thumbnail, name, id } = data;
+  const { thumbnail, name, product_name, id } = data;
   const { isHover, onMouseEnterHandler, onMouseLeaveHandler } = useMouseHover();
-  const onErrorHandler = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+
+  const usingName = useMemo(() => {
+    if (name) return name;
+    if (product_name) return product_name;
+    return name;
+  }, [name, product_name]);
+
+  const onErrorHandler = useCallback((e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     e.currentTarget.style.position = "absolute";
     e.currentTarget.style.transition = "none";
     e.currentTarget.style.transform = "translate(-50%, -50%)";
@@ -57,7 +64,7 @@ export const SpeciesItem = (props: { data: ISpecies; species: string }) => {
     e.currentTarget.style.width = "100px";
     e.currentTarget.style.height = "50px";
     e.currentTarget.src = ImagePath.placeholder;
-  };
+  }, []);
   return (
     <LinkCustom href={UrlPath.speciesDetail(species as string, String(id))}>
       <div className="info-detail-item" onMouseEnter={onMouseEnterHandler} onMouseLeave={onMouseLeaveHandler}>
@@ -84,7 +91,7 @@ export const SpeciesItem = (props: { data: ISpecies; species: string }) => {
         </AspectRatio>
 
         <div className="info-detail-item-description">
-          <p className="info-detail-item__title">{name}</p>
+          <p className="info-detail-item__title">{usingName}</p>
         </div>
       </div>
 
