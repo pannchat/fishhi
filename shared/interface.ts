@@ -47,6 +47,7 @@ export interface IContentsParams {
 
 export interface IImage {
   image_url: string;
+  is_main?: boolean;
 }
 
 export interface ISupplyRetriveData {
@@ -65,4 +66,20 @@ export interface ISupplyRetriveData {
   images?: IImage[];
   spec?: any;
   pump_amount?: any;
+}
+
+export interface IFishRetriveData {
+  id: number;
+  name: string;
+  standard_length: number;
+  aquarium_minimum_size: number;
+  min_temperature: number;
+  max_temperature: number;
+  min_pH: number;
+  max_pH: number;
+  description: string;
+  scientific_name: string;
+  source: string;
+  source_url: string;
+  images: IImage[];
 }

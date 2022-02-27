@@ -12,4 +12,9 @@ export default function useGetSupplyRetrive(id: string) {
       const { images } = data;
     }
   }, [data, error]);
+
+  return {
+    data,
+    error,
+  };
 }
