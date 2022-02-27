@@ -2,8 +2,7 @@ import axios from "axios";
 import { getParamsString } from "../shared/funtion";
 import { IFishListResponse } from "../shared/hooks/useContents";
 import { IGetSuppliesProductResponse } from "../shared/hooks/useSuppliesProduct";
-import { IAquaplant, IContentsParams, ISuppliesItem, ISupplyRetriveData } from "../shared/interface";
-
+import { IAquaplant, IContentsParams, IFishRetriveData, ISuppliesItem, ISupplyRetriveData } from "../shared/interface";
 const BASE_URL = "http://54.180.156.194:8000";
 axios.defaults.baseURL = BASE_URL;
 
@@ -16,6 +15,11 @@ export async function getSuppliesProduct() {
 export async function getFishListApi() {
   const { data } = await axios.get<IFishListResponse>("/fish/");
 
+  return data;
+}
+
+export async function getFishRetriveApi(id: string) {
+  const { data } = await axios.get<IFishRetriveData>(`/fish/${id}/`);
   return data;
 }
 
@@ -50,6 +54,6 @@ export async function getSupplies(param?: IContentsParams) {
 }
 
 export async function getSupplyRetriveApi(id: string) {
-  const { data } = await axios.get<ISupplyRetriveData>(`/supplies/${id}`);
+  const { data } = await axios.get<ISupplyRetriveData>(`/supplies/${id}/`);
   return data;
 }

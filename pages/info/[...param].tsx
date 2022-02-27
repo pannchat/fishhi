@@ -1,6 +1,13 @@
 import { useRouter } from "next/dist/client/router";
 import React from "react";
-import { getAquaplantApi, getFishListApi, getSupplies } from "../../api";
+import {
+  getAquaplantApi,
+  getAquaplantRetriveApi,
+  getFishListApi,
+  getFishRetriveApi,
+  getSupplies,
+  getSupplyRetriveApi,
+} from "../../api";
 import ErrorView from "../../components/errorView";
 import Species from "../../components/info/species";
 import SpeciesDetail from "../../components/info/speciesDetail";
@@ -8,24 +15,54 @@ import SpeciesDetail from "../../components/info/speciesDetail";
 export async function getStaticPaths() {
   return {
     paths: [{ params: { param: ["fish"] } }, { params: { param: ["aquaplant"] } }, { params: { param: ["supplies"] } }],
-    fallback: false,
+    fallback: "blocking",
   };
 }
 export async function getStaticProps(value: any) {
   const category = value.params.param[0] as string;
+  const param = value.params.param;
 
   try {
-    if (category === "fish") {
-      const data = await getFishListApi();
+    // info list case
+    if (param.length < 2) {
+      if (category === "fish") {
+        const data = await getFishListApi();
+        return {
+          props: {
+            data,
+          },
+        };
+      }
+
+      if (category === "aquaplant") {
+        const data = await getAquaplantApi({ offset: 8 });
+        return {
+          props: {
+            data: data,
+          },
+        };
+      }
+
+      if (category === "supplies") {
+        const data = await getSupplies({ offset: 8 });
+        return {
+          props: {
+            data: data,
+          },
+        };
+      }
+
       return {
         props: {
-          data,
+          data: null,
         },
       };
     }
+    // info detail case
+    const id = param[1] as string;
 
-    if (category === "aquaplant") {
-      const data = await getAquaplantApi({ offset: 8 });
+    if (category === "supplies") {
+      const data = await getSupplyRetriveApi(id);
       return {
         props: {
           data: data,
@@ -33,8 +70,17 @@ export async function getStaticProps(value: any) {
       };
     }
 
-    if (category === "supplies") {
-      const data = await getSupplies({ offset: 8 });
+    if (category === "aquaplant") {
+      const data = await getAquaplantRetriveApi(id);
+      return {
+        props: {
+          data: data,
+        },
+      };
+    }
+
+    if (category === "fish") {
+      const data = await getFishRetriveApi(id);
       return {
         props: {
           data: data,
@@ -48,6 +94,7 @@ export async function getStaticProps(value: any) {
       },
     };
   } catch {
+    console.log("the error occur!!");
     return {
       props: {
         data: "error",
@@ -58,7 +105,6 @@ export async function getStaticProps(value: any) {
 // merge
 const InfoPageDetail = <T extends unknown>(props: { data: T }) => {
   const { data } = props;
-  console.log("init data => ", data);
   const router = useRouter();
   const { param } = router.query;
   const species = param ? param[0] : null;
