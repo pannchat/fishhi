@@ -68,6 +68,19 @@ export interface ISupplyRetriveData {
   pump_amount?: any;
 }
 
+export interface IAquaPlantRetriveData {
+  id: number;
+  name: string;
+  min_temperature: number;
+  max_temperature: number;
+  min_pH: number;
+  max_pH: number;
+  description: string;
+  source: null;
+  source_url: null;
+  images: IImage[];
+}
+
 export interface IFishRetriveData {
   id: number;
   name: string;
