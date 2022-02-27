@@ -1,7 +1,8 @@
-import { useMemo } from 'react';
-import useSWR from 'swr';
-import { getAquaplant, getFishListApi } from '../../api';
-import { ISpecies, ISpeciesList } from '../interface';
+import { get } from "lodash";
+import { useMemo } from "react";
+import useSWR from "swr";
+import { getAquaplantApi, getFishListApi, getSupplies } from "../../api";
+import { IContentsParams, ISpecies, ISpeciesList, ISuppliesItem } from "../interface";
 
 export interface ISupplyListItem {
   id: number;
@@ -69,20 +70,20 @@ export interface ISupply {
 //   ]
 // }
 
-export default function useContents(type: string, initData?: any) {
+export default function useContents(type: string, initData?: any, params?: IContentsParams) {
   const { data, error } = useSWR(
-    `contents_${type}`,
+    [`contents`, type, params],
     () => {
-      if (type === 'aquaplant') {
-        return getAquaplant();
+      if (type === "aquaplant") {
+        return getAquaplantApi(params);
       }
 
-      if (type === 'fish') {
+      if (type === "fish") {
         return getFishListApi();
       }
 
-      if (type === 'supplies') {
-        return;
+      if (type === "supplies") {
+        return getSupplies(params);
       }
 
       return null;
@@ -90,16 +91,22 @@ export default function useContents(type: string, initData?: any) {
     { fallbackData: initData },
   );
 
+  interface IContentData {
+    id: number;
+    product_name: string;
+    thumbnail?: string | null;
+  }
+
   const contentsData = useMemo(() => {
     const tempData: ISpecies[] = [];
-    if (data && type === 'aquaplant') {
+    if (data && type === "aquaplant") {
       data.map((spec: any) => {
         const { id, min_pH, max_pH, name, images, max_temperature, min_temperature, description } = spec;
 
         tempData.push({
           id: id,
           name: name,
-          thumbnail: images && images.length > 0 ? images[0].image_url : '',
+          thumbnail: images && images.length > 0 ? images[0].image_url : "",
           description: description,
           minPH: min_pH,
           maxPH: max_pH,
@@ -109,20 +116,32 @@ export default function useContents(type: string, initData?: any) {
       });
     }
 
-    if (data && type === 'fish') {
+    if (data && type === "fish") {
       data.map((fish: IFishListItem, index: number) => {
         const { id, species, thumbnail, description } = fish;
         tempData.push({
           id: id,
           name: species,
-          thumbnail: thumbnail || '',
+          thumbnail: thumbnail || "",
           description: description,
         });
       });
     }
 
+    // 용품 api
+    if (data && type === "supplies") {
+      data.map((supply: IContentData, index: number) => {
+        const { id, product_name, thumbnail } = supply;
+        tempData.push({
+          id: id,
+          name: product_name,
+          thumbnail: thumbnail || "",
+        });
+      });
+    }
+
     return tempData;
-  }, [data]);
+  }, [data, type]);
 
   return {
     data: contentsData.length > 0 ? contentsData : null,
