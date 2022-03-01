@@ -9,7 +9,7 @@ interface IInterSectionObserverProps {
 export default function useIntersectionObserver(props: IInterSectionObserverProps) {
   const { option, stopObserveInterSecting = false } = props;
   const { root, rootMargin, threshold } = option;
-  const targetRef = useRef<HTMLElement>();
+  const targetRef = useRef<HTMLDivElement>(null);
   const [observer, setObserver] = useState<IntersectionObserver | null>(null);
   const [isInterSecting, setIsInterSecting] = useState<boolean>(false);
 
