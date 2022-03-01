@@ -1,6 +1,7 @@
 import { get } from "lodash";
 import { useMemo } from "react";
 import useSWR from "swr";
+
 import { getAquaplantApi, getFishListApi, getSupplies } from "../../api";
 import { IContentsParams, ISpecies, ISpeciesList, ISuppliesItem } from "../interface";
 
@@ -147,4 +148,11 @@ export default function useContents(type: string, initData?: any, params?: ICont
     data: contentsData.length > 0 ? contentsData : null,
     species: type,
   } as ISpeciesList;
+}
+function useSWRInfinite(
+  arg0: (string | IContentsParams | undefined)[],
+  arg1: () => Promise<import("../interface").IAquaplant[]> | Promise<IFishListResponse> | Promise<ISuppliesItem> | null,
+  arg2: { fallbackData: any },
+): { data: any; error: any } {
+  throw new Error("Function not implemented.");
 }

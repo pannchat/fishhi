@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable jsx-a11y/alt-text */
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import ListView from "../../../shared/commonComponent/listView";
 import useMouseHover from "../../../shared/hooks/useMouseHover";
 import LinkCustom from "../../../shared/commonComponent/link";
@@ -12,12 +12,18 @@ import { IAquaplant, ISpecies } from "../../../shared/interface";
 import { AspectRatio } from "@chakra-ui/react";
 import ImagePath from "../../../shared/imagePath";
 import Spacing from "../../../shared/commonComponent/spacing";
+import InfiniteScrollWrapper from "../../infiniteScrollWrapper";
 
 const Species = <T extends unknown>(props: { species: string; initData?: T }) => {
   const { species, initData } = props;
-  const { data } = useContents(species, initData);
+  const [offset, setOffset] = useState<number>(8);
+  const { data } = useContents(species, initData, { offset: offset });
   const { refinedObj } = getEumEntries(FishSpeciesName);
   const speciesName = refinedObj[species];
+
+  const fetchMoreHalder = useCallback(() => {
+    // setOffset(offset + 8);
+  }, []);
 
   if (data && data.length < 1) return null;
   return (
@@ -25,6 +31,7 @@ const Species = <T extends unknown>(props: { species: string; initData?: T }) =>
       <Spacing height={20} />
       <h1 className="species-list-title">{speciesName}</h1>
       <Spacing height={20} />
+
       <ListView
         list={data}
         column={2}
@@ -32,6 +39,7 @@ const Species = <T extends unknown>(props: { species: string; initData?: T }) =>
         gap={20}
         ListItem={(props: ISpecies) => <SpeciesItem data={props} species={species} />}
       />
+
       <Spacing height={50} />
       <style jsx>{`
         .species-list-title {
