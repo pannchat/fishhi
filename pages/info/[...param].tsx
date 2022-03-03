@@ -8,6 +8,7 @@ import {
   getSupplies,
   getSupplyRetriveApi,
 } from "../../api";
+import Contents from "../../components/contents";
 import ErrorView from "../../components/errorView";
 import Species from "../../components/info/species";
 import SpeciesDetail from "../../components/info/speciesDetail";
@@ -109,12 +110,13 @@ const InfoPageDetail = <T extends unknown>(props: { data: T }) => {
   const { param } = router.query;
   const species = param ? param[0] : null;
   const id = param ? param[1] : null;
+
   if (data === "error") {
     return <ErrorView />;
   }
 
   if (!species) return null;
-  if (!id) return <Species species={species} initData={data} />;
+  if (!id) return <Contents type={species} />;
   return <SpeciesDetail id={id} type={species} initData={data} />;
 };
 

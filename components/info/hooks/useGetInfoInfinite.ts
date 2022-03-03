@@ -6,21 +6,21 @@ interface IUseGetInfoInfiniteProps {
   type: string;
   params?: IContentsParams;
 }
-
+// WIP
 export default function useGetInfoInfinite(props: IUseGetInfoInfiniteProps) {
   const { type, params } = props;
   const { data, error, size, setSize } = useSWRInfinite<IAquaplant[] | ISuppliesItem | IFishListResponse | null>(
-    index => [type, params, index, "useGetInfoInfinite"],
-    () => {
-      if (type === "fish") return getFishListApi(params);
+    index => [index, type, params, "useGetInfoInfinite"],
+    index => {
+      const curIndex = index as number;
+      console.log("### curIndex => ", curIndex);
+      if (type === "fish") return getFishListApi({ limit: 10 });
       if (type === "aquaplant") return getAquaplantApi(params);
       if (type === "supplies") return getSupplies(params);
 
       return null;
     },
   );
-
-  console.log(data);
 
   return {
     data,
