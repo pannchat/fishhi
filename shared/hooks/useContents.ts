@@ -1,4 +1,3 @@
-import { get } from "lodash";
 import { useMemo } from "react";
 import useSWR from "swr";
 
@@ -47,29 +46,6 @@ export interface ISupply {
     image_url: string[];
   };
 }
-
-// {
-//   'id' : 1
-//   'category' : 'medicine',
-//   'product_name' : '생선용 박카스',
-//   'manufacturer' : '농심',
-//   'manual_text' : '힘이 쑥쑥~',
-//   'base_medicine': '카페인',
-//   'standard_amount' : 100,
-//   'input_amount' : 100,
-//   'input_unit' : 'ml',
-//   'disease' : '만성피로',
-//   'spec' : '',
-//   'pump_amount' : '',
-//   'source' : '박지원 뇌',
-//   'source_url' : 'fishhi.com',
-//   'images' : [
-//       {'image_url' : 'supplies_images_1.jpg'}
-//   ],
-//   'manual_images' : [
-//       {'image_url' : 'supplies_manual_iamge_1.jpg'}
-//   ]
-// }
 
 export default function useContents(type: string, initData?: any, params?: IContentsParams) {
   const { data, error } = useSWR(
@@ -148,11 +124,4 @@ export default function useContents(type: string, initData?: any, params?: ICont
     data: contentsData.length > 0 ? contentsData : null,
     species: type,
   } as ISpeciesList;
-}
-function useSWRInfinite(
-  arg0: (string | IContentsParams | undefined)[],
-  arg1: () => Promise<import("../interface").IAquaplant[]> | Promise<IFishListResponse> | Promise<ISuppliesItem> | null,
-  arg2: { fallbackData: any },
-): { data: any; error: any } {
-  throw new Error("Function not implemented.");
 }

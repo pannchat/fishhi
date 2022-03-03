@@ -19,8 +19,8 @@ export async function getSuppliesProduct() {
   return data;
 }
 
-export async function getFishListApi() {
-  const { data } = await axios.get<IFishListResponse>("/fish/");
+export async function getFishListApi(params?: IContentsParams) {
+  const { data } = await axios.get<IFishListResponse>(`/fish/?${params ? getParamsString(params) : ""}`);
 
   return data;
 }

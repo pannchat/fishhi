@@ -1,7 +1,8 @@
-import React from 'react';
-import Title from '../shared/commonComponent/title';
-import ImagePath from '../shared/imagePath';
-import UrlPath from '../shared/urlPath';
+import React from "react";
+import Title from "../shared/commonComponent/title";
+import ImagePath from "../shared/imagePath";
+import UrlPath from "../shared/urlPath";
+import useGetAquaPlant from "./info/hooks/useGetAquaPlant";
 // merge
 const Main = () => {
   return (

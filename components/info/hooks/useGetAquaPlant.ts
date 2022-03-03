@@ -1,14 +1,19 @@
-import useSWR from "swr";
 import { getAquaplantApi } from "../../../api";
 import { IContentsParams } from "../../../shared/interface";
-
+import useSWRInfinite from "swr/infinite";
 export default function useGetAquaPlant(params?: IContentsParams) {
-  const { data, error } = useSWR(["useGetAquaPlant", params], () => {
-    return getAquaplantApi(params);
-  });
+  const { data, error, size, setSize } = useSWRInfinite(
+    index => `getAquaPlant${index}`,
+    () => {
+      if (params) return getAquaplantApi(params);
+      return null;
+    },
+  );
 
   return {
     data,
-    error,
+    isLoading: !data && !error,
+    size,
+    setSize,
   };
 }
