@@ -6,7 +6,7 @@ interface IUseGetInfoInfiniteProps {
   type: string;
   params?: IContentsParams;
 }
-
+// WIP
 export default function useGetInfoInfinite(props: IUseGetInfoInfiniteProps) {
   const { type, params } = props;
   const { data, error, size, setSize } = useSWRInfinite<IAquaplant[] | ISuppliesItem | IFishListResponse | null>(
