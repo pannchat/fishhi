@@ -1,4 +1,5 @@
 import axios from "axios";
+import { IUseGetInfoInfiniteResponse } from "../components/info/hooks/useGetInfoInfinite";
 import { getParamsString } from "../shared/funtion";
 import { IFishListResponse } from "../shared/hooks/useContents";
 import { IGetSuppliesProductResponse } from "../shared/hooks/useSuppliesProduct";
@@ -20,7 +21,7 @@ export async function getSuppliesProduct() {
 }
 
 export async function getFishListApi(params?: IContentsParams) {
-  const { data } = await axios.get<IFishListResponse>(`/fish/?${params ? getParamsString(params) : ""}`);
+  const { data } = await axios.get<IUseGetInfoInfiniteResponse>(`/fish/?${params ? getParamsString(params) : ""}`);
 
   return data;
 }
