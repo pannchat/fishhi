@@ -1,9 +1,11 @@
-import React, { ReactNode, useEffect } from "react";
+import React, { ReactNode, useCallback, useEffect, useState } from "react";
 import useIntersectionObserver from "../shared/hooks/useIntersectionObserver";
 
 interface IInfiniteScrollWrapperProps {
   children: ReactNode;
+  canFetchMore: boolean;
   fetchMore: () => void;
+  isLoading?: boolean;
   loadingComponent?: ReactNode;
   keepAliveObserver?: boolean;
   horizontal?: boolean;
@@ -13,7 +15,9 @@ interface IInfiniteScrollWrapperProps {
 const InfiniteScrollWrapper = (props: IInfiniteScrollWrapperProps) => {
   const {
     children,
+    canFetchMore,
     loadingComponent,
+    isLoading,
     keepAliveObserver = true,
     horizontal = false,
     intersectionObserverOption,
@@ -21,11 +25,21 @@ const InfiniteScrollWrapper = (props: IInfiniteScrollWrapperProps) => {
     fetchMore,
   } = props;
 
+  const [callFetch, setCallFetch] = useState<boolean>(false);
+  const onIntersectHandler = useCallback(() => {
+    setCallFetch(true);
+  }, [setCallFetch]);
+  useEffect(() => {
+    if (callFetch && canFetchMore && !isLoading) {
+      fetchMore();
+      setCallFetch(false);
+    }
+  }, [callFetch, fetchMore, canFetchMore, isLoading]);
   return (
     <div className={`infinite-scroll-wrapper`}>
       {children}
       <Trigger
-        onIntersect={fetchMore}
+        onIntersect={onIntersectHandler}
         horizontal={horizontal}
         keepObserverAlive={keepAliveObserver}
         intersectionObserverOption={intersectionObserverOption}
@@ -54,11 +68,12 @@ const Trigger = (props: {
 }) => {
   const { onIntersect, horizontal, keepObserverAlive, intersectionObserverOption } = props;
   const { isInterSecting, targetRef } = useIntersectionObserver({
-    option: intersectionObserverOption ?? {},
+    option: intersectionObserverOption,
     stopObserveInterSecting: keepObserverAlive,
   });
   useEffect(() => {
     if (isInterSecting) {
+      console.log("### on intersecti");
       onIntersect();
     }
   }, [isInterSecting, onIntersect]);

@@ -2,19 +2,19 @@ import { useFocusEffect } from "@chakra-ui/hooks";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 interface IInterSectionObserverProps {
-  option: IntersectionObserverInit;
+  option?: IntersectionObserverInit;
   stopObserveInterSecting?: boolean;
 }
 
 export default function useIntersectionObserver(props: IInterSectionObserverProps) {
   const { option, stopObserveInterSecting = false } = props;
-  const { root, rootMargin, threshold } = option;
   const targetRef = useRef<HTMLDivElement>(null);
   const [observer, setObserver] = useState<IntersectionObserver | null>(null);
   const [isInterSecting, setIsInterSecting] = useState<boolean>(false);
 
   const callback = useCallback(
     (entries: IntersectionObserverEntry[]) => {
+      console.log("### callback");
       const [entry] = entries;
       const needToSet = stopObserveInterSecting
         ? entry.isIntersecting && !isInterSecting
@@ -28,18 +28,22 @@ export default function useIntersectionObserver(props: IInterSectionObserverProp
   const intersectionObserverConsturctor = useCallback(
     (param: { option?: IntersectionObserverInit; callback?: (entries: IntersectionObserverEntry[]) => void }) => {
       const { option, callback } = param;
-
+      console.log("### intersection observer constructor");
       if (callback) {
         const intersectionObserver = new IntersectionObserver(callback, option);
         if (targetRef.current) {
           intersectionObserver.observe(targetRef.current);
         }
         setObserver(intersectionObserver);
-        return () => intersectionObserver.disconnect();
+        intersectionObserver.disconnect();
       }
     },
     [],
   );
+
+  useEffect(() => {
+    console.log("### stopObserveInterSecting");
+  }, [stopObserveInterSecting]);
 
   useEffect(() => {
     intersectionObserverConsturctor({ option, callback });

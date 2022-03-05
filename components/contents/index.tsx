@@ -1,5 +1,6 @@
 import { useRouter } from "next/dist/client/router";
-import React, { useEffect, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
+import InfiniteScrollWrapper from "../infiniteScrollWrapper";
 import useGetInfoInfinite from "../info/hooks/useGetInfoInfinite";
 
 interface IContetnsProps {
@@ -7,12 +8,41 @@ interface IContetnsProps {
 }
 const Contents = (props: IContetnsProps) => {
   const { type } = props;
-  const { data, size, setSize } = useGetInfoInfinite({ type: type });
-  console.log("data => ", data);
-  useEffect(() => {
+  const { data, isLoading, size, setSize } = useGetInfoInfinite({ type: type });
+  const canFetchMore = useMemo(() => {
+    if (data && data.length > 0) {
+      const curData = data[data.length - 1];
+
+      if ((curData as any)["next"]) {
+        return true;
+      }
+    }
+
+    return false;
+  }, [data]);
+
+  const fetchMoreHandler = useCallback(() => {
     setSize(size + 1);
-  }, []);
-  return <div></div>;
+  }, [size, setSize]);
+
+  if (!isLoading && !data) return <></>;
+
+  return (
+    <div>
+      <InfiniteScrollWrapper fetchMore={fetchMoreHandler} canFetchMore={canFetchMore} isLoading={isLoading}>
+        <div>
+          {data?.map((value, index) => {
+            if (value) {
+              const { results } = value;
+              console.log("results => ", results);
+              return <p key={`data${index}`}>{}</p>;
+            }
+            return <></>;
+          })}
+        </div>
+      </InfiniteScrollWrapper>
+    </div>
+  );
 };
 
 export default Contents;
