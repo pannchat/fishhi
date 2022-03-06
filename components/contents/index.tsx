@@ -36,32 +36,37 @@ const Contents = (props: IContetnsProps) => {
   return (
     <div>
       <h1 className="content-title">{speciesName}</h1>
-      <InfiniteScrollWrapper
-        fetchMore={fetchMoreHandler}
-        canFetchMore={canFetchMore}
-        isLoading={isLoading}
-        hasNextPage={canFetchMore}
-      >
-        <div>
-          {data?.map((value, index) => {
-            if (value) {
-              const { results } = value;
-              return (
-                <div className="contents-wrapper" key={`contents${index}`}>
-                  {results.map((content, i) => {
-                    return (
-                      <div key={`speciesItem${index}${i}`} className="contents">
-                        <SpeciesItem data={content} species={type} />
-                      </div>
-                    );
-                  })}
-                </div>
-              );
-            }
-            return <></>;
-          })}
-        </div>
-      </InfiniteScrollWrapper>
+      <div>
+        <InfiniteScrollWrapper
+          fetchMore={fetchMoreHandler}
+          canFetchMore={canFetchMore}
+          isLoading={isLoading}
+          hasNextPage={canFetchMore}
+          intersectionObserverOption={{
+            rootMargin: "10px",
+          }}
+        >
+          <div>
+            {data?.map((value, index) => {
+              if (value) {
+                const { results } = value;
+                return (
+                  <div className="contents-wrapper" key={`contents${index}`}>
+                    {results.map((content, i) => {
+                      return (
+                        <div key={`speciesItem${index}${i}`} className="contents">
+                          <SpeciesItem data={content} species={type} />
+                        </div>
+                      );
+                    })}
+                  </div>
+                );
+              }
+              return <></>;
+            })}
+          </div>
+        </InfiniteScrollWrapper>
+      </div>
       <style jsx>{`
         .contents-wrapper {
           width: 100%;
