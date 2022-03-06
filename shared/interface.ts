@@ -45,6 +45,15 @@ export interface IContentsParams {
   limit?: number;
 }
 
+export interface IContentsItem {
+  id: number;
+  thumbnail: string;
+  species?: string;
+  description?: string;
+  name?: string;
+  product_name?: string;
+}
+
 export interface IImage {
   image_url: string;
   is_main?: boolean;

@@ -1,4 +1,4 @@
-import { IAquaplant, IContentsParams, ISuppliesItem } from "../../../shared/interface";
+import { IAquaplant, IContentsItem, IContentsParams, ISuppliesItem } from "../../../shared/interface";
 import useSWRInfinite from "swr/infinite";
 import { getAquaplantApi, getFishListApi, getSupplies } from "../../../api";
 import { IFishListResponse } from "../../../shared/hooks/useContents";
@@ -11,7 +11,7 @@ export interface IUseGetInfoInfiniteResponse {
   count: number;
   next: string | null;
   previous: string | null;
-  results: any[];
+  results: IContentsItem[];
 }
 // WIP
 export default function useGetInfoInfinite(props: IUseGetInfoInfiniteProps) {
