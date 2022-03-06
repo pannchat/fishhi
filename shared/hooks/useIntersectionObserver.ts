@@ -14,7 +14,6 @@ export default function useIntersectionObserver(props: IInterSectionObserverProp
 
   const callback = useCallback(
     (entries: IntersectionObserverEntry[]) => {
-      console.log("### callback");
       const [entry] = entries;
       const needToSet = stopObserveInterSecting
         ? entry.isIntersecting && !isInterSecting
@@ -28,22 +27,19 @@ export default function useIntersectionObserver(props: IInterSectionObserverProp
   const intersectionObserverConsturctor = useCallback(
     (param: { option?: IntersectionObserverInit; callback?: (entries: IntersectionObserverEntry[]) => void }) => {
       const { option, callback } = param;
-      console.log("### intersection observer constructor");
+
       if (callback) {
         const intersectionObserver = new IntersectionObserver(callback, option);
         if (targetRef.current) {
           intersectionObserver.observe(targetRef.current);
         }
+
         setObserver(intersectionObserver);
-        intersectionObserver.disconnect();
+        return () => intersectionObserver.disconnect();
       }
     },
     [],
   );
-
-  useEffect(() => {
-    console.log("### stopObserveInterSecting");
-  }, [stopObserveInterSecting]);
 
   useEffect(() => {
     intersectionObserverConsturctor({ option, callback });

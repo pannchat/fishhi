@@ -8,7 +8,7 @@ import UrlPath from "../../../shared/urlPath";
 import { FishSpeciesName } from "../../../shared/enum";
 import { getEumEntries } from "../../../shared/funtion";
 import useContents from "../../../shared/hooks/useContents";
-import { IAquaplant, ISpecies } from "../../../shared/interface";
+import { IAquaplant, IContentsItem, ISpecies } from "../../../shared/interface";
 import { AspectRatio } from "@chakra-ui/react";
 import ImagePath from "../../../shared/imagePath";
 import Spacing from "../../../shared/commonComponent/spacing";
@@ -52,16 +52,17 @@ const Species = <T extends unknown>(props: { species: string; initData?: T }) =>
 
 export default Species;
 
-export const SpeciesItem = (props: { data: ISpecies; species: string }) => {
+export const SpeciesItem = (props: { data: IContentsItem; species: string }) => {
   const { data, species } = props;
-  const { thumbnail, name, product_name, id } = data;
+  const { thumbnail, name, product_name, description, id } = data;
   const { isHover, onMouseEnterHandler, onMouseLeaveHandler } = useMouseHover();
 
-  const usingName = useMemo(() => {
+  const title = useMemo(() => {
     if (name) return name;
     if (product_name) return product_name;
-    return name;
-  }, [name, product_name]);
+    if (description) return description;
+    return null;
+  }, [name, product_name, description]);
 
   const onErrorHandler = useCallback((e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     e.currentTarget.style.position = "absolute";
@@ -99,7 +100,7 @@ export const SpeciesItem = (props: { data: ISpecies; species: string }) => {
         </AspectRatio>
 
         <div className="info-detail-item-description">
-          <p className="info-detail-item__title">{usingName}</p>
+          <p className="info-detail-item__title">{title}</p>
         </div>
       </div>
 

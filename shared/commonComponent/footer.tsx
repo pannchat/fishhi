@@ -1,12 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
-import { AspectRatio } from '@chakra-ui/layout';
-import { Skeleton } from '@chakra-ui/skeleton';
-import React from 'react';
-import { CSSProperties } from 'styled-components';
-import useFooterVisible from '../hooks/useFooterVisible';
-import CustomImage from './image';
-import LinkCustom from './link';
-import Spacing from './spacing';
+import { AspectRatio } from "@chakra-ui/layout";
+import { Skeleton } from "@chakra-ui/skeleton";
+import React from "react";
+import { CSSProperties } from "styled-components";
+import useFooterVisible from "../hooks/useFooterVisible";
+import CustomImage from "./image";
+import LinkCustom from "./link";
+import Spacing from "./spacing";
 
 interface IFooterProps {
   footerItems: IFooterItemProps[];
@@ -33,6 +33,7 @@ const Footer = (props: IFooterProps) => {
           height: 75px;
           position: fixed;
           bottom: 0;
+          background-color: white;
           border-top: 1px solid #d2d2d2;
 
           display: flex;
@@ -41,6 +42,7 @@ const Footer = (props: IFooterProps) => {
           background-color: white;
           padding-left: 10px;
           padding-right: 10px;
+          z-index: 700;
         }
       `}</style>
     </>
