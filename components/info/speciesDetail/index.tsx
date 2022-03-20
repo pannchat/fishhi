@@ -1,7 +1,9 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
+import { AspectRatio } from "@chakra-ui/layout";
 import React, { useMemo } from "react";
 import { GREY_COLOR } from "../../../shared/color";
+import CustomImage from "../../../shared/commonComponent/image";
 import ListView from "../../../shared/commonComponent/listView";
 import Spacing from "../../../shared/commonComponent/spacing";
 import ErrorView from "../../errorView";
@@ -22,16 +24,23 @@ const AQUAPLANT_SPEC_KEYS = {
   min_pH: "최소 PH",
   max_pH: "최대 PH",
 };
+
+interface ISpeciesDetailData {}
 const SpeciesDetail = <T extends unknown>(props: { id: string; type: string; initData?: T }) => {
   const { type, id, initData } = props;
   const { data, error } = useGetContentsDetail(type, id, initData);
+  const image = useMemo(() => {
+    if (!data) return null;
+    const { images } = data;
+    if (!images || images.length < 1) return null;
+    return images[0].image_url as string;
+  }, [data]);
 
   const specKeys = useMemo(() => {
     if (type === "fish") return FISH_SPEC_KEYS;
     if (type === "aquaplant") return AQUAPLANT_SPEC_KEYS;
   }, [type]);
   const specList = useMemo(() => {
-    console.log("data => ", data);
     if (data) {
       const temp: ISpecData[] = [];
 
@@ -49,29 +58,59 @@ const SpeciesDetail = <T extends unknown>(props: { id: string; type: string; ini
     return null;
   }, [data, specKeys]);
   if (error) return <ErrorView />;
-  console.log("specList => ", specList);
+
   return (
     <div>
-      <div>
-        {specList?.map((specData, index) => {
-          const { name, spec } = specData;
-          return (
-            <SpecBox
-              key={`specList${spec}${index}`}
-              name={name}
-              spec={spec}
-              color={GREY_COLOR}
-              specColor={"white"}
-              width={"40%"}
-              height={50}
-              style={{
-                fontWeight: 700,
-                borderRadius: 5,
-              }}
-            />
-          );
-        })}
-      </div>
+      {image && (
+        <div className="psecies-image">
+          <CustomImage src={image} width={"90%"} ratio={1 / 1} />
+        </div>
+      )}
+
+      {specList && specList.length > 0 && (
+        <>
+          <p className="species-title">상세 정보</p>
+          <div className="spec-list__wrapper">
+            {specList?.map((specData, index) => {
+              const { name, spec } = specData;
+              return (
+                <SpecBox
+                  key={`specList${spec}${index}`}
+                  name={name}
+                  spec={spec}
+                  color={GREY_COLOR}
+                  specColor={"white"}
+                  width={"100%"}
+                  style={{
+                    fontWeight: 700,
+                    borderRadius: 5,
+                  }}
+                />
+              );
+            })}
+          </div>
+        </>
+      )}
+
+      <style jsx>{`
+        .psecies-image {
+          display: flex;
+          justify-content: center;
+        }
+
+        .species-title {
+          font-size: 16px;
+          font-weight: 500;
+          padding-top: 10px;
+          padding-bottom: 10px;
+        }
+        .spec-list__wrapper {
+          display: grid;
+          grid-template-columns: repeat(2, 50%);
+          column-gap: 20px;
+          row-gap: 15px;
+        }
+      `}</style>
     </div>
   );
 };
