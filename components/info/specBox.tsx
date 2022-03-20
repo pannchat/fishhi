@@ -31,7 +31,7 @@ const SpecBox = (props: ISpecBox) => {
         ...style,
       }}
     >
-      {img ? <FHImage src={img} width={imgWidth} height={imgHeight} /> : <div></div>}
+      {img ? <FHImage src={img} width={imgWidth} height={imgHeight} /> : <></>}
 
       <div className="spec-box-footer">
         <p
@@ -61,7 +61,6 @@ const SpecBox = (props: ISpecBox) => {
         }
 
         .spec-box-footer {
-          height: 100%;
           margin-top: auto;
           margin-bottom: auto;
         }
