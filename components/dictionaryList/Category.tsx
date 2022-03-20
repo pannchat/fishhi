@@ -15,19 +15,19 @@ import { FiChevronDown } from 'react-icons/fi';
 import { categoryType } from './index';
 import styles from './index.module.scss';
 
-const Category = () => {
-    const [category, setCategory] = useState<string>(categoryType.default)
-    const clickMenuItem = (item : string) => {
-        setCategory(item)
-    }
+const Category = (props: any) => {
+    // const [category, setCategory] = useState<string>(categoryType.default)
+    const clickMenuItem = (item: string) => {
+        props.setCategory(item);
+    };
     return (
-        <div className={styles['category--select']}>
+        <div className={styles['category__select']}>
             <Menu>
                 <MenuButton as={Button} rightIcon={<FiChevronDown />}>
-                    {category}
+                    {props.category}
                 </MenuButton>
                 <MenuList>
-                    <MenuItem id={categoryType.fish} minH='40px' onClick={(e)=>clickMenuItem(categoryType.fish)} >
+                    <MenuItem id={categoryType.fish} minH='40px' onClick={(e) => clickMenuItem(categoryType.fish)} >
                         <Image
                             boxSize='2rem'
                             borderRadius='full'
@@ -38,7 +38,7 @@ const Category = () => {
                         <span>{categoryType.fish}</span>
                     </MenuItem>
 
-                    <MenuItem minH='48px' onClick={(e)=>clickMenuItem(categoryType.aquaplant)}>
+                    <MenuItem minH='48px' onClick={(e) => clickMenuItem(categoryType.aquaplant)}>
                         <Image
                             boxSize='2rem'
                             borderRadius='full'
@@ -48,7 +48,7 @@ const Category = () => {
                         />
                         <span>{categoryType.aquaplant}</span>
                     </MenuItem>
-                    <MenuItem minH='40px' onClick={(e)=>clickMenuItem(categoryType.supplies)}>
+                    <MenuItem minH='40px' onClick={(e) => clickMenuItem(categoryType.supplies)}>
                         <Image
                             boxSize='2rem'
                             borderRadius='full'
@@ -62,6 +62,6 @@ const Category = () => {
             </Menu>
         </div>
     );
-}
+};
 
 export default Category;
