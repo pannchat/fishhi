@@ -131,7 +131,7 @@ function addSupplies() {
       });
       if (suppliesRes.status === 201) {
         toast({
-          description: "Fish Created",
+          description: "Supplies Created",
           status: "success",
           duration: 3000,
           isClosable: true,

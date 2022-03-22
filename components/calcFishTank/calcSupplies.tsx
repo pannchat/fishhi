@@ -29,7 +29,7 @@ const CalcSupplies = (props: { suppliesList: ISupplies[], waterCapacity: number;
               <div className={styles["test2"]}>
                 <p className={styles["supply-product-name"]}>{product_name}</p>
                 <p>
-                  권장 사용량 : {standard_amount}L 당 {input_amount}cc
+                  권장 사용량 : {standard_amount}L 당 {input_amount} {input_unit}
                 </p>
                 <p>
                   내 어항 사용량 :{' '}
