@@ -41,7 +41,7 @@ export async function postUserLogin(value: ILoginParam) {
 }
 
 export async function getAquaplantApi(params?: IContentsParams) {
-  const { data } = await axios.get<IAquaplant[]>(`/aquaplant/?${params ? getParamsString(params) : ""}`);
+  const { data } = await axios.get<IUseGetInfoInfiniteResponse>(`/aquaplant/?${params ? getParamsString(params) : ""}`);
 
   return data;
 }
@@ -57,7 +57,9 @@ export async function getSuppliesCalculate(param?: IContentsParams) {
 }
 
 export async function getSupplies(param?: IContentsParams) {
-  const { data } = await axios.get<ISuppliesItem>(`/supplies/${param ? `?${getParamsString(param)}` : ""}`);
+  const { data } = await axios.get<IUseGetInfoInfiniteResponse>(
+    `/supplies/${param ? `?${getParamsString(param)}` : ""}`,
+  );
   return data;
 }
 

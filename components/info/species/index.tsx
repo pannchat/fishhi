@@ -20,6 +20,7 @@ const Species = <T extends unknown>(props: { species: string; initData?: T }) =>
   const { data } = useContents(species, initData, { offset: offset });
   const { refinedObj } = getEumEntries(FishSpeciesName);
   const speciesName = refinedObj[species];
+  console.log("### data => ", data);
 
   const fetchMoreHalder = useCallback(() => {
     // setOffset(offset + 8);
@@ -53,16 +54,14 @@ const Species = <T extends unknown>(props: { species: string; initData?: T }) =>
 export default Species;
 
 export const SpeciesItem = (props: { data: IContentsItem; species: string }) => {
-  const { data, species } = props;
-  const { thumbnail, name, product_name, description, id } = data;
+  const { data, species: type } = props;
+  const { thumbnail, species, name, product_name, description, id } = data;
   const { isHover, onMouseEnterHandler, onMouseLeaveHandler } = useMouseHover();
 
   const title = useMemo(() => {
-    if (name) return name;
-    if (product_name) return product_name;
-    if (description) return description;
+    if (species) return species;
     return null;
-  }, [name, product_name, description]);
+  }, [species]);
 
   const onErrorHandler = useCallback((e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     e.currentTarget.style.position = "absolute";
@@ -75,7 +74,7 @@ export const SpeciesItem = (props: { data: IContentsItem; species: string }) => 
     e.currentTarget.src = ImagePath.placeholder;
   }, []);
   return (
-    <LinkCustom href={UrlPath.speciesDetail(species as string, String(id))}>
+    <LinkCustom href={UrlPath.speciesDetail(type as string, String(id))}>
       <div className="info-detail-item" onMouseEnter={onMouseEnterHandler} onMouseLeave={onMouseLeaveHandler}>
         <AspectRatio ratio={1 / 1} border="1px solid #e5e5e5" borderRadius={10} overflow={"hidden"}>
           {thumbnail ? (
@@ -147,6 +146,11 @@ export const SpeciesItem = (props: { data: IContentsItem; species: string }) => 
           text-align: center;
           margin-top: 5px;
           text-decoration: ${isHover ? "underline" : "none"};
+
+          height: 40px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          -webkit-line-clamp: 1;
         }
       `}</style>
     </LinkCustom>
