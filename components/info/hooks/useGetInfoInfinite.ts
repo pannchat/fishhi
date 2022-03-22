@@ -18,12 +18,18 @@ export default function useGetInfoInfinite(props: IUseGetInfoInfiniteProps) {
   const { type, params } = props;
   const { data, error, size, setSize } = useSWRInfinite<IUseGetInfoInfiniteResponse | null>(
     index => [index, type, params, "useGetInfoInfinite"],
-    index => {
+    async index => {
       const curIndex = index as number;
 
-      if (type === "fish") return getFishListApi({ offset: curIndex * 10, limit: 10 });
-      // if (type === "aquaplant") return getAquaplantApi(params);
-      // if (type === "supplies") return getSupplies(params);
+      if (type === "fish") {
+        return getFishListApi({ offset: curIndex * 10, limit: 10 });
+      }
+      if (type === "aquaplant") {
+        return getAquaplantApi({ offset: curIndex * 10, limit: 10 });
+      }
+      if (type === "supplies") {
+        return getSupplies({ offset: curIndex * 10, limit: 10 });
+      }
 
       return null;
     },
