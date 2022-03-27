@@ -105,7 +105,7 @@ export const SpeciesItem = (props: { data: IContentsItem; species: string }) => 
 
       <style jsx>{`
         .info-detail-item {
-          width: 90%;
+          width: 100%;
           margin-left: auto;
           margin-right: auto;
           cursor: pointer;

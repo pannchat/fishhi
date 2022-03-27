@@ -71,9 +71,10 @@ const Contents = (props: IContetnsProps) => {
         .contents-wrapper {
           width: 100%;
           height: 100%;
-          display: flex;
-          justify-content: space-around;
-          flex-wrap: wrap;
+          display: grid;
+          grid-template-columns: repeat(2, calc(100% / 2 - 15px));
+          column-gap: 30px;
+          grid-row-gap: 20px;
         }
 
         .content-title {
