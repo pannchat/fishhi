@@ -41,6 +41,7 @@ export async function postUserLogin(value: ILoginParam) {
 }
 
 export async function getAquaplantApi(params?: IContentsParams) {
+  console.log("get aquaplant params => ", getParamsString(params));
   const { data } = await axios.get<IUseGetInfoInfiniteResponse>(`/aquaplant/?${params ? getParamsString(params) : ""}`);
 
   return data;

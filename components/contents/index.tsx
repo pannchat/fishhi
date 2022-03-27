@@ -3,18 +3,27 @@ import React, { useCallback, useEffect, useMemo } from "react";
 import Spacing from "../../shared/commonComponent/spacing";
 import { FishSpeciesName } from "../../shared/enum";
 import { getEumEntries } from "../../shared/funtion";
+import { IContentsItem } from "../../shared/interface";
 import InfiniteScrollWrapper from "../infiniteScrollWrapper";
-import useGetInfoInfinite from "../info/hooks/useGetInfoInfinite";
+import useGetInfoInfinite, { IUseGetInfoInfiniteResponse } from "../info/hooks/useGetInfoInfinite";
 import { SpeciesItem } from "../info/species";
+
+export interface IInitData<T> {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: T[];
+}
 
 interface IContetnsProps {
   type: string;
+  initData?: IUseGetInfoInfiniteResponse;
 }
 const Contents = (props: IContetnsProps) => {
-  const { type } = props;
+  const { type, initData } = props;
   const { refinedObj } = getEumEntries(FishSpeciesName);
   const speciesName = refinedObj[type];
-  const { data, isLoading, size, setSize } = useGetInfoInfinite({ type: type });
+  const { data, isLoading, size, setSize } = useGetInfoInfinite({ type: type, initData: initData });
   const canFetchMore = useMemo(() => {
     if (data && data.length > 0) {
       const curData = data[data.length - 1];

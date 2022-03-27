@@ -2,9 +2,12 @@ import { IAquaplant, IContentsItem, IContentsParams, ISuppliesItem } from "../..
 import useSWRInfinite from "swr/infinite";
 import { getAquaplantApi, getFishListApi, getSupplies } from "../../../api";
 import { IFishListResponse } from "../../../shared/hooks/useContents";
+import { IInitData } from "../../contents";
+import { useMemo } from "react";
 interface IUseGetInfoInfiniteProps {
   type: string;
   params?: IContentsParams;
+  initData?: IUseGetInfoInfiniteResponse;
 }
 
 export interface IUseGetInfoInfiniteResponse {
@@ -15,8 +18,15 @@ export interface IUseGetInfoInfiniteResponse {
 }
 // WIP
 export default function useGetInfoInfinite(props: IUseGetInfoInfiniteProps) {
-  const { type, params } = props;
-  const { data, error, size, setSize } = useSWRInfinite<IUseGetInfoInfiniteResponse | null>(
+  const { type, params, initData } = props;
+  const refinedInitData = useMemo(() => {
+    if (initData) {
+      return [initData];
+    }
+
+    return undefined;
+  }, [initData]);
+  const { data, error, size, setSize } = useSWRInfinite<IUseGetInfoInfiniteResponse | null | undefined>(
     index => [index, type, params, "useGetInfoInfinite"],
     async index => {
       const curIndex = index as number;
@@ -33,6 +43,8 @@ export default function useGetInfoInfinite(props: IUseGetInfoInfiniteProps) {
 
       return null;
     },
+
+    { fallbackData: refinedInitData },
   );
 
   return {

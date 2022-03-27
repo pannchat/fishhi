@@ -27,7 +27,7 @@ export async function getStaticProps(value: any) {
     // info list case
     if (param.length < 2) {
       if (category === "fish") {
-        const data = await getFishListApi();
+        const data = await getFishListApi({ offset: 0, limit: 10 });
         return {
           props: {
             data,
@@ -36,7 +36,8 @@ export async function getStaticProps(value: any) {
       }
 
       if (category === "aquaplant") {
-        const data = await getAquaplantApi({ offset: 8 });
+        const data = await getAquaplantApi({ offset: 0, limit: 10 });
+
         return {
           props: {
             data: data,
@@ -45,7 +46,7 @@ export async function getStaticProps(value: any) {
       }
 
       if (category === "supplies") {
-        const data = await getSupplies({ offset: 8 });
+        const data = await getSupplies({ offset: 0, limit: 10 });
         return {
           props: {
             data: data,
@@ -116,7 +117,7 @@ const InfoPageDetail = <T extends unknown>(props: { data: T }) => {
   }
 
   if (!species) return null;
-  if (!id) return <Contents type={species} />;
+  if (!id) return <Contents type={species} initData={data as any} />;
   return <SpeciesDetail id={id} type={species} initData={data} />;
 };
 
