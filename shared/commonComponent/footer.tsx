@@ -1,5 +1,10 @@
+/* eslint-disable @next/next/no-img-element */
+import { AspectRatio } from "@chakra-ui/layout";
+import { Skeleton } from "@chakra-ui/skeleton";
 import React from "react";
 import { CSSProperties } from "styled-components";
+import useFooterVisible from "../hooks/useFooterVisible";
+import CustomImage from "./image";
 import LinkCustom from "./link";
 import Spacing from "./spacing";
 
@@ -10,6 +15,8 @@ interface IFooterProps {
 
 const Footer = (props: IFooterProps) => {
   const { footerItems, style } = props;
+  const { isFooterVisible } = useFooterVisible();
+  if (!isFooterVisible) return <></>;
   return (
     <>
       <div className="footer" style={style}>
@@ -26,6 +33,7 @@ const Footer = (props: IFooterProps) => {
           height: 75px;
           position: fixed;
           bottom: 0;
+          background-color: white;
           border-top: 1px solid #d2d2d2;
 
           display: flex;
@@ -34,6 +42,7 @@ const Footer = (props: IFooterProps) => {
           background-color: white;
           padding-left: 10px;
           padding-right: 10px;
+          z-index: 700;
         }
       `}</style>
     </>
@@ -57,7 +66,8 @@ const FooterItem = (props: IFooterItemProps) => {
 
   return (
     <div className="footer-item" style={{ ...style }}>
-      {image && <img src={image} width={width} height={height} />}
+      {image && <CustomImage src={image} width={width} height={height} ratio={1 / 1} useSkeleton />}
+
       <p className="footer-label">{text}</p>
 
       <style jsx>{`

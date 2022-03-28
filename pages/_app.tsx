@@ -8,13 +8,15 @@ import { AppContextType, NextPageContext } from 'next/dist/shared/lib/utils';
 import { GetStaticProps } from 'next';
 import { SWRConfig } from 'swr';
 import Navbar from '../shared/commonComponent/navBar';
+import { ChakraProvider } from "@chakra-ui/react"
+
 
 const FOOTER_ITEMS = [
   {
-    itemKey: 'hone',
+    itemKey: 'calculator',
     href: '/',
-    text: '홈',
-    image: ImagePath.home,
+    text: '물양계산기',
+    image: ImagePath.calculator,
     width: 35,
     height: 35,
     style: {
@@ -23,33 +25,22 @@ const FOOTER_ITEMS = [
     },
   },
   {
-    itemKey: 'calculrator',
-    href: '/calcFishTank',
-    text: '어항계산기',
-    image: ImagePath.aquarium,
-    width: 40,
-    height: 40,
-    style: {
-      flexBasis: '25%',
-      cursor: 'pointer',
-    },
-  },
-  {
-    itemKey: 'info',
-    text: '피쉬하이 백과',
-    href: '/info',
+    itemKey: 'fish',
+    href: '/info/fish',
+    text: '어종',
     image: ImagePath.fishes,
-    width: 40,
-    height: 40,
+    width: 35,
+    height: 35,
     style: {
       flexBasis: '25%',
       cursor: 'pointer',
     },
   },
+
   {
-    itemKey: 'auth',
-    text: '미정',
-    href: '/',
+    itemKey: 'aquaplant',
+    text: '수초',
+    href: '/info/aquaplant',
     image: ImagePath.aquaPlant,
     width: 40,
     height: 40,
@@ -58,15 +49,30 @@ const FOOTER_ITEMS = [
       cursor: 'pointer',
     },
   },
+  {
+    itemKey: 'supplies',
+    text: '용품',
+    href: '/info/supplies',
+    image: ImagePath.aquariumIcon,
+    width: 38,
+    height: 38,
+    style: {
+      flexBasis: '25%',
+      cursor: 'pointer',
+    },
+  },
 ];
-
+// for merge
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <SWRConfig>
       <RecoilRoot>
+       
         <div className="app">
           <Navbar />
+          <ChakraProvider>
           <Component {...pageProps} />
+          </ChakraProvider>
           <Footer
             footerItems={FOOTER_ITEMS}
             style={{
@@ -81,6 +87,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             }
           `}</style>
         </div>
+       
       </RecoilRoot>
     </SWRConfig>
   );

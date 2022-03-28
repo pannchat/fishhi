@@ -1,34 +1,25 @@
-import { useRouter } from "next/dist/client/router";
-import styled from "styled-components";
-import React, { useCallback, useState } from "react";
-import ImagePath from "../shared/imagePath";
-import SlidingPane from "react-sliding-pane";
-import { useSlidePane } from "../shared/hooks/useSlidePane";
-interface IFish {
-  id: number;
-  name: string;
-  keyword: string[];
-}
+import { useRouter } from 'next/dist/client/router';
+import styled from 'styled-components';
+import React, { useCallback, useState } from 'react';
+import ImagePath from '../shared/imagePath';
+import SlidingPane from 'react-sliding-pane';
+import { useSlidePane } from '../shared/hooks/useSlidePane';
 
-interface IFishDummy {
-  data: IFish[];
-}
-
-const FISH_DUMMY_DATA: IFishDummy = {
+const FISH_DUMMY_DATA = {
   data: [
-    { id: 1, name: "라쿤 타이거 새우", keyword: ["비쉬림프", "쉬림프"] },
-    { id: 2, name: "오렌지 타이거 새우", keyword: ["비쉬림프"] },
-    { id: 3, name: "크리스탈 화이트 새우", keyword: ["오토신"] },
-    { id: 5, name: "다리오다리오", keyword: ["스칼렛바디스"] },
-    { id: 6, name: "아프리카발톱개구리", keyword: ["똥고기"] },
-    { id: 7, name: "구라미", keyword: ["똥고기"] },
-    { id: 8, name: "코리도라스 하스타투스", keyword: ["Corydoras hastatus"] },
+    { id: 1, name: '라쿤 타이거 새우', keyword: ['비쉬림프', '쉬림프'] },
+    { id: 2, name: '오렌지 타이거 새우', keyword: ['비쉬림프'] },
+    { id: 3, name: '크리스탈 화이트 새우', keyword: ['오토신'] },
+    { id: 5, name: '다리오다리오', keyword: ['스칼렛바디스'] },
+    { id: 6, name: '아프리카발톱개구리', keyword: ['똥고기'] },
+    { id: 7, name: '구라미', keyword: ['똥고기'] },
+    { id: 8, name: '코리도라스 하스타투스', keyword: ['Corydoras hastatus'] },
     {
       id: 9,
-      name: "코리도라스 듀프리카레우스",
-      keyword: ["Corydoras duplicareus", "듀플리"],
+      name: '코리도라스 듀프리카레우스',
+      keyword: ['Corydoras duplicareus', '듀플리'],
     },
-    { id: 10, name: "코리도라스 스터바이", keyword: ["Corydoras sterbai"] },
+    { id: 10, name: '코리도라스 스터바이', keyword: ['Corydoras sterbai'] },
   ],
 };
 
@@ -62,31 +53,30 @@ const ResultInform = styled.div`
 
 const FHNavbar = () => {
   const router = useRouter();
-  const [search, setSearch] = useState("");
-  const [text, setText] = useState("");
-  const [suggestion, setSuggestion] = useState<IFish[] | null>(null);
+  const [search, setSearch] = useState('');
+  const [text, setText] = useState('');
+  const [suggestion, setSuggestion] = useState<any | null>(null);
   const { data } = FISH_DUMMY_DATA;
-  const { isPaneOpen, isPaneOpenLeft, isPaneOpenBottom, onClickPane } =
-    useSlidePane();
+  const { isPaneOpen, isPaneOpenLeft, isPaneOpenBottom, onClickPane } = useSlidePane();
   const onChangeHandler = useCallback(
-    (text) => {
-      let matches: IFish[] = [];
-      let matches2: IFish[] = [];
-      text = text.replace("\\", "");
+    text => {
+      let matches: any = [];
+      let matches2: any = [];
+      text = text.replace('\\', '');
       if (text.length > 0) {
-        matches = data.filter((dt) => {
-          const regex = new RegExp(`${text}`, "gi");
+        matches = data.filter(dt => {
+          const regex = new RegExp(`${text}`, 'gi');
           // var test = [...dt.email,...dt.first_name];
 
           return dt.name.match(regex);
         });
       }
       if (text.length > 0) {
-        matches2 = data.filter((dt) => {
-          const regex = new RegExp(`\\${text}`, "gi");
+        matches2 = data.filter(dt => {
+          const regex = new RegExp(`\\${text}`, 'gi');
           // var test = [...dt.email,...dt.first_name];
           let test = null;
-          dt.keyword.map((e) => {
+          dt.keyword.map(e => {
             if (e.match(regex)) {
               test = dt.keyword;
               return;
@@ -103,7 +93,7 @@ const FHNavbar = () => {
       }
       setText(text);
     },
-    [text, suggestion]
+    [text, suggestion],
   );
 
   return (
@@ -112,22 +102,17 @@ const FHNavbar = () => {
       <SearchBtn
         src={ImagePath.search2}
         onClick={() => {
-          onClickPane(!isPaneOpenBottom, "isPaneOpenBottom");
+          onClickPane(!isPaneOpenBottom, 'isPaneOpenBottom');
         }}
         width={20}
         height={20}
         style={{
-          cursor: "pointer",
+          cursor: 'pointer',
         }}
       />
       <SlidingPane
         closeIcon={
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 13 22"
-            width={20}
-            height={20}
-          >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 13 22" width={20} height={20}>
             <path
               fill="currentColor"
               fillRule="evenodd"
@@ -141,16 +126,12 @@ const FHNavbar = () => {
             <input
               className="input-box"
               placeholder="검색어를 입력하세요"
-              onChange={(e) => {
+              onChange={e => {
                 onChangeHandler(e.target.value);
               }}
               value={text}
             />
-            <SearchBtn
-              className="search-btn"
-              src={""}
-              onClick={() => console.log("검색")}
-            />
+            <SearchBtn className="search-btn" src={''} onClick={() => console.log('검색')} />
             {/* <div stlye={searchArea}> */}
 
             {/* </div> */}
@@ -159,11 +140,11 @@ const FHNavbar = () => {
         from="bottom"
         width="100%"
         onRequestClose={() => {
-          onClickPane(!isPaneOpenBottom, "isPaneOpenBottom");
+          onClickPane(!isPaneOpenBottom, 'isPaneOpenBottom');
         }}
       >
         {suggestion && suggestion.length > 0 ? (
-          suggestion.map((suggestion, i) => (
+          suggestion.map((suggestion: any, i: number) => (
             <SearchResultList key={i}>
               {suggestion.name} <hr />
             </SearchResultList>
@@ -199,7 +180,7 @@ const FHNavbar = () => {
           display: flex;
           width: 100%;
           max-width: 500px;
-          justify-content: "center";
+          justify-content: 'center';
           align-items: center;
         }
 
@@ -223,7 +204,7 @@ const FHNavbar = () => {
 export default FHNavbar;
 
 function SlidePaneKey(arg0: boolean, SlidePaneKey: any) {
-  throw new Error("Function not implemented.");
+  throw new Error('Function not implemented.');
 }
 interface IMainNavbarProps {
   value: string;
@@ -234,37 +215,37 @@ interface IMainNavbarProps {
   onClick?: (value?: any) => void;
 }
 
-type MainNavbarItems = Omit<IMainNavbarProps, "onClick">[];
+type MainNavbarItems = Omit<IMainNavbarProps, 'onClick'>[];
 
 const mainNavbarItems: MainNavbarItems = [
   {
-    value: "calcFishTank",
+    value: 'calcFishTank',
     image: ImagePath.aquarium,
-    text: "#어항계산기",
-    imageBackgroundColor: "rgb(239, 242, 198)",
+    text: '#어항계산기',
+    imageBackgroundColor: 'rgb(239, 242, 198)',
     isOpen: true,
   },
 
   {
-    value: "",
+    value: '',
     image: ImagePath.aquaPlant,
-    text: "텍스트",
-    imageBackgroundColor: "rgb(230, 252, 245)",
+    text: '텍스트',
+    imageBackgroundColor: 'rgb(230, 252, 245)',
     isOpen: false,
   },
 
   {
-    value: "",
+    value: '',
     image: ImagePath.fish,
-    text: "텍스트",
-    imageBackgroundColor: "rgb(255, 244, 230)",
+    text: '텍스트',
+    imageBackgroundColor: 'rgb(255, 244, 230)',
     isOpen: false,
   },
   {
-    value: "",
+    value: '',
     image: ImagePath.aquarium2,
-    text: "텍스트",
-    imageBackgroundColor: "rgb(241, 243, 245)",
+    text: '텍스트',
+    imageBackgroundColor: 'rgb(241, 243, 245)',
     isOpen: false,
   },
 ];
@@ -315,7 +296,7 @@ const FNMainNavbarItem = (props: IMainNavbarProps) => {
         >
           <img src={image} width={40} height={40} />
         </div>
-        <p className="main-navbar__text">{isOpen ? text : "#준비중"}</p>
+        <p className="main-navbar__text">{isOpen ? text : '#준비중'}</p>
       </div>
       <style jsx>{`
         .main-nav-bar-item__wrapper {
@@ -340,3 +321,5 @@ const FNMainNavbarItem = (props: IMainNavbarProps) => {
     </div>
   );
 };
+
+// for commit

@@ -1,5 +1,6 @@
 import React from "react";
 import { CSSProperties } from "styled-components";
+import FHImage from "../FHImage";
 
 export interface ISpecData {
   name: string;
@@ -18,18 +19,7 @@ interface ISpecBox extends ISpecData {
 }
 
 const SpecBox = (props: ISpecBox) => {
-  const {
-    img,
-    imgWidth,
-    imgHeight,
-    name,
-    spec,
-    color,
-    width,
-    height,
-    specColor,
-    style,
-  } = props;
+  const { img, imgWidth, imgHeight, name, spec, color, width, height, specColor, style } = props;
   return (
     <div
       className="spec-box"
@@ -41,11 +31,7 @@ const SpecBox = (props: ISpecBox) => {
         ...style,
       }}
     >
-      {img ? (
-        <img src={img} width={imgWidth} height={imgHeight} />
-      ) : (
-        <div></div>
-      )}
+      {img ? <FHImage src={img} width={imgWidth} height={imgHeight} /> : <></>}
 
       <div className="spec-box-footer">
         <p
@@ -75,7 +61,6 @@ const SpecBox = (props: ISpecBox) => {
         }
 
         .spec-box-footer {
-          height: 100%;
           margin-top: auto;
           margin-bottom: auto;
         }

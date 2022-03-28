@@ -1,162 +1,219 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
-import React, { useMemo } from 'react';
-import ListView from '../../../shared/commonComponent/listView';
-import Spacing from '../../../shared/commonComponent/spacing';
-import useSpeciesDetailData, {
-  ISpeciesBaseInfo,
-  ISpeciesDetailInfo,
-  SPECIES_NAME,
-} from '../hooks/useSpeciesDetailData';
-import SpecBox from '../specBox';
+import { AspectRatio } from "@chakra-ui/layout";
+import React, { useMemo } from "react";
+import { GREY_COLOR } from "../../../shared/color";
+import CustomImage from "../../../shared/commonComponent/image";
+import ListView from "../../../shared/commonComponent/listView";
+import Spacing from "../../../shared/commonComponent/spacing";
+import ErrorView from "../../errorView";
+import useGetContentsDetail from "../hooks/useGetContentDetail";
+import SpecBox, { ISpecData } from "../specBox";
 const SPECIES_DETAIL_GAP = 20;
-const SpeciesDetail = (props: { id: string; type: string }) => {
-  const { id, type } = props;
-  const { base, spec, description } = useSpeciesDetailData(id, type);
 
-  if (!base || !spec || !description) return null;
+const FISH_SPEC_KEYS = {
+  standard_length: "평균길이",
+  aquarium_minimum_size: "최소어항크기",
+  min_temperature: "최소물 온도",
+  max_temperature: "최고물 온도",
+};
+
+const AQUAPLANT_SPEC_KEYS = {
+  min_temperature: "최고물 온도",
+  max_temperature: "최소물 온도",
+  min_pH: "최소 PH",
+  max_pH: "최대 PH",
+};
+
+const SUPPLIES_SPEC_KEYS = {
+  manufacturer: "제조사",
+  base_medicine: "기본 약품",
+  standard_amount: "정량",
+  input_amount: "투여량",
+  input_unit: "단위",
+};
+
+//     'id' : 1
+//     'category' : 'medicine',
+//     'product_name' : '생선용 박카스',
+//     'manufacturer' : '농심',
+//     'manual_text' : '힘이 쑥쑥~',
+//     'base_medicine': '카페인',
+//     'standard_amount' : 100,
+//     'input_amount' : 100,
+//     'input_unit' : 'ml',
+//     'disease' : '만성피로',
+//     'spec' : '',
+//     'pump_amount' : '',
+//     'source' : '박지원 뇌',
+//     'source_url' : 'fishhi.com',
+//     'images' : [
+//         {'image_url' : 'supplies_images_1.jpg'}
+//     ],
+//     'manual_images' : [
+//         {'image_url' : 'supplies_manual_iamge_1.jpg'}
+//     ]
+
+// "id": 1,
+// "name": "아누비아스 바테리",
+// "min_temperature": 22,
+// "max_temperature": 28,
+// "min_pH": 6,
+// "max_pH": 7,
+// "description": "아누비아스 바테리는 나이지리아 남동부, 카메룬 및 비오코에서 서식합니다. 잎은 12인치(300mm)까지 자랄 수 있습니다. 아누비아스 바테리는 부분 혹은 완전 잠긴채로 자라고 강한 빛에서 잎이 더 빠르게 자라며 촘촘하게 유지되지만, 낮은 광량에서도 견딜 수 있습니다.",
+// "source": null,
+// "source_url": null,
+// "images": [
+//   {
+//     "image_url": "naver.com",
+//     "is_main": true
+//   }
+// ]
+
+// "id": 1,
+// "species": "금붕어",
+// "standard_length": 5,
+// "aquarium_minimum_size": 30,
+// "min_temperature": 15,
+// "max_temperature": 20,
+// "min_pH": 5,
+// "max_pH": 6,
+// "description": "뒤돌면 까먹음.",
+// "scientific_name": "과학적인 금붕어",
+// "source": "test_site",
+// "source_url": "test_url.com",
+// "images": [
+//   {
+//     "image_url": "test2.jpg",
+//     "is_main": false
+//   },
+//   {
+//     "image_url": "test1.png",
+//     "is_main": true
+//   }
+// ]
+
+export interface ISpeciesDetailBaseData {
+  title: string;
+  description: string;
+  image: string;
+}
+const SpeciesDetail = <T extends unknown>(props: { id: string; type: string; initData?: T }) => {
+  const { type, id, initData } = props;
+  const { data, error } = useGetContentsDetail(type, id, initData);
+  const image = useMemo(() => {
+    if (!data) return null;
+    const { images } = data;
+    if (!images || images.length < 1) return null;
+    return images[0].image_url as string;
+  }, [data]);
+
+  const description = useMemo(() => {
+    if (data) {
+      if (type === "fish") {
+        return data.description;
+      }
+
+      if (type === "aquaplant") {
+        return data.description;
+      }
+
+      if (type === "supplies") {
+        return data.manual_text;
+      }
+    }
+
+    return null;
+  }, [data, type]);
+
+  const specKeys = useMemo(() => {
+    if (type === "fish") return FISH_SPEC_KEYS;
+    if (type === "aquaplant") return AQUAPLANT_SPEC_KEYS;
+    if (type === "supplies") return SUPPLIES_SPEC_KEYS;
+  }, [type]);
+
+  const specList = useMemo(() => {
+    if (data) {
+      const temp: ISpecData[] = [];
+
+      Object.entries(data).map(([key, value]) => {
+        if (typeof key === "string" && (specKeys as any)[key])
+          temp.push({
+            name: (specKeys as any)[key] as string,
+            spec: value as any,
+          });
+      });
+
+      return temp;
+    }
+
+    return null;
+  }, [data, specKeys]);
+  if (error) return <ErrorView />;
 
   return (
     <div>
-      <SpeciesDetailBase data={base} />
-      <Spacing height={SPECIES_DETAIL_GAP} />
-      <SpeciesDetailSpecs data={spec} title="어종 정보" />
-      <Spacing height={SPECIES_DETAIL_GAP} />
-      <SpeciesDetailDescription description={description} />
+      {image && (
+        <div className="species-image">
+          <CustomImage src={image} width={"90%"} ratio={1 / 1} />
+        </div>
+      )}
+
+      <p className="description">{description}</p>
+
+      {specList && specList.length > 0 && (
+        <>
+          <p className="species-title">상세 정보</p>
+          <div className="spec-list__wrapper">
+            {specList?.map((specData, index) => {
+              const { name, spec } = specData;
+              return (
+                <SpecBox
+                  key={`specList${spec}${index}`}
+                  name={name}
+                  spec={spec}
+                  color={GREY_COLOR}
+                  specColor={"white"}
+                  width={"100%"}
+                  style={{
+                    fontWeight: 700,
+                    borderRadius: 5,
+                  }}
+                />
+              );
+            })}
+          </div>
+        </>
+      )}
+
+      <style jsx>{`
+        .species-image {
+          display: flex;
+          justify-content: center;
+        }
+
+        .description {
+          font-size: 13px;
+          font-weight: 500;
+        }
+
+        .species-title {
+          font-size: 16px;
+          font-weight: 500;
+          padding-top: 10px;
+          padding-bottom: 10px;
+        }
+        .spec-list__wrapper {
+          display: grid;
+          grid-template-columns: repeat(2, 50%);
+          column-gap: 20px;
+          row-gap: 15px;
+        }
+      `}</style>
     </div>
   );
 };
 
 export default SpeciesDetail;
 
-const SpeciesDetailBase = (props: { data: ISpeciesBaseInfo }) => {
-  const { name, thumbnail } = props.data;
-
-  return (
-    <div className="species-detail-base">
-      <h1 className="species-detail-title"> {name} </h1>
-      <div className="species-detail-image">
-        {thumbnail.map((value, index) => {
-          const { image_url } = value;
-          return <img key={`speciesDetailImage${index}`} className="detail-image" src={image_url} height="100%" />;
-        })}
-      </div>
-
-      <style jsx>{`
-        .species-detail-title {
-          fons-size: 18px;
-          font-weight: 700;
-        }
-
-        .species-detail-image {
-          position: relative;
-          padding-bottom: 60%;
-          overflow: hidden;
-          border-radius: 10px;
-        }
-
-        .detail-image {
-          position: absolute;
-          transform: translate(-50%, -50%);
-          top: 50%;
-          left: 50%;
-        }
-      `}</style>
-    </div>
-  );
-};
-
-type ISpeciesBaseInfoKeys = keyof ISpeciesDetailInfo;
-
-interface ISpeciesDetailSpecData {
-  id: string;
-  value: ISpeciesBaseInfoKeys;
-}
-
-const SpeciesDetailSpecs = (props: { data: ISpeciesDetailInfo; title: string }) => {
-  const { data, title } = props;
-  const keys = Object.keys(data);
-  const specs = useMemo(() => {
-    let tempSpecs: ISpeciesDetailSpecData[] = [];
-    keys.map(specKey => {
-      tempSpecs.push({
-        id: specKey,
-        value: (data as any)[specKey],
-      } as ISpeciesDetailSpecData);
-    });
-
-    if (tempSpecs.length > 0) return tempSpecs;
-    return null;
-  }, [keys, data]);
-  if (!specs) return null;
-
-  return (
-    <div className="species-detail-specs">
-      <h3>{title}</h3>
-      <ListView
-        list={specs}
-        ListItem={(props: ISpeciesDetailSpecData) => {
-          return (
-            <SpecBox
-              name={(SPECIES_NAME as any)[props.id]}
-              spec={props.value}
-              width="100%"
-              height={50}
-              color={'#d2d2d2'}
-              specColor="white"
-            />
-          );
-        }}
-        column={2}
-        columnSize="50%"
-        gap={20}
-      />
-    </div>
-  );
-};
-
-const SpeciesDetailDescription = (props: { description: string[] }) => {
-  const { description } = props;
-  return (
-    <div className="species-detail-description">
-      <h3 className="species-detail-title">세부 사항</h3>
-      <div className="species-detail-text__wrapper">
-        {description.map((value, index) => (
-          <div
-            key={index}
-            style={{
-              marginBottom: 20,
-            }}
-          >
-            <p
-              style={{
-                lineHeight: 1.6,
-              }}
-            >
-              {value}
-            </p>
-          </div>
-        ))}
-      </div>
-
-      <style jsx>{`
-        .species-detail-description {
-          padding-top: 10px;
-          padding-bottom: 10px;
-          background-color: #f3f4f5;
-          border-radius: 15px;
-        }
-
-        .species-detail-text__wrapper {
-          width: 90%;
-          margin-left: auto;
-          margin-right: auto;
-        }
-
-        .species-detail-title {
-          padding-left: 10px;
-        }
-      `}</style>
-    </div>
-  );
-};
+const SpecList = () => {};

@@ -1,0 +1,45 @@
+.addDict-body{
+    padding:10px;
+    display:flex;
+    flex-direction: column;
+
+    &__input-box{
+        display:flex;
+        flex-direction: column;
+        box-sizing: border-box;
+        width:100%;
+        margin-bottom: 5px;
+        & > div {
+            display: flex;
+            width:100%;
+            margin-right: 10px;
+            font-size: 12pt;
+            color:#666666;
+        }
+        & > input{
+            width:100%;
+            height:35px;
+            padding:6px 12px;
+            border-radius: 5px;
+            border:0.1rem solid #b1bbc4;
+            font-size:14pt;
+            &::placeholder{
+                color:#b1bbc4;
+            }
+        }
+    }
+}
+
+.main-image{
+    position: absolute;
+    right:5px;
+    bottom:5px;
+    width:40px;
+    height:20px;
+    border-radius: 3px;
+    background-color: #319759;
+    color:white;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}

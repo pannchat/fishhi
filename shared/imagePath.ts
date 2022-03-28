@@ -13,6 +13,10 @@ export default class ImagePath {
     return `${PREFIX}/search2.svg`;
   }
 
+  static get aquariumIcon() {
+    return `${PREFIX}/aquariumIcon.png`;
+  }
+
   static get aquarium() {
     return `${PREFIX}/aquarium.svg`;
   }
@@ -53,6 +57,17 @@ export default class ImagePath {
     return `${PREFIX}/fish_icon.png`;
   }
 
+  static get warning() {
+    return `${PREFIX}/warning.png`;
+  }
+
+  static get calculator() {
+    return `${PREFIX}/calculator.png`;
+  }
+
+  static get placeholder() {
+    return `${PREFIX}/placeholder.png`;
+  }
   static arrow(direction: 'right' | 'left' | 'up' | 'down') {
     return `${PREFIX}/arrow_${direction}.png`;
   }

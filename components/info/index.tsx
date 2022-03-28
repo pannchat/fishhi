@@ -11,8 +11,8 @@ const INFO_CATEGORY_DUMMY = [
     label: '수초',
   },
   {
-    id: 'medicine',
-    label: '약품',
+    id: 'supplies',
+    label: '용품',
   },
 ];
 const Info = () => {
@@ -30,6 +30,8 @@ const Info = () => {
           font-size: 18px;
           padding-top: 10px;
           padding-left: 10px;
+          margin-top: 10px;
+          margin-bottom: 20px;
         }
       `}</style>
     </div>
