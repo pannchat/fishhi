@@ -86,6 +86,9 @@ export const SpeciesItem = (props: { data: IContentsItem; species: string }) => 
               height={"100%"}
               placeholder="이미지"
               onError={onErrorHandler}
+              style={{
+                objectFit: "fill",
+              }}
             />
           ) : (
             <img
