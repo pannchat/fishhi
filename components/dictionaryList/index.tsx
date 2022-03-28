@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Link from "next/link";
 import {
     Table,
     Thead,
@@ -86,7 +87,6 @@ export default function dictionaryList() {
                 <Button size="xs" colorScheme="teal" onClick={() => handleAdd()}> 추가 </Button>
             </div>
             <Table variant='simple' className={styles['category__table']}>
-                <TableCaption>Imperial to metric conversion factors</TableCaption>
                 <Thead>
                     <Tr>
                         <Th width={'15px'} isNumeric>id</Th>
@@ -100,7 +100,7 @@ export default function dictionaryList() {
                         return (
                             <Tr>
                                 <Td isNumeric>{post.id}</Td>
-                                <Td>{post.species}</Td>
+                                <Td><Link href={`http://localhost:4000/info/fish/${post.id}`}>{post.species}</Link></Td>
                                 <Td><img style={{ width: '80px' }} src={post.thumbnail} /></Td>
                                 <Td>
                                     <Button isLoading={IsLoading} loadingText={IsLoading ? '' : "삭제"} size="xs" colorScheme="red" variant={IsLoading ? 'outline' : undefined} onClick={

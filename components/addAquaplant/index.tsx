@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { FieldType, IDataType } from '../addFish/index';
 import styled from "styled-components";
 import { darken } from "polished";
 import Previews from "../../shared/hooks/usePreviews";
@@ -67,6 +68,18 @@ function addAquaplant() {
     source: "",
     source_url: "",
     scientific_name: "Anubias barteri var. nana",
+  };
+
+  const dataType: IDataType = {
+    species: FieldType.CharField,
+    min_temperature: FieldType.Number,
+    max_temperature: FieldType.Number,
+    min_pH: FieldType.Number,
+    max_pH: FieldType.Number,
+    description: FieldType.TextField,
+    source: FieldType.CharField,
+    source_url: FieldType.CharField,
+    scientific_name: FieldType.CharField,
   };
 
   useEffect(() => {
@@ -158,6 +171,53 @@ function addAquaplant() {
       throw new Error("정상적인 요청이아닙니다.");
     }
   };
+  const getFieldElement = (item: string) => {
+
+
+    switch (dataType[item]) {
+      case FieldType.Number:
+        return <input
+          id={item}
+          type="number"
+          inputMode="decimal"
+          placeholder={dummy[item]}
+          onChange={e => {
+            setAquaplant({
+              ...aquaplant,
+              [e.target.id]: e.target.value,
+            });
+          }}
+          disabled={submitState ? true : false}
+        ></input>;
+      case FieldType.TextField:
+        return <textarea
+          id={item}
+          placeholder={dummy[item]}
+          onChange={e => {
+            setAquaplant({
+              ...aquaplant,
+              [e.target.id]: e.target.value,
+            });
+          }}
+          style={{ height: '150px' }}
+          disabled={submitState ? true : false}
+        ></textarea>;
+      case FieldType.CharField:
+        return <input
+          id={item}
+          placeholder={dummy[item]}
+          onChange={e => {
+            setAquaplant({
+              ...aquaplant,
+              [e.target.id]: e.target.value,
+            });
+          }}
+          disabled={submitState ? true : false}
+        ></input>;
+    }
+
+
+  };
   return (
     <>
       <Alert variant={palette.gray}>Aquaplant_info</Alert>
@@ -166,21 +226,11 @@ function addAquaplant() {
           return (
             <div className={styles["addDict-body__input-box"]} key={`${item.id}-${idx}`}>
               <div>{item}</div>
-              <input
-                id={item}
-                placeholder={dummy[item]}
-                onChange={e => {
-                  setAquaplant({
-                    ...aquaplant,
-                    [e.target.id]: e.target.value,
-                  });
-                }}
-                disabled={submitState ? true : false}
-              ></input>
+              {getFieldElement(item)}
             </div>
           );
         })}
-
+        <p>제품 이미지</p>
         <Previews files={files} setFiles={setFiles} isMain={isMain} setIsMain={setIsMain} />
         {!submitState ? (
           <Button colorScheme="teal" size="lg" onClick={() => addAquaplant(aquaplant)}>

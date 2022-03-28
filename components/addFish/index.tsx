@@ -21,6 +21,7 @@ const Alert = styled.div<{ variant: string; }>`
   border-radius: 4px;
 `;
 
+
 interface IFish {
   species: string;
   standard_length: number | null;
@@ -33,12 +34,23 @@ interface IFish {
   source: string;
   source_url: string;
   scientific_name: string;
-  [prop: string]: any;
+  [prop: string | FieldType]: any;
 }
 
 interface Ifile {
   name: React.Key | null | undefined;
   setFiles?: (value?: any) => void;
+}
+
+export interface IDataType {
+  [prop: string]: FieldType;
+}
+
+export enum FieldType {
+  'Char' = 'Char',
+  'CharField' = 'CharField',
+  'TextField' = 'TextField',
+  'Number' = 'Number'
 }
 
 function addFish() {
@@ -61,6 +73,19 @@ function addFish() {
     source_url: "",
     scientific_name: "",
   });
+  const dataType: IDataType = {
+    'species': FieldType.CharField,
+    'standard_length': FieldType.Number,
+    'aquarium_minimum_size': FieldType.Number,
+    'min_temperature': FieldType.Number,
+    'max_temperature': FieldType.Number,
+    'min_pH': FieldType.Number,
+    'max_pH': FieldType.Number,
+    'description': FieldType.TextField,
+    'source': FieldType.CharField,
+    'source_url': FieldType.CharField,
+    'scientific_name': FieldType.CharField,
+  };
   const dummy: IFish = {
     species: "금붕어",
     standard_length: 7,
@@ -75,11 +100,55 @@ function addFish() {
     scientific_name: "gold fish",
   };
 
-  useEffect(() => {
-
-  });
-
   let mainImgUrl = "";
+
+  const getFieldElement = (item: string) => {
+
+
+    switch (dataType[item]) {
+      case FieldType.Number:
+        return <input
+          id={item}
+          type="number"
+          inputMode="decimal"
+          placeholder={dummy[item]}
+          onChange={e => {
+            setFish({
+              ...fish,
+              [e.target.id]: e.target.value,
+            });
+          }}
+          disabled={submitState ? true : false}
+        ></input>;
+      case FieldType.TextField:
+        return <textarea
+          id={item}
+          placeholder={dummy[item]}
+          onChange={e => {
+            setFish({
+              ...fish,
+              [e.target.id]: e.target.value,
+            });
+          }}
+          style={{ height: '150px' }}
+          disabled={submitState ? true : false}
+        ></textarea>;
+      case FieldType.CharField:
+        return <input
+          id={item}
+          placeholder={dummy[item]}
+          onChange={e => {
+            setFish({
+              ...fish,
+              [e.target.id]: e.target.value,
+            });
+          }}
+          disabled={submitState ? true : false}
+        ></input>;
+    }
+
+
+  };
   const addFish = async (fishData: IFish) => {
     setSubmitState(true);
 
@@ -120,6 +189,8 @@ function addFish() {
           isClosable: true,
         });
       }
+      location.href = `http://localhost:4000/info/fish/${fish.data.id}`;
+
     } catch (e) {
       toast({
         description: `${e}`,
@@ -164,6 +235,10 @@ function addFish() {
       throw new Error("정상적인 요청이아닙니다.");
     }
   };
+
+
+
+
   return (
     <>
       <Alert variant={palette.gray}>fish_info</Alert>
@@ -172,21 +247,11 @@ function addFish() {
           return (
             <div className={styles["addDict-body__input-box"]} key={`${item.id}-${idx}`}>
               <div>{item}</div>
-              <input
-                id={item}
-                placeholder={dummy[item]}
-                onChange={e => {
-                  setFish({
-                    ...fish,
-                    [e.target.id]: e.target.value,
-                  });
-                }}
-                disabled={submitState ? true : false}
-              ></input>
+              {getFieldElement(item)}
             </div>
           );
         })}
-
+        <p>이미지</p>
         <Previews files={files} setFiles={setFiles} isMain={isMain} setIsMain={setIsMain} />
         {!submitState ? (
           <Button colorScheme="teal" size="lg" onClick={() => addFish(fish)}>

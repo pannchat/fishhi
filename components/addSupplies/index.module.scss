@@ -5,18 +5,16 @@
 
     &__input-box{
         display:flex;
+        flex-direction: column;
         box-sizing: border-box;
         width:100%;
-        margin-bottom: 20px;
+        margin-bottom: 5px;
         & > div {
             display: flex;
-            justify-content: end;
             width:100%;
             margin-right: 10px;
             font-size: 12pt;
             color:#666666;
-            padding: 5px;
-            
         }
         & > input{
             width:100%;

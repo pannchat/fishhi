@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { FieldType, IDataType } from '../addFish/index';
 import styled from "styled-components";
 import { darken } from "polished";
 import Previews from "../../shared/hooks/usePreviews";
@@ -42,6 +43,8 @@ interface Ifile {
   setFiles?: (value?: any) => void;
 }
 
+
+
 function addSupplies() {
   const [productFiles, setProductFiles] = useState<Ifile[]>([]);
   const [manualfiles, setManualFiles] = useState<Ifile[]>([]);
@@ -67,8 +70,8 @@ function addSupplies() {
     source: "",
     source_url: "",
   });
-  const dummy: ISupplies = {
 
+  const dummy: ISupplies = {
     product_name: "네오 C",
     manufacturer: "aquario",
     manual_text: "적당량 투여하세요",
@@ -81,7 +84,21 @@ function addSupplies() {
     pump_amount: "",
     source: '아쿠아리오',
     source_url: 'fishhi.kr',
+  };
 
+  const dataType:IDataType = {
+    product_name: FieldType.CharField,
+    manufacturer: FieldType.CharField,
+    manual_text: FieldType.CharField,
+    base_medicine: FieldType.CharField,
+    standard_amount: FieldType.Number,
+    input_amount: FieldType.Number,
+    input_unit: FieldType.CharField,
+    disease: FieldType.CharField,
+    spec: FieldType.CharField,
+    pump_amount: FieldType.CharField,
+    source: FieldType.CharField,
+    source_url: FieldType.CharField,
   };
 
   useEffect(() => {
@@ -124,7 +141,6 @@ function addSupplies() {
     });
     dataForm["images"] = suppliesImgArr;
     dataForm["manual_images"] = suppliesImgArr;
-    console.log(dataForm);
     try {
       const suppliesRes = await axios.post("http://54.180.156.194:8000/supplies/", JSON.stringify(dataForm), {
         headers: { "Content-Type": "application/json" },
@@ -217,6 +233,54 @@ function addSupplies() {
     }
   };
 
+  const getFieldElement = (item: string) => {
+
+
+    switch (dataType[item]) {
+      case FieldType.Number:
+        return <input
+          id={item}
+          type="number"
+          inputMode="decimal"
+          placeholder={dummy[item]}
+          onChange={e => {
+            setSupplies({
+              ...supplies,
+              [e.target.id]: e.target.value,
+            });
+          }}
+          disabled={submitState ? true : false}
+        ></input>;
+      case FieldType.TextField:
+        return <textarea
+          id={item}
+          placeholder={dummy[item]}
+          onChange={e => {
+            setSupplies({
+              ...supplies,
+              [e.target.id]: e.target.value,
+            });
+          }}
+          style={{ height: '150px' }}
+          disabled={submitState ? true : false}
+        ></textarea>;
+      case FieldType.CharField:
+        return <input
+          id={item}
+          placeholder={dummy[item]}
+          onChange={e => {
+            setSupplies({
+              ...supplies,
+              [e.target.id]: e.target.value,
+            });
+          }}
+          disabled={submitState ? true : false}
+        ></input>;
+    }
+
+
+  };
+
   return (
     <>
       <Alert variant={palette.gray}>fish_info</Alert>
@@ -226,18 +290,7 @@ function addSupplies() {
           return (
             <div className={styles["addDict-body__input-box"]} key={`${item.id}-${idx}`}>
               <div>{item}</div>
-              <input
-                id={item}
-                placeholder={dummy[item]}
-
-                onChange={e => {
-                  setSupplies({
-                    ...supplies,
-                    [e.target.id]: e.target.value,
-                  });
-                }}
-                disabled={submitState ? true : false}
-              ></input>
+             {getFieldElement(item)}
             </div>
           );
         })}
