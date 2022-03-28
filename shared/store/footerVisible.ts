@@ -1,6 +1,6 @@
-import { atom } from 'recoil';
+import { atom } from "recoil";
 
 export const footerVisibleState = atom<boolean>({
-  key: 'isFooterVisible',
+  key: "footerVisibleState",
   default: true,
 });
