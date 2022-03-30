@@ -1,6 +1,8 @@
 import { useRouter } from "next/dist/client/router";
 import React, { useMemo } from "react";
+import { useRecoilValue } from "recoil";
 import Search from "../../components/search";
+import { navbarVisibleState } from "../store/navbarVisible";
 
 export const PAGE_TITLES = {
   calcFishTank: "물양 계산기",
@@ -9,12 +11,13 @@ export const PAGE_TITLES = {
 
 const Navbar = () => {
   const router = useRouter();
-  const { pathname } = router;
+  const { pathname, asPath } = router;
   const title = useMemo(() => {
     const currentpage = Object.keys(PAGE_TITLES).filter(page => pathname.indexOf(page) !== -1)[0];
     return (PAGE_TITLES as any)[currentpage] || "Fish Hi";
   }, [pathname]);
-
+  const navbarVisible = useRecoilValue(navbarVisibleState);
+  if (!navbarVisible) return <></>;
   return (
     <>
       <div className="navbar">
