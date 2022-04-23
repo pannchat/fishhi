@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FieldType, IDataType } from '../addFish/index';
+import { FieldType, IDataType } from "../addFish/index";
 import styled from "styled-components";
 import { darken } from "polished";
 import Previews from "../../shared/hooks/usePreviews";
@@ -39,9 +39,9 @@ interface Ifile {
   setFiles?: (value?: any) => void;
 }
 interface IProps {
-  id? : number
+  id?: number;
 }
-function addAquaplant(props:IProps) {
+function addAquaplant(props: IProps) {
   const [files, setFiles] = useState<Ifile[]>([]);
   const [submitState, setSubmitState] = useState<boolean>(false);
   const [isMain, setIsMain] = useState<Ifile>({
@@ -56,7 +56,7 @@ function addAquaplant(props:IProps) {
     max_pH: null,
     description: "",
     source: "",
-    source_url: ""
+    source_url: "",
   });
   const dummy: IAquaplant = {
     name: "아누비아스 바테리 나나",
@@ -79,21 +79,19 @@ function addAquaplant(props:IProps) {
     description: FieldType.TextField,
     source: FieldType.CharField,
     source_url: FieldType.CharField,
-
   };
 
   useEffect(() => {
-    const getAquaplantData = async() => {
-      if(props.id){
-        const aquaplantData = await axios.get(`http://54.180.156.194:8000/aquaplant/${props.id}/`)
-        delete aquaplantData.data.id
-        console.log(aquaplantData.data)
+    const getAquaplantData = async () => {
+      if (props.id) {
+        const aquaplantData = await axios.get(`http://54.180.156.194:8000/aquaplant/${props.id}/`);
+        delete aquaplantData.data.id;
+        console.log(aquaplantData.data);
         setAquaplant(aquaplantData.data);
       }
-    }
+    };
     getAquaplantData();
-  },[]);
-
+  }, []);
 
   let mainImgUrl = "";
   const addAquaplant = async (aquaplantData: IAquaplant) => {
@@ -126,11 +124,11 @@ function addAquaplant(props:IProps) {
 
     try {
       let aquaplant;
-      if(props.id){
+      if (props.id) {
         aquaplant = await axios.patch(`http://54.180.156.194:8000/aquaplant/${props.id}/`, JSON.stringify(dataForm), {
           headers: { "Content-Type": "application/json" },
         });
-      }else{
+      } else {
         aquaplant = await axios.post("http://54.180.156.194:8000/aquaplant/", JSON.stringify(dataForm), {
           headers: { "Content-Type": "application/json" },
         });
@@ -185,54 +183,57 @@ function addAquaplant(props:IProps) {
     }
   };
   const getFieldElement = (item: string) => {
-
-    console.log(item)
+    console.log(item);
     switch (dataType[item]) {
       case FieldType.Number:
-        return <input
-          id={item}
-          type="number"
-          inputMode="decimal"
-          placeholder={dummy[item]}
-          onChange={e => {
-            setAquaplant({
-              ...aquaplant,
-              [e.target.id]: e.target.value,
-            });
-          }}
-          value={aquaplant[item]}
-          disabled={submitState ? true : false}
-        ></input>;
+        return (
+          <input
+            id={item}
+            type="number"
+            inputMode="decimal"
+            placeholder={dummy[item]}
+            onChange={e => {
+              setAquaplant({
+                ...aquaplant,
+                [e.target.id]: e.target.value,
+              });
+            }}
+            value={aquaplant[item]}
+            disabled={submitState ? true : false}
+          ></input>
+        );
       case FieldType.TextField:
-        return <textarea
-          id={item}
-          placeholder={dummy[item]}
-          onChange={e => {
-            setAquaplant({
-              ...aquaplant,
-              [e.target.id]: e.target.value,
-            });
-          }}
-          value={aquaplant[item]}
-          style={{ height: '150px' }}
-          disabled={submitState ? true : false}
-        ></textarea>;
+        return (
+          <textarea
+            id={item}
+            placeholder={dummy[item]}
+            onChange={e => {
+              setAquaplant({
+                ...aquaplant,
+                [e.target.id]: e.target.value,
+              });
+            }}
+            value={aquaplant[item]}
+            style={{ height: "150px" }}
+            disabled={submitState ? true : false}
+          ></textarea>
+        );
       case FieldType.CharField:
-        return <input
-          id={item}
-          placeholder={dummy[item]}
-          value={aquaplant[item]}
-          onChange={e => {
-            setAquaplant({
-              ...aquaplant,
-              [e.target.id]: e.target.value,
-            });
-          }}
-          disabled={submitState ? true : false}
-        ></input>;
+        return (
+          <input
+            id={item}
+            placeholder={dummy[item]}
+            value={aquaplant[item]}
+            onChange={e => {
+              setAquaplant({
+                ...aquaplant,
+                [e.target.id]: e.target.value,
+              });
+            }}
+            disabled={submitState ? true : false}
+          ></input>
+        );
     }
-
-
   };
   return (
     <>

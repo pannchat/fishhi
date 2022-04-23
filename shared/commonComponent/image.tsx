@@ -4,6 +4,7 @@ import { Image } from "@chakra-ui/react";
 import { Skeleton } from "@chakra-ui/skeleton";
 import { ImageProps } from "next/image";
 import React, { useCallback, useMemo, useState } from "react";
+import { CSSProperties } from "styled-components";
 import ImagePath from "../imagePath";
 
 interface ICustomImageProps extends Partial<ImageProps> {
@@ -13,10 +14,11 @@ interface ICustomImageProps extends Partial<ImageProps> {
   ratio: number;
   useLazy?: boolean;
   useSkeleton?: boolean;
+  style?: CSSProperties;
 }
 
 const CustomImage = React.forwardRef<HTMLImageElement, ICustomImageProps>((props: ICustomImageProps, ref) => {
-  const { src, useLazy, useSkeleton, loading, ...rest } = props;
+  const { src, useLazy, useSkeleton, loading, style, ...rest } = props;
   const [isLoad, setIsLoad] = useState<boolean>(false);
   const onLoadHandler = () => {
     setIsLoad(true);
@@ -35,7 +37,7 @@ const CustomImage = React.forwardRef<HTMLImageElement, ICustomImageProps>((props
 
   const ImageContent = useCallback(() => {
     return (
-      <AspectRatio {...rest} onLoad={onLoadHandler}>
+      <AspectRatio {...rest} onLoad={onLoadHandler} style={style}>
         <Image src={src} width="100%" height="100%" loading={loading} onLoad={onLoadHandler} onError={onErrorHandler} />
       </AspectRatio>
     );
