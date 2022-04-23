@@ -96,7 +96,6 @@ export default function dictionaryList() {
 
   useEffect(() => {
     getPost();
-    console.log(category);
   }, [category]);
 
   return (

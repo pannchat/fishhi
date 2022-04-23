@@ -1,0 +1,19 @@
+.thumbnail {
+  &__wrapper {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  &__selected-image {
+    display: flex;
+    justify-content: center;
+  }
+
+  &__list {
+    display: flex;
+    column-gap: 20px;
+    margin-top: 15px;
+  
+  }
+}

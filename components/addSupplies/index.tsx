@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FieldType, IDataType } from '../addFish/index';
+import { FieldType, IDataType } from "../addFish/index";
 import styled from "styled-components";
 import { darken } from "polished";
 import Previews from "../../shared/hooks/usePreviews";
@@ -12,7 +12,7 @@ const palette = {
   pink: "#ffc9c9",
 };
 
-const Alert = styled.div<{ variant: string; }>`
+const Alert = styled.div<{ variant: string }>`
   width: auto;
   box-sizing: border-box;
   margin: 10px;
@@ -83,8 +83,8 @@ function addSupplies(props: IProps) {
     disease: "염소제거제",
     spec: "http://naver.com",
     pump_amount: "",
-    source: '아쿠아리오',
-    source_url: 'fishhi.kr',
+    source: "아쿠아리오",
+    source_url: "fishhi.kr",
   };
 
   const dataType: IDataType = {
@@ -113,8 +113,6 @@ function addSupplies(props: IProps) {
     };
     getSuppliesData();
   }, []);
-
-
 
   const addSupplies = async (suppliesData: ISupplies) => {
     setSubmitState(true);
@@ -189,13 +187,11 @@ function addSupplies(props: IProps) {
       } else {
         const images = await Promise.all(
           productFiles.map(async (file: any) => {
-
             let suppliesData = new FormData();
             suppliesData.append("filename", file.name);
             suppliesData.append("file", file);
             suppliesData.append("key", "fishhi/supplies");
             let response = await axios.post("http://54.180.156.194:8000/upload_image", suppliesData, {
-
               headers: { "Content-Type": `multipart/form-data` },
             });
 
@@ -225,7 +221,6 @@ function addSupplies(props: IProps) {
             suppliesData.append("file", file);
             suppliesData.append("key", "fish");
             let response = await axios.post("http://54.180.156.194:8000/upload_image", suppliesData, {
-
               headers: { "Content-Type": `multipart/form-data` },
             });
 
@@ -243,54 +238,56 @@ function addSupplies(props: IProps) {
   };
 
   const getFieldElement = (item: string) => {
-
-
     switch (dataType[item]) {
       case FieldType.Number:
-        return <input
-          id={item}
-          type="number"
-          inputMode="decimal"
-          placeholder={dummy[item]}
-          value={supplies[item]}
-          onChange={e => {
-            setSupplies({
-              ...supplies,
-              [e.target.id]: e.target.value,
-            });
-          }}
-          disabled={submitState ? true : false}
-        ></input>;
+        return (
+          <input
+            id={item}
+            type="number"
+            inputMode="decimal"
+            placeholder={dummy[item]}
+            value={supplies[item]}
+            onChange={e => {
+              setSupplies({
+                ...supplies,
+                [e.target.id]: e.target.value,
+              });
+            }}
+            disabled={submitState ? true : false}
+          ></input>
+        );
       case FieldType.TextField:
-        return <textarea
-          id={item}
-          placeholder={dummy[item]}
-          value={supplies[item]}
-          onChange={e => {
-            setSupplies({
-              ...supplies,
-              [e.target.id]: e.target.value,
-            });
-          }}
-          style={{ height: '150px' }}
-          disabled={submitState ? true : false}
-        ></textarea>;
+        return (
+          <textarea
+            id={item}
+            placeholder={dummy[item]}
+            value={supplies[item]}
+            onChange={e => {
+              setSupplies({
+                ...supplies,
+                [e.target.id]: e.target.value,
+              });
+            }}
+            style={{ height: "150px" }}
+            disabled={submitState ? true : false}
+          ></textarea>
+        );
       case FieldType.CharField:
-        return <input
-          id={item}
-          placeholder={dummy[item]}
-          value={supplies[item]}
-          onChange={e => {
-            setSupplies({
-              ...supplies,
-              [e.target.id]: e.target.value,
-            });
-          }}
-          disabled={submitState ? true : false}
-        ></input>;
+        return (
+          <input
+            id={item}
+            placeholder={dummy[item]}
+            value={supplies[item]}
+            onChange={e => {
+              setSupplies({
+                ...supplies,
+                [e.target.id]: e.target.value,
+              });
+            }}
+            disabled={submitState ? true : false}
+          ></input>
+        );
     }
-
-
   };
 
   return (
@@ -300,27 +297,24 @@ function addSupplies(props: IProps) {
         {Object.keys(supplies).map((item: any, idx: number) => {
           return (
             <div className={styles["addDict-body__input-box"]} key={`${item.id}-${idx}`}>
-              <div>{item}</div>;
-              {getFieldElement(item)}
-            </div >
+              <div>{item}</div>;{getFieldElement(item)}
+            </div>
           );
         })}
         <p>제품 이미지</p>
         <Previews files={productFiles} setFiles={setProductFiles} isMain={suppliesMain} setIsMain={setSuppliesMain} />
         <p>설명서 이미지</p>
         <Previews files={manualfiles} setFiles={setManualFiles} isMain={maunalMain} setIsMain={setManualMain} />;
-        {
-          !submitState ? (
-            <Button colorScheme="teal" size="lg" onClick={() => addSupplies(supplies)}>
-              Submit
-            </Button>
-          ) : (
-            <Button isLoading loadingText="Submitting" size="lg" colorScheme="teal" variant="outline">
-              Submit
-            </Button>
-          )
-        }
-      </div >
+        {!submitState ? (
+          <Button colorScheme="teal" size="lg" onClick={() => addSupplies(supplies)}>
+            Submit
+          </Button>
+        ) : (
+          <Button isLoading loadingText="Submitting" size="lg" colorScheme="teal" variant="outline">
+            Submit
+          </Button>
+        )}
+      </div>
     </>
   );
 }
