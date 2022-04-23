@@ -11,7 +11,7 @@ const palette = {
   pink: "#ffc9c9",
 };
 
-const Alert = styled.div<{ variant: string; }>`
+const Alert = styled.div<{ variant: string }>`
   width: auto;
   box-sizing: border-box;
   margin: 10px;
@@ -195,7 +195,7 @@ function addFish(props: IProps) {
       };
     });
     dataForm["images"] = imgarr;
-    console.log(dataForm);
+
     try {
       let fish;
       if(props.id){
@@ -225,9 +225,7 @@ function addFish(props: IProps) {
         duration: 3000,
         isClosable: true,
       });
-
     }
-
 
     setSubmitState(false);
   };
@@ -240,7 +238,6 @@ function addFish(props: IProps) {
       } else {
         const images = await Promise.all(
           files.map(async (file: any) => {
-
             let fishData = new FormData();
             fishData.append("filename", file.name);
             fishData.append("file", file);
@@ -252,7 +249,7 @@ function addFish(props: IProps) {
             if (file.name === isMain.name) mainImgUrl = response.data.url;
             return {
               filename: file.name,
-              url: response.data.url
+              url: response.data.url,
             };
           }),
         );
@@ -292,6 +289,6 @@ function addFish(props: IProps) {
       </div>
     </>
   );
-};
+}
 
 export default addFish;

@@ -44,10 +44,10 @@ interface Ifile {
 }
 
 interface IProps {
-  id? : number
+  id?: number;
 }
 
-function addSupplies(props : IProps) {
+function addSupplies(props: IProps) {
   const [productFiles, setProductFiles] = useState<Ifile[]>([]);
   const [manualfiles, setManualFiles] = useState<Ifile[]>([]);
   const [submitState, setSubmitState] = useState<boolean>(false);
@@ -72,7 +72,6 @@ function addSupplies(props : IProps) {
     source: "",
     source_url: "",
   });
-
   const dummy: ISupplies = {
     product_name: "네오 C",
     manufacturer: "aquario",
@@ -88,7 +87,7 @@ function addSupplies(props : IProps) {
     source_url: 'fishhi.kr',
   };
 
-  const dataType:IDataType = {
+  const dataType: IDataType = {
     product_name: FieldType.CharField,
     manufacturer: FieldType.CharField,
     manual_text: FieldType.CharField,
@@ -116,13 +115,14 @@ function addSupplies(props : IProps) {
   }, []);
 
 
+
   const addSupplies = async (suppliesData: ISupplies) => {
     setSubmitState(true);
 
     const images = await productImageUpload();
     const images2 = await manualImageUpload();
 
-    if ((images.length === 0 || images2.length === 0) && !props.id ) {
+    if ((images.length === 0 || images2.length === 0) && !props.id) {
       toast({
         description: "이미지가 없습니다.",
         status: "error",
@@ -165,21 +165,18 @@ function addSupplies(props : IProps) {
         });
       }
     } catch (e: any) {
-
       let description = Object.entries(e.response.data).map((list: any) => {
         return `${list[0]}:${list[1]}`;
       });
-      console.log(description);
+
       toast({
         title: `${e}`,
-        description: `${description.join('\n')}\n\nz`,
+        description: `${description.join("\n")}\n\nz`,
         status: "error",
         duration: 3000,
         isClosable: true,
       });
-
     }
-
 
     setSubmitState(false);
   };
@@ -198,12 +195,13 @@ function addSupplies(props : IProps) {
             suppliesData.append("file", file);
             suppliesData.append("key", "fishhi/supplies");
             let response = await axios.post("http://54.180.156.194:8000/upload_image", suppliesData, {
+
               headers: { "Content-Type": `multipart/form-data` },
             });
 
             return {
               filename: file.name,
-              url: response.data.url
+              url: response.data.url,
             };
           }),
         );
@@ -222,18 +220,18 @@ function addSupplies(props : IProps) {
       } else {
         const images = await Promise.all(
           manualfiles.map(async (file: any) => {
-
             let suppliesData = new FormData();
             suppliesData.append("filename", file.name);
             suppliesData.append("file", file);
             suppliesData.append("key", "fish");
             let response = await axios.post("http://54.180.156.194:8000/upload_image", suppliesData, {
+
               headers: { "Content-Type": `multipart/form-data` },
             });
 
             return {
               filename: file.name,
-              url: response.data.url
+              url: response.data.url,
             };
           }),
         );
@@ -300,30 +298,31 @@ function addSupplies(props : IProps) {
       <Alert variant={palette.gray}>fish_info</Alert>
       <div className={styles["addDict-body"]}>
         {Object.keys(supplies).map((item: any, idx: number) => {
-          console.log(typeof item);
           return (
             <div className={styles["addDict-body__input-box"]} key={`${item.id}-${idx}`}>
-              <div>{item}</div>
-             {getFieldElement(item)}
-            </div>
+              <div>{item}</div>;
+              {getFieldElement(item)}
+            </div >
           );
         })}
         <p>제품 이미지</p>
         <Previews files={productFiles} setFiles={setProductFiles} isMain={suppliesMain} setIsMain={setSuppliesMain} />
         <p>설명서 이미지</p>
-        <Previews files={manualfiles} setFiles={setManualFiles} isMain={maunalMain} setIsMain={setManualMain} />
-        {!submitState ? (
-          <Button colorScheme="teal" size="lg" onClick={() => addSupplies(supplies)}>
-            Submit
-          </Button>
-        ) : (
-          <Button isLoading loadingText="Submitting" size="lg" colorScheme="teal" variant="outline">
-            Submit
-          </Button>
-        )}
-      </div>
+        <Previews files={manualfiles} setFiles={setManualFiles} isMain={maunalMain} setIsMain={setManualMain} />;
+        {
+          !submitState ? (
+            <Button colorScheme="teal" size="lg" onClick={() => addSupplies(supplies)}>
+              Submit
+            </Button>
+          ) : (
+            <Button isLoading loadingText="Submitting" size="lg" colorScheme="teal" variant="outline">
+              Submit
+            </Button>
+          )
+        }
+      </div >
     </>
   );
-};
+}
 
 export default addSupplies;

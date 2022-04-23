@@ -96,7 +96,6 @@ export async function getStaticProps(value: any) {
       },
     };
   } catch {
-    console.log("the error occur!!");
     return {
       props: {
         data: "error",

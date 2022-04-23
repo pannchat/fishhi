@@ -20,7 +20,6 @@ const Species = <T extends unknown>(props: { species: string; initData?: T }) =>
   const { data } = useContents(species, initData, { offset: offset });
   const { refinedObj } = getEumEntries(FishSpeciesName);
   const speciesName = refinedObj[species];
-  console.log("### data => ", data);
 
   const fetchMoreHalder = useCallback(() => {
     // setOffset(offset + 8);
@@ -86,6 +85,9 @@ export const SpeciesItem = (props: { data: IContentsItem; species: string }) => 
               height={"100%"}
               placeholder="이미지"
               onError={onErrorHandler}
+              style={{
+                objectFit: "fill",
+              }}
             />
           ) : (
             <img
