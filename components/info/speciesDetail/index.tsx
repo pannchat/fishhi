@@ -157,9 +157,14 @@ const SpeciesDetail = <T extends unknown>(props: { id: string; type: string; ini
 
   return (
     <div>
-      {image && image.length > 0 && <ThumbnailList images={image} />}
-      <Spacing height={20} />
-      <p className="description">{description}</p>
+      {image && (
+        <div className="species-image">
+          <CustomImage src={image} width={"90%"} ratio={1 / 1} />
+        </div>
+      )}
+
+      <pre className="description">{description}</pre>
+
       {specList && specList.length > 0 && (
         <>
           <p className="species-title">상세 정보</p>

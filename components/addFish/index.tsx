@@ -33,7 +33,7 @@ interface IFish {
   source: string;
   source_url: string;
   scientific_name: string;
-  [prop: string]: any;
+  [prop: string | FieldType]: any;
 }
 
 interface Ifile {
@@ -41,7 +41,22 @@ interface Ifile {
   setFiles?: (value?: any) => void;
 }
 
-function addFish() {
+export interface IDataType {
+  [prop: string]: FieldType;
+}
+
+export enum FieldType {
+  "Char" = "Char",
+  "CharField" = "CharField",
+  "TextField" = "TextField",
+  "Number" = "Number",
+}
+
+interface IProps {
+  id?: number;
+}
+
+function addFish(props: IProps) {
   const [files, setFiles] = useState<Ifile[]>([]);
   const [submitState, setSubmitState] = useState<boolean>(false);
   const [isMain, setIsMain] = useState<Ifile>({
@@ -61,6 +76,19 @@ function addFish() {
     source_url: "",
     scientific_name: "",
   });
+  const dataType: IDataType = {
+    species: FieldType.CharField,
+    standard_length: FieldType.Number,
+    aquarium_minimum_size: FieldType.Number,
+    min_temperature: FieldType.Number,
+    max_temperature: FieldType.Number,
+    min_pH: FieldType.Number,
+    max_pH: FieldType.Number,
+    description: FieldType.TextField,
+    source: FieldType.CharField,
+    source_url: FieldType.CharField,
+    scientific_name: FieldType.CharField,
+  };
   const dummy: IFish = {
     species: "금붕어",
     standard_length: 7,
@@ -75,15 +103,77 @@ function addFish() {
     scientific_name: "gold fish",
   };
 
-  useEffect(() => {});
-
   let mainImgUrl = "";
+  useEffect(() => {
+    const getFishData = async () => {
+      if (props.id) {
+        const fishData = await axios.get(`http://54.180.156.194:8000/fish/${props.id}/`);
+        delete fishData.data.id;
+        console.log(fishData.data);
+        setFish(fishData.data);
+      }
+    };
+    getFishData();
+  }, []);
+
+  const getFieldElement = (item: string) => {
+    switch (dataType[item]) {
+      case FieldType.Number:
+        return (
+          <input
+            id={item}
+            type="number"
+            inputMode="decimal"
+            placeholder={dummy[item]}
+            onChange={e => {
+              setFish({
+                ...fish,
+                [e.target.id]: e.target.value,
+              });
+            }}
+            value={fish[item]}
+            disabled={submitState ? true : false}
+          ></input>
+        );
+      case FieldType.TextField:
+        return (
+          <textarea
+            id={item}
+            placeholder={dummy[item]}
+            onChange={e => {
+              setFish({
+                ...fish,
+                [e.target.id]: e.target.value,
+              });
+            }}
+            value={fish[item]}
+            style={{ height: "150px" }}
+            disabled={submitState ? true : false}
+          ></textarea>
+        );
+      case FieldType.CharField:
+        return (
+          <input
+            id={item}
+            placeholder={dummy[item]}
+            onChange={e => {
+              setFish({
+                ...fish,
+                [e.target.id]: e.target.value,
+              });
+            }}
+            value={fish[item]}
+            disabled={submitState ? true : false}
+          ></input>
+        );
+    }
+  };
   const addFish = async (fishData: IFish) => {
     setSubmitState(true);
 
     const images = await uploadImage();
 
-    if (images.length === 0) {
+    if (images.length === 0 && !props.id) {
       toast({
         description: "이미지가 없습니다.",
         status: "error",
@@ -107,9 +197,17 @@ function addFish() {
     dataForm["images"] = imgarr;
 
     try {
-      const fish = await axios.post("http://54.180.156.194:8000/fish/", JSON.stringify(dataForm), {
-        headers: { "Content-Type": "application/json" },
-      });
+      let fish;
+      if (props.id) {
+        fish = await axios.patch(`http://54.180.156.194:8000/fish/${props.id}/`, JSON.stringify(dataForm), {
+          headers: { "Content-Type": "application/json" },
+        });
+      } else {
+        fish = await axios.post("http://54.180.156.194:8000/fish/", JSON.stringify(dataForm), {
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+
       if (fish.status === 201) {
         toast({
           description: "Fish Created",
@@ -118,6 +216,7 @@ function addFish() {
           isClosable: true,
         });
       }
+      location.href = `http://localhost:4000/info/fish/${fish.data.id}`;
     } catch (e) {
       toast({
         description: `${e}`,
@@ -159,6 +258,7 @@ function addFish() {
       throw new Error("정상적인 요청이아닙니다.");
     }
   };
+
   return (
     <>
       <Alert variant={palette.gray}>fish_info</Alert>
@@ -167,21 +267,11 @@ function addFish() {
           return (
             <div className={styles["addDict-body__input-box"]} key={`${item.id}-${idx}`}>
               <div>{item}</div>
-              <input
-                id={item}
-                placeholder={dummy[item]}
-                onChange={e => {
-                  setFish({
-                    ...fish,
-                    [e.target.id]: e.target.value,
-                  });
-                }}
-                disabled={submitState ? true : false}
-              ></input>
+              {getFieldElement(item)}
             </div>
           );
         })}
-
+        <p>이미지</p>
         <Previews files={files} setFiles={setFiles} isMain={isMain} setIsMain={setIsMain} />
         {!submitState ? (
           <Button colorScheme="teal" size="lg" onClick={() => addFish(fish)}>
