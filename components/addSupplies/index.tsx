@@ -122,7 +122,7 @@ function addSupplies(props : IProps) {
     const images = await productImageUpload();
     const images2 = await manualImageUpload();
 
-    if (images.length === 0 || images2.length === 0) {
+    if ((images.length === 0 || images2.length === 0) && !props.id ) {
       toast({
         description: "이미지가 없습니다.",
         status: "error",

@@ -99,7 +99,7 @@ function addAquaplant(props:IProps) {
 
     const images = await uploadImage();
 
-    if (images.length === 0) {
+    if (images.length === 0 && !props.id) {
       toast({
         description: "이미지가 없습니다.",
         status: "error",

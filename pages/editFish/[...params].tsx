@@ -1,7 +1,7 @@
 import { useRouter } from "next/dist/client/router";
-import React, { useEffect } from "react";
+import React from "react";
 
-import Aquaplant from '../../components/addAquaplant'
+import Fish from '../../components/addFish'
 
 // merge
 const EditPageDetail = () => {
@@ -10,7 +10,7 @@ const EditPageDetail = () => {
   
   if (!params || params.length < 1) return <></>;
   const id = parseInt(params[0]);
-  return <Aquaplant id={id} />;
+  return <Fish id={id} />;
 };
 
 export default EditPageDetail;

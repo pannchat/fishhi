@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useRouter } from "next/dist/client/router";
 import Link from "next/link";
 import {
     Table,
@@ -31,6 +32,7 @@ export default function dictionaryList() {
     const [listData, setListData] = useState<[]>([]);
     const [IsLoading, setIsLoading] = useState<boolean>(false);
     const toast = useToast();
+    const router = useRouter();
 
     const getPost = async () => {
         const res = await axios.get(`http://54.180.156.194:8000/${category}/?offset=0&limit=100`);
@@ -58,19 +60,35 @@ export default function dictionaryList() {
         deletePost(id);
         setIsLoading(true);
     };
+    
+    const handleEditClick = (id: number) => {
+        
+        
+        switch (category) {
+            case categoryType.fish:
+                router.push(`/editFish/${id}/`)
+                break;
+            case categoryType.aquaplant:
+                router.push(`/editAquaPlant/${id}/`)
+                break;
+            case categoryType.supplies:
+                router.push(`/editSupplies/${id}/`)
+                break;
+
+        }
+    }
 
     const handleAdd = () => {
         switch (category) {
             case categoryType.fish:
-                location.href = "/addFish";
+                router.push(`/addFish/`)
                 break;
             case categoryType.aquaplant:
-                location.href = "/addAquaPlant";
+                router.push(`/addAquaplant/`)
                 break;
             case categoryType.supplies:
-                location.href = "/addSupplies";
+                router.push(`/addSupplies/`)
                 break;
-
         }
     };
 
@@ -106,7 +124,9 @@ export default function dictionaryList() {
                                     <Button isLoading={IsLoading} loadingText={IsLoading ? '' : "삭제"} size="xs" colorScheme="red" variant={IsLoading ? 'outline' : undefined} onClick={
                                         () => handleDeleteClick(post.id)
                                     }>삭제</Button>
-                                    <Button isLoading={IsLoading} loadingText={IsLoading ? '' : "수정"} size="xs" colorScheme="teal" variant={IsLoading ? 'outline' : undefined} >수정</Button>
+                                    <Button isLoading={IsLoading} loadingText={IsLoading ? '' : "수정"} size="xs" colorScheme="teal" variant={IsLoading ? 'outline' : undefined} onClick={
+                                        () => handleEditClick(post.id)
+                                    } >수정</Button>
                                 </Td>
                             </Tr>
                         );
