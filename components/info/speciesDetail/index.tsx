@@ -9,6 +9,7 @@ import Spacing from "../../../shared/commonComponent/spacing";
 import ErrorView from "../../errorView";
 import useGetContentsDetail from "../hooks/useGetContentDetail";
 import SpecBox, { ISpecData } from "../specBox";
+import ThumbnailList from "./thumbnailList";
 const SPECIES_DETAIL_GAP = 20;
 
 const FISH_SPEC_KEYS = {
@@ -104,8 +105,11 @@ const SpeciesDetail = <T extends unknown>(props: { id: string; type: string; ini
   const image = useMemo(() => {
     if (!data) return null;
     const { images } = data;
+
     if (!images || images.length < 1) return null;
-    return images[0].image_url as string;
+    return images.map((value: { image_url: string }, index: number) => {
+      return value.image_url;
+    });
   }, [data]);
 
   const description = useMemo(() => {
@@ -153,13 +157,9 @@ const SpeciesDetail = <T extends unknown>(props: { id: string; type: string; ini
 
   return (
     <div>
-      {image && (
-        <div className="species-image">
-          <CustomImage src={image} width={"90%"} ratio={1 / 1} />
-        </div>
-      )}
+      {image && image.length > 0 && <ThumbnailList images={image} />}
 
-      <p className="description">{description}</p>
+      <pre className="description">{description}</pre>
 
       {specList && specList.length > 0 && (
         <>
@@ -195,6 +195,7 @@ const SpeciesDetail = <T extends unknown>(props: { id: string; type: string; ini
         .description {
           font-size: 13px;
           font-weight: 500;
+          white-space: pre-wrap;
         }
 
         .species-title {
