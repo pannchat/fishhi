@@ -34,7 +34,7 @@ const Navbar = () => {
           {title}
         </h1>
 
-        <Search width={"50%"} />
+        {/* <Search width={"50%"} /> */}
       </div>
 
       <style jsx>{`

@@ -159,7 +159,7 @@ const SpeciesDetail = <T extends unknown>(props: { id: string; type: string; ini
         </div>
       )}
 
-      <p className="description">{description}</p>
+      <pre className="description">{description}</pre>
 
       {specList && specList.length > 0 && (
         <>
