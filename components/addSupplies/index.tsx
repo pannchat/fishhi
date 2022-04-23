@@ -299,7 +299,7 @@ function addSupplies(props: IProps) {
             <div className={styles["addDict-body__input-box"]} key={`${item.id}-${idx}`}>
               <div>{item}</div>
               {getFieldElement(item)}
-            </div >
+            </div>
           );
         })}
         <p>제품 이미지</p>
