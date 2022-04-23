@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { FieldType, IDataType } from '../addFish/index';
 import styled from "styled-components";
 import { darken } from "polished";
 import Previews from "../../shared/hooks/usePreviews";
@@ -11,7 +12,7 @@ const palette = {
   pink: "#ffc9c9",
 };
 
-const Alert = styled.div<{ variant: string }>`
+const Alert = styled.div<{ variant: string; }>`
   width: auto;
   box-sizing: border-box;
   margin: 10px;
@@ -42,7 +43,11 @@ interface Ifile {
   setFiles?: (value?: any) => void;
 }
 
-function addSupplies() {
+interface IProps {
+  id?: number;
+}
+
+function addSupplies(props: IProps) {
   const [productFiles, setProductFiles] = useState<Ifile[]>([]);
   const [manualfiles, setManualFiles] = useState<Ifile[]>([]);
   const [submitState, setSubmitState] = useState<boolean>(false);
@@ -78,19 +83,46 @@ function addSupplies() {
     disease: "염소제거제",
     spec: "http://naver.com",
     pump_amount: "",
-    source: "아쿠아리오",
-    source_url: "fishhi.kr",
+    source: '아쿠아리오',
+    source_url: 'fishhi.kr',
   };
 
-  useEffect(() => {});
+  const dataType: IDataType = {
+    product_name: FieldType.CharField,
+    manufacturer: FieldType.CharField,
+    manual_text: FieldType.CharField,
+    base_medicine: FieldType.CharField,
+    standard_amount: FieldType.Number,
+    input_amount: FieldType.Number,
+    input_unit: FieldType.CharField,
+    disease: FieldType.CharField,
+    spec: FieldType.CharField,
+    pump_amount: FieldType.CharField,
+    source: FieldType.CharField,
+    source_url: FieldType.CharField,
+  };
 
-  const addSupplies = async (fishData: ISupplies) => {
+  useEffect(() => {
+    const getSuppliesData = async () => {
+      if (props.id) {
+        const suppliesData = await axios.get(`http://54.180.156.194:8000/supplies/${props.id}/`);
+        delete suppliesData.data.id;
+        console.log(suppliesData.data);
+        setSupplies(suppliesData.data);
+      }
+    };
+    getSuppliesData();
+  }, []);
+
+
+
+  const addSupplies = async (suppliesData: ISupplies) => {
     setSubmitState(true);
 
     const images = await productImageUpload();
     const images2 = await manualImageUpload();
 
-    if (images.length === 0 || images2.length === 0) {
+    if ((images.length === 0 || images2.length === 0) && !props.id) {
       toast({
         description: "이미지가 없습니다.",
         status: "error",
@@ -102,8 +134,8 @@ function addSupplies() {
 
     const dataForm: any = {};
     dataForm["category"] = "medicine";
-    Object.keys(fishData).map(fish => {
-      dataForm[fish] = fishData[fish];
+    Object.keys(suppliesData).map(data => {
+      dataForm[data] = suppliesData[data];
     });
 
     const suppliesImgArr = images.map((image, idx) => {
@@ -120,7 +152,6 @@ function addSupplies() {
     });
     dataForm["images"] = suppliesImgArr;
     dataForm["manual_images"] = suppliesImgArr;
-
     try {
       const suppliesRes = await axios.post("http://54.180.156.194:8000/supplies/", JSON.stringify(dataForm), {
         headers: { "Content-Type": "application/json" },
@@ -158,11 +189,13 @@ function addSupplies() {
       } else {
         const images = await Promise.all(
           productFiles.map(async (file: any) => {
-            let fishData = new FormData();
-            fishData.append("filename", file.name);
-            fishData.append("file", file);
-            fishData.append("key", "fishhi/supplies");
-            let response = await axios.post("http://54.180.156.194:8000/upload_image", fishData, {
+
+            let suppliesData = new FormData();
+            suppliesData.append("filename", file.name);
+            suppliesData.append("file", file);
+            suppliesData.append("key", "fishhi/supplies");
+            let response = await axios.post("http://54.180.156.194:8000/upload_image", suppliesData, {
+
               headers: { "Content-Type": `multipart/form-data` },
             });
 
@@ -187,11 +220,12 @@ function addSupplies() {
       } else {
         const images = await Promise.all(
           manualfiles.map(async (file: any) => {
-            let fishData = new FormData();
-            fishData.append("filename", file.name);
-            fishData.append("file", file);
-            fishData.append("key", "fish");
-            let response = await axios.post("http://54.180.156.194:8000/upload_image", fishData, {
+            let suppliesData = new FormData();
+            suppliesData.append("filename", file.name);
+            suppliesData.append("file", file);
+            suppliesData.append("key", "fish");
+            let response = await axios.post("http://54.180.156.194:8000/upload_image", suppliesData, {
+
               headers: { "Content-Type": `multipart/form-data` },
             });
 
@@ -208,6 +242,57 @@ function addSupplies() {
     }
   };
 
+  const getFieldElement = (item: string) => {
+
+
+    switch (dataType[item]) {
+      case FieldType.Number:
+        return <input
+          id={item}
+          type="number"
+          inputMode="decimal"
+          placeholder={dummy[item]}
+          value={supplies[item]}
+          onChange={e => {
+            setSupplies({
+              ...supplies,
+              [e.target.id]: e.target.value,
+            });
+          }}
+          disabled={submitState ? true : false}
+        ></input>;
+      case FieldType.TextField:
+        return <textarea
+          id={item}
+          placeholder={dummy[item]}
+          value={supplies[item]}
+          onChange={e => {
+            setSupplies({
+              ...supplies,
+              [e.target.id]: e.target.value,
+            });
+          }}
+          style={{ height: '150px' }}
+          disabled={submitState ? true : false}
+        ></textarea>;
+      case FieldType.CharField:
+        return <input
+          id={item}
+          placeholder={dummy[item]}
+          value={supplies[item]}
+          onChange={e => {
+            setSupplies({
+              ...supplies,
+              [e.target.id]: e.target.value,
+            });
+          }}
+          disabled={submitState ? true : false}
+        ></input>;
+    }
+
+
+  };
+
   return (
     <>
       <Alert variant={palette.gray}>fish_info</Alert>
@@ -215,35 +300,27 @@ function addSupplies() {
         {Object.keys(supplies).map((item: any, idx: number) => {
           return (
             <div className={styles["addDict-body__input-box"]} key={`${item.id}-${idx}`}>
-              <div>{item}</div>
-              <input
-                id={item}
-                placeholder={dummy[item]}
-                onChange={e => {
-                  setSupplies({
-                    ...supplies,
-                    [e.target.id]: e.target.value,
-                  });
-                }}
-                disabled={submitState ? true : false}
-              ></input>
-            </div>
+              <div>{item}</div>;
+              {getFieldElement(item)}
+            </div >
           );
         })}
         <p>제품 이미지</p>
         <Previews files={productFiles} setFiles={setProductFiles} isMain={suppliesMain} setIsMain={setSuppliesMain} />
         <p>설명서 이미지</p>
-        <Previews files={manualfiles} setFiles={setManualFiles} isMain={maunalMain} setIsMain={setManualMain} />
-        {!submitState ? (
-          <Button colorScheme="teal" size="lg" onClick={() => addSupplies(supplies)}>
-            Submit
-          </Button>
-        ) : (
-          <Button isLoading loadingText="Submitting" size="lg" colorScheme="teal" variant="outline">
-            Submit
-          </Button>
-        )}
-      </div>
+        <Previews files={manualfiles} setFiles={setManualFiles} isMain={maunalMain} setIsMain={setManualMain} />;
+        {
+          !submitState ? (
+            <Button colorScheme="teal" size="lg" onClick={() => addSupplies(supplies)}>
+              Submit
+            </Button>
+          ) : (
+            <Button isLoading loadingText="Submitting" size="lg" colorScheme="teal" variant="outline">
+              Submit
+            </Button>
+          )
+        }
+      </div >
     </>
   );
 }
