@@ -300,7 +300,7 @@ function addSupplies(props: IProps) {
         {Object.keys(supplies).map((item: any, idx: number) => {
           return (
             <div className={styles["addDict-body__input-box"]} key={`${item.id}-${idx}`}>
-              <div>{item}</div>;
+              <div>{item}</div>
               {getFieldElement(item)}
             </div >
           );
