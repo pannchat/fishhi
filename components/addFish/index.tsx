@@ -21,7 +21,6 @@ const Alert = styled.div<{ variant: string }>`
   border-radius: 4px;
 `;
 
-
 interface IFish {
   species: string;
   standard_length: number | null;
@@ -47,10 +46,10 @@ export interface IDataType {
 }
 
 export enum FieldType {
-  'Char' = 'Char',
-  'CharField' = 'CharField',
-  'TextField' = 'TextField',
-  'Number' = 'Number'
+  "Char" = "Char",
+  "CharField" = "CharField",
+  "TextField" = "TextField",
+  "Number" = "Number",
 }
 
 interface IProps {
@@ -78,17 +77,17 @@ function addFish(props: IProps) {
     scientific_name: "",
   });
   const dataType: IDataType = {
-    'species': FieldType.CharField,
-    'standard_length': FieldType.Number,
-    'aquarium_minimum_size': FieldType.Number,
-    'min_temperature': FieldType.Number,
-    'max_temperature': FieldType.Number,
-    'min_pH': FieldType.Number,
-    'max_pH': FieldType.Number,
-    'description': FieldType.TextField,
-    'source': FieldType.CharField,
-    'source_url': FieldType.CharField,
-    'scientific_name': FieldType.CharField,
+    species: FieldType.CharField,
+    standard_length: FieldType.Number,
+    aquarium_minimum_size: FieldType.Number,
+    min_temperature: FieldType.Number,
+    max_temperature: FieldType.Number,
+    min_pH: FieldType.Number,
+    max_pH: FieldType.Number,
+    description: FieldType.TextField,
+    source: FieldType.CharField,
+    source_url: FieldType.CharField,
+    scientific_name: FieldType.CharField,
   };
   const dummy: IFish = {
     species: "금붕어",
@@ -117,56 +116,57 @@ function addFish(props: IProps) {
     getFishData();
   }, []);
 
-
   const getFieldElement = (item: string) => {
-
-
     switch (dataType[item]) {
       case FieldType.Number:
-        return <input
-          id={item}
-          type="number"
-          inputMode="decimal"
-          placeholder={dummy[item]}
-          onChange={e => {
-            setFish({
-              ...fish,
-              [e.target.id]: e.target.value,
-            });
-          }}
-          value={fish[item]}
-          disabled={submitState ? true : false}
-        ></input>;
+        return (
+          <input
+            id={item}
+            type="number"
+            inputMode="decimal"
+            placeholder={dummy[item]}
+            onChange={e => {
+              setFish({
+                ...fish,
+                [e.target.id]: e.target.value,
+              });
+            }}
+            value={fish[item]}
+            disabled={submitState ? true : false}
+          ></input>
+        );
       case FieldType.TextField:
-        return <textarea
-          id={item}
-          placeholder={dummy[item]}
-          onChange={e => {
-            setFish({
-              ...fish,
-              [e.target.id]: e.target.value,
-            });
-          }}
-          value={fish[item]}
-          style={{ height: '150px' }}
-          disabled={submitState ? true : false}
-        ></textarea>;
+        return (
+          <textarea
+            id={item}
+            placeholder={dummy[item]}
+            onChange={e => {
+              setFish({
+                ...fish,
+                [e.target.id]: e.target.value,
+              });
+            }}
+            value={fish[item]}
+            style={{ height: "150px" }}
+            disabled={submitState ? true : false}
+          ></textarea>
+        );
       case FieldType.CharField:
-        return <input
-          id={item}
-          placeholder={dummy[item]}
-          onChange={e => {
-            setFish({
-              ...fish,
-              [e.target.id]: e.target.value,
-            });
-          }}
-          value={fish[item]}
-          disabled={submitState ? true : false}
-        ></input>;
+        return (
+          <input
+            id={item}
+            placeholder={dummy[item]}
+            onChange={e => {
+              setFish({
+                ...fish,
+                [e.target.id]: e.target.value,
+              });
+            }}
+            value={fish[item]}
+            disabled={submitState ? true : false}
+          ></input>
+        );
     }
-
-
   };
   const addFish = async (fishData: IFish) => {
     setSubmitState(true);
@@ -198,11 +198,11 @@ function addFish(props: IProps) {
 
     try {
       let fish;
-      if(props.id){
+      if (props.id) {
         fish = await axios.patch(`http://54.180.156.194:8000/fish/${props.id}/`, JSON.stringify(dataForm), {
           headers: { "Content-Type": "application/json" },
         });
-      }else{
+      } else {
         fish = await axios.post("http://54.180.156.194:8000/fish/", JSON.stringify(dataForm), {
           headers: { "Content-Type": "application/json" },
         });
@@ -217,7 +217,6 @@ function addFish(props: IProps) {
         });
       }
       location.href = `http://localhost:4000/info/fish/${fish.data.id}`;
-
     } catch (e) {
       toast({
         description: `${e}`,
@@ -259,9 +258,6 @@ function addFish(props: IProps) {
       throw new Error("정상적인 요청이아닙니다.");
     }
   };
-
-
-
 
   return (
     <>

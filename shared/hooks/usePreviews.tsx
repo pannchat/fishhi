@@ -161,8 +161,7 @@ function Previews(props: any) {
   };
 
   return (
-    <section className={styles['image-section']}>
-
+    <section className={styles["image-section"]}>
       <div {...getRootProps({ style })}>
         <input {...getInputProps()} />
         <p>여기에 파일을 끌어놓거나 클릭해주세요.</p>
