@@ -65,7 +65,7 @@ const FOOTER_ITEMS = [
 ];
 // for merge
 const SIZE_EXCEPTION_PATHS = ["/dictionaryList"];
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component }: AppProps) {
   const router = useRouter();
   const { asPath } = router;
   const maxWidth = useMemo(() => {
@@ -82,7 +82,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <div className="app">
           <Navbar />
           <ChakraProvider>
-            <Component {...pageProps} />
+            <Component />
           </ChakraProvider>
           <Footer
             footerItems={FOOTER_ITEMS}
@@ -103,11 +103,3 @@ function MyApp({ Component, pageProps }: AppProps) {
   );
 }
 export default MyApp;
-
-MyApp.getInitialProps = async (appContext: AppContextType<any>) => {
-  return {
-    pagePrpos: {
-      title: "피쉬하이",
-    },
-  };
-};
