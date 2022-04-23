@@ -15,6 +15,9 @@
     "downlevelIteration": true,
     "jsx": "preserve"
   },
+  "typescript": {
+    "ignoreBuildErrors": true
+  },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }
