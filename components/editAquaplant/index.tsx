@@ -1,10 +1,14 @@
-import React from 'react';
-import AquaPlant from '../addAquaplant'
+import { useRouter } from "next/dist/client/router";
+import React from "react";
+import AquaPlant from "../addAquaplant";
 
-const EditAquaplant = () => {
-    return(
-        <AquaPlant id={1}/>
-    )
+export interface IEditAquaplantProps {
+  id: number;
 }
+
+const EditAquaplant = (props: IEditAquaplantProps) => {
+  const { id } = props;
+  return <AquaPlant id={1} />;
+};
 
 export default EditAquaplant;
