@@ -11,7 +11,7 @@ const palette = {
   pink: "#ffc9c9",
 };
 
-const Alert = styled.div<{ variant: string; }>`
+const Alert = styled.div<{ variant: string }>`
   width: auto;
   box-sizing: border-box;
   margin: 10px;
@@ -75,9 +75,7 @@ function addFish() {
     scientific_name: "gold fish",
   };
 
-  useEffect(() => {
-
-  });
+  useEffect(() => {});
 
   let mainImgUrl = "";
   const addFish = async (fishData: IFish) => {
@@ -107,7 +105,7 @@ function addFish() {
       };
     });
     dataForm["images"] = imgarr;
-    console.log(dataForm);
+
     try {
       const fish = await axios.post("http://54.180.156.194:8000/fish/", JSON.stringify(dataForm), {
         headers: { "Content-Type": "application/json" },
@@ -127,9 +125,7 @@ function addFish() {
         duration: 3000,
         isClosable: true,
       });
-
     }
-
 
     setSubmitState(false);
   };
@@ -142,7 +138,6 @@ function addFish() {
       } else {
         const images = await Promise.all(
           files.map(async (file: any) => {
-
             let fishData = new FormData();
             fishData.append("filename", file.name);
             fishData.append("file", file);
@@ -154,7 +149,7 @@ function addFish() {
             if (file.name === isMain.name) mainImgUrl = response.data.url;
             return {
               filename: file.name,
-              url: response.data.url
+              url: response.data.url,
             };
           }),
         );
@@ -200,6 +195,6 @@ function addFish() {
       </div>
     </>
   );
-};
+}
 
 export default addFish;

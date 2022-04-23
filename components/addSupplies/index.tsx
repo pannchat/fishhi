@@ -11,7 +11,7 @@ const palette = {
   pink: "#ffc9c9",
 };
 
-const Alert = styled.div<{ variant: string; }>`
+const Alert = styled.div<{ variant: string }>`
   width: auto;
   box-sizing: border-box;
   margin: 10px;
@@ -68,7 +68,6 @@ function addSupplies() {
     source_url: "",
   });
   const dummy: ISupplies = {
-
     product_name: "네오 C",
     manufacturer: "aquario",
     manual_text: "적당량 투여하세요",
@@ -79,14 +78,11 @@ function addSupplies() {
     disease: "염소제거제",
     spec: "http://naver.com",
     pump_amount: "",
-    source: '아쿠아리오',
-    source_url: 'fishhi.kr',
-
+    source: "아쿠아리오",
+    source_url: "fishhi.kr",
   };
 
-  useEffect(() => {
-
-  });
+  useEffect(() => {});
 
   const addSupplies = async (fishData: ISupplies) => {
     setSubmitState(true);
@@ -124,7 +120,7 @@ function addSupplies() {
     });
     dataForm["images"] = suppliesImgArr;
     dataForm["manual_images"] = suppliesImgArr;
-    console.log(dataForm);
+
     try {
       const suppliesRes = await axios.post("http://54.180.156.194:8000/supplies/", JSON.stringify(dataForm), {
         headers: { "Content-Type": "application/json" },
@@ -138,21 +134,18 @@ function addSupplies() {
         });
       }
     } catch (e: any) {
-
       let description = Object.entries(e.response.data).map((list: any) => {
         return `${list[0]}:${list[1]}`;
       });
-      console.log(description);
+
       toast({
         title: `${e}`,
-        description: `${description.join('\n')}\n\nz`,
+        description: `${description.join("\n")}\n\nz`,
         status: "error",
         duration: 3000,
         isClosable: true,
       });
-
     }
-
 
     setSubmitState(false);
   };
@@ -165,7 +158,6 @@ function addSupplies() {
       } else {
         const images = await Promise.all(
           productFiles.map(async (file: any) => {
-
             let fishData = new FormData();
             fishData.append("filename", file.name);
             fishData.append("file", file);
@@ -176,7 +168,7 @@ function addSupplies() {
 
             return {
               filename: file.name,
-              url: response.data.url
+              url: response.data.url,
             };
           }),
         );
@@ -195,7 +187,6 @@ function addSupplies() {
       } else {
         const images = await Promise.all(
           manualfiles.map(async (file: any) => {
-
             let fishData = new FormData();
             fishData.append("filename", file.name);
             fishData.append("file", file);
@@ -206,7 +197,7 @@ function addSupplies() {
 
             return {
               filename: file.name,
-              url: response.data.url
+              url: response.data.url,
             };
           }),
         );
@@ -222,14 +213,12 @@ function addSupplies() {
       <Alert variant={palette.gray}>fish_info</Alert>
       <div className={styles["addDict-body"]}>
         {Object.keys(supplies).map((item: any, idx: number) => {
-          console.log(typeof item);
           return (
             <div className={styles["addDict-body__input-box"]} key={`${item.id}-${idx}`}>
               <div>{item}</div>
               <input
                 id={item}
                 placeholder={dummy[item]}
-
                 onChange={e => {
                   setSupplies({
                     ...supplies,
@@ -257,6 +246,6 @@ function addSupplies() {
       </div>
     </>
   );
-};
+}
 
 export default addSupplies;
