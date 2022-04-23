@@ -157,11 +157,7 @@ const SpeciesDetail = <T extends unknown>(props: { id: string; type: string; ini
 
   return (
     <div>
-      {image && (
-        <div className="species-image">
-          <CustomImage src={image} width={"90%"} ratio={1 / 1} />
-        </div>
-      )}
+      {image && image.length > 0 && <ThumbnailList images={image} />}
 
       <pre className="description">{description}</pre>
 
@@ -199,6 +195,7 @@ const SpeciesDetail = <T extends unknown>(props: { id: string; type: string; ini
         .description {
           font-size: 13px;
           font-weight: 500;
+          white-space: pre-wrap;
         }
 
         .species-title {
