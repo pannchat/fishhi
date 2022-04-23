@@ -43,9 +43,11 @@ interface Ifile {
   setFiles?: (value?: any) => void;
 }
 
+interface IProps {
+  id? : number
+}
 
-
-function addSupplies() {
+function addSupplies(props : IProps) {
   const [productFiles, setProductFiles] = useState<Ifile[]>([]);
   const [manualfiles, setManualFiles] = useState<Ifile[]>([]);
   const [submitState, setSubmitState] = useState<boolean>(false);
@@ -102,10 +104,19 @@ function addSupplies() {
   };
 
   useEffect(() => {
+    const getSuppliesData = async () => {
+      if (props.id) {
+        const suppliesData = await axios.get(`http://54.180.156.194:8000/supplies/${props.id}/`);
+        delete suppliesData.data.id;
+        console.log(suppliesData.data);
+        setSupplies(suppliesData.data);
+      }
+    };
+    getSuppliesData();
+  }, []);
 
-  });
 
-  const addSupplies = async (fishData: ISupplies) => {
+  const addSupplies = async (suppliesData: ISupplies) => {
     setSubmitState(true);
 
     const images = await productImageUpload();
@@ -123,8 +134,8 @@ function addSupplies() {
 
     const dataForm: any = {};
     dataForm["category"] = "medicine";
-    Object.keys(fishData).map(fish => {
-      dataForm[fish] = fishData[fish];
+    Object.keys(suppliesData).map(data => {
+      dataForm[data] = suppliesData[data];
     });
 
     const suppliesImgArr = images.map((image, idx) => {
@@ -182,11 +193,11 @@ function addSupplies() {
         const images = await Promise.all(
           productFiles.map(async (file: any) => {
 
-            let fishData = new FormData();
-            fishData.append("filename", file.name);
-            fishData.append("file", file);
-            fishData.append("key", "fishhi/supplies");
-            let response = await axios.post("http://54.180.156.194:8000/upload_image", fishData, {
+            let suppliesData = new FormData();
+            suppliesData.append("filename", file.name);
+            suppliesData.append("file", file);
+            suppliesData.append("key", "fishhi/supplies");
+            let response = await axios.post("http://54.180.156.194:8000/upload_image", suppliesData, {
               headers: { "Content-Type": `multipart/form-data` },
             });
 
@@ -212,11 +223,11 @@ function addSupplies() {
         const images = await Promise.all(
           manualfiles.map(async (file: any) => {
 
-            let fishData = new FormData();
-            fishData.append("filename", file.name);
-            fishData.append("file", file);
-            fishData.append("key", "fish");
-            let response = await axios.post("http://54.180.156.194:8000/upload_image", fishData, {
+            let suppliesData = new FormData();
+            suppliesData.append("filename", file.name);
+            suppliesData.append("file", file);
+            suppliesData.append("key", "fish");
+            let response = await axios.post("http://54.180.156.194:8000/upload_image", suppliesData, {
               headers: { "Content-Type": `multipart/form-data` },
             });
 
@@ -243,6 +254,7 @@ function addSupplies() {
           type="number"
           inputMode="decimal"
           placeholder={dummy[item]}
+          value={supplies[item]}
           onChange={e => {
             setSupplies({
               ...supplies,
@@ -255,6 +267,7 @@ function addSupplies() {
         return <textarea
           id={item}
           placeholder={dummy[item]}
+          value={supplies[item]}
           onChange={e => {
             setSupplies({
               ...supplies,
@@ -268,6 +281,7 @@ function addSupplies() {
         return <input
           id={item}
           placeholder={dummy[item]}
+          value={supplies[item]}
           onChange={e => {
             setSupplies({
               ...supplies,

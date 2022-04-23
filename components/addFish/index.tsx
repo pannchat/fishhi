@@ -53,7 +53,11 @@ export enum FieldType {
   'Number' = 'Number'
 }
 
-function addFish() {
+interface IProps {
+  id?: number;
+}
+
+function addFish(props: IProps) {
   const [files, setFiles] = useState<Ifile[]>([]);
   const [submitState, setSubmitState] = useState<boolean>(false);
   const [isMain, setIsMain] = useState<Ifile>({
@@ -101,6 +105,18 @@ function addFish() {
   };
 
   let mainImgUrl = "";
+  useEffect(() => {
+    const getFishData = async () => {
+      if (props.id) {
+        const fishData = await axios.get(`http://54.180.156.194:8000/fish/${props.id}/`);
+        delete fishData.data.id;
+        console.log(fishData.data);
+        setFish(fishData.data);
+      }
+    };
+    getFishData();
+  }, []);
+
 
   const getFieldElement = (item: string) => {
 
@@ -118,6 +134,7 @@ function addFish() {
               [e.target.id]: e.target.value,
             });
           }}
+          value={fish[item]}
           disabled={submitState ? true : false}
         ></input>;
       case FieldType.TextField:
@@ -130,6 +147,7 @@ function addFish() {
               [e.target.id]: e.target.value,
             });
           }}
+          value={fish[item]}
           style={{ height: '150px' }}
           disabled={submitState ? true : false}
         ></textarea>;
@@ -143,6 +161,7 @@ function addFish() {
               [e.target.id]: e.target.value,
             });
           }}
+          value={fish[item]}
           disabled={submitState ? true : false}
         ></input>;
     }
@@ -178,9 +197,17 @@ function addFish() {
     dataForm["images"] = imgarr;
     console.log(dataForm);
     try {
-      const fish = await axios.post("http://54.180.156.194:8000/fish/", JSON.stringify(dataForm), {
-        headers: { "Content-Type": "application/json" },
-      });
+      let fish;
+      if(props.id){
+        fish = await axios.patch(`http://54.180.156.194:8000/fish/${props.id}/`, JSON.stringify(dataForm), {
+          headers: { "Content-Type": "application/json" },
+        });
+      }else{
+        fish = await axios.post("http://54.180.156.194:8000/fish/", JSON.stringify(dataForm), {
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+
       if (fish.status === 201) {
         toast({
           description: "Fish Created",

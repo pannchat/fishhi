@@ -23,7 +23,7 @@ const Alert = styled.div<{ variant: string; }>`
 `;
 
 interface IAquaplant {
-  species: string;
+  name: string;
   min_temperature: number | null;
   max_temperature: number | null;
   min_pH: number | null;
@@ -31,7 +31,6 @@ interface IAquaplant {
   description: string;
   source: string;
   source_url: string;
-  scientific_name: string;
   [prop: string]: any;
 }
 
@@ -39,8 +38,10 @@ interface Ifile {
   name: React.Key | null | undefined;
   setFiles?: (value?: any) => void;
 }
-
-function addAquaplant() {
+interface IProps {
+  id? : number
+}
+function addAquaplant(props:IProps) {
   const [files, setFiles] = useState<Ifile[]>([]);
   const [submitState, setSubmitState] = useState<boolean>(false);
   const [isMain, setIsMain] = useState<Ifile>({
@@ -48,18 +49,17 @@ function addAquaplant() {
   });
   const toast = useToast();
   const [aquaplant, setAquaplant] = useState<IAquaplant>({
-    species: "",
+    name: "",
     min_temperature: null,
     max_temperature: null,
     min_pH: null,
     max_pH: null,
     description: "",
     source: "",
-    source_url: "",
-    scientific_name: "",
+    source_url: ""
   });
   const dummy: IAquaplant = {
-    species: "아누비아스 바테리 나나",
+    name: "아누비아스 바테리 나나",
     min_temperature: 22,
     max_temperature: 28,
     min_pH: 6,
@@ -67,11 +67,10 @@ function addAquaplant() {
     description: "아누비아스 바테리는 나이지리아 남동부, 카메룬 및 비오코에서 서식합니다. 잎은 12인치(300mm)까지 자랄 수 있습니다. 아누비아스 바테리는 부분 혹은 완전 잠긴채로 자라고 강한 빛에서 잎이 더 빠르게 자라며 촘촘하게 유지되지만, 낮은 광량에서도 견딜 수 있습니다.",
     source: "",
     source_url: "",
-    scientific_name: "Anubias barteri var. nana",
   };
 
   const dataType: IDataType = {
-    species: FieldType.CharField,
+    name: FieldType.CharField,
     min_temperature: FieldType.Number,
     max_temperature: FieldType.Number,
     min_pH: FieldType.Number,
@@ -79,12 +78,20 @@ function addAquaplant() {
     description: FieldType.TextField,
     source: FieldType.CharField,
     source_url: FieldType.CharField,
-    scientific_name: FieldType.CharField,
+
   };
 
   useEffect(() => {
-
-  });
+    const getAquaplantData = async() => {
+      if(props.id){
+        const aquaplantData = await axios.get(`http://54.180.156.194:8000/aquaplant/${props.id}/`)
+        delete aquaplantData.data.id
+        console.log(aquaplantData.data)
+        setAquaplant(aquaplantData.data);
+      }
+    }
+    getAquaplantData();
+  },[]);
 
   let mainImgUrl = "";
   const addAquaplant = async (aquaplantData: IAquaplant) => {
@@ -116,9 +123,16 @@ function addAquaplant() {
     dataForm["images"] = imgarr;
     console.log(dataForm);
     try {
-      const aquaplant = await axios.post("http://54.180.156.194:8000/aquaplant/", JSON.stringify(dataForm), {
-        headers: { "Content-Type": "application/json" },
-      });
+      let aquaplant;
+      if(props.id){
+        aquaplant = await axios.patch(`http://54.180.156.194:8000/aquaplant/${props.id}/`, JSON.stringify(dataForm), {
+          headers: { "Content-Type": "application/json" },
+        });
+      }else{
+        aquaplant = await axios.post("http://54.180.156.194:8000/aquaplant/", JSON.stringify(dataForm), {
+          headers: { "Content-Type": "application/json" },
+        });
+      }
       if (aquaplant.status === 201) {
         toast({
           description: "Aquaplant Created",
@@ -173,7 +187,7 @@ function addAquaplant() {
   };
   const getFieldElement = (item: string) => {
 
-
+    console.log(item)
     switch (dataType[item]) {
       case FieldType.Number:
         return <input
@@ -187,6 +201,7 @@ function addAquaplant() {
               [e.target.id]: e.target.value,
             });
           }}
+          value={aquaplant[item]}
           disabled={submitState ? true : false}
         ></input>;
       case FieldType.TextField:
@@ -199,6 +214,7 @@ function addAquaplant() {
               [e.target.id]: e.target.value,
             });
           }}
+          value={aquaplant[item]}
           style={{ height: '150px' }}
           disabled={submitState ? true : false}
         ></textarea>;
@@ -206,6 +222,7 @@ function addAquaplant() {
         return <input
           id={item}
           placeholder={dummy[item]}
+          value={aquaplant[item]}
           onChange={e => {
             setAquaplant({
               ...aquaplant,
