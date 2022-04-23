@@ -49,18 +49,19 @@ const FOOTER_ITEMS = [
       cursor: "pointer",
     },
   },
-  {
-    itemKey: "supplies",
-    text: "용품",
-    href: "/info/supplies",
-    image: ImagePath.aquariumIcon,
-    width: 38,
-    height: 38,
-    style: {
-      flexBasis: "25%",
-      cursor: "pointer",
-    },
-  },
+  // 지우지 말 것
+  // {
+  //   itemKey: "supplies",
+  //   text: "용품",
+  //   href: "/info/supplies",
+  //   image: ImagePath.aquariumIcon,
+  //   width: 38,
+  //   height: 38,
+  //   style: {
+  //     flexBasis: "25%",
+  //     cursor: "pointer",
+  //   },
+  // },
 ];
 // for merge
 const SIZE_EXCEPTION_PATHS = ["/dictionaryList"];
