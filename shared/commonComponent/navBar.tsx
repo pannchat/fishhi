@@ -23,18 +23,18 @@ const Navbar = () => {
       <div className="navbar">
         <h1
           style={{
-            width: "50%",
+            width: "100%",
             fontSize: 21,
             fontWeight: 700,
             fontFamily: "GmarketSansLight",
             marginLeft: "auto",
             marginRight: "auto",
+            paddingLeft: 10,
+            paddingRight: 10,
           }}
         >
           {title}
         </h1>
-
-        <Search width={"50%"} />
       </div>
 
       <style jsx>{`

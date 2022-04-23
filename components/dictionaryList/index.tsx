@@ -65,7 +65,6 @@ export default function dictionaryList() {
   useHideFooter();
   useEffect(() => {
     getPost();
-    console.log(category);
   }, [category]);
 
   return (

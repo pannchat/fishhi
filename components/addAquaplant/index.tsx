@@ -11,7 +11,7 @@ const palette = {
   pink: "#ffc9c9",
 };
 
-const Alert = styled.div<{ variant: string; }>`
+const Alert = styled.div<{ variant: string }>`
   width: auto;
   box-sizing: border-box;
   margin: 10px;
@@ -63,15 +63,14 @@ function addAquaplant() {
     max_temperature: 28,
     min_pH: 6,
     max_pH: 7,
-    description: "아누비아스 바테리는 나이지리아 남동부, 카메룬 및 비오코에서 서식합니다. 잎은 12인치(300mm)까지 자랄 수 있습니다. 아누비아스 바테리는 부분 혹은 완전 잠긴채로 자라고 강한 빛에서 잎이 더 빠르게 자라며 촘촘하게 유지되지만, 낮은 광량에서도 견딜 수 있습니다.",
+    description:
+      "아누비아스 바테리는 나이지리아 남동부, 카메룬 및 비오코에서 서식합니다. 잎은 12인치(300mm)까지 자랄 수 있습니다. 아누비아스 바테리는 부분 혹은 완전 잠긴채로 자라고 강한 빛에서 잎이 더 빠르게 자라며 촘촘하게 유지되지만, 낮은 광량에서도 견딜 수 있습니다.",
     source: "",
     source_url: "",
     scientific_name: "Anubias barteri var. nana",
   };
 
-  useEffect(() => {
-
-  });
+  useEffect(() => {});
 
   let mainImgUrl = "";
   const addAquaplant = async (aquaplantData: IAquaplant) => {
@@ -101,7 +100,7 @@ function addAquaplant() {
       };
     });
     dataForm["images"] = imgarr;
-    console.log(dataForm);
+
     try {
       const aquaplant = await axios.post("http://54.180.156.194:8000/aquaplant/", JSON.stringify(dataForm), {
         headers: { "Content-Type": "application/json" },
@@ -121,9 +120,7 @@ function addAquaplant() {
         duration: 3000,
         isClosable: true,
       });
-
     }
-
 
     setSubmitState(false);
   };
@@ -136,7 +133,6 @@ function addAquaplant() {
       } else {
         const images = await Promise.all(
           files.map(async (file: any) => {
-
             let aquaplantData = new FormData();
             aquaplantData.append("filename", file.name);
             aquaplantData.append("file", file);
@@ -148,7 +144,7 @@ function addAquaplant() {
             if (file.name === isMain.name) mainImgUrl = response.data.url;
             return {
               filename: file.name,
-              url: response.data.url
+              url: response.data.url,
             };
           }),
         );
@@ -194,6 +190,6 @@ function addAquaplant() {
       </div>
     </>
   );
-};
+}
 
 export default addAquaplant;
